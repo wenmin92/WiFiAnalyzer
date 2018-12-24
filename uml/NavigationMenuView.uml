@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.vrem.wifianalyzer.navigation.NavigationMenuView</OriginalElement>
+  <nodes>
+    <node x="0.0" y="2142.0">com.vrem.wifianalyzer.navigation.NavigationGroup</node>
+    <node x="651.4860275689223" y="1434.0">android.support.design.widget.NavigationView</node>
+    <node x="463.9860275689223" y="2309.0">com.vrem.wifianalyzer.navigation.NavigationMenuView</node>
+    <node x="265.4860275689223" y="1288.0">com.vrem.wifianalyzer.navigation.items.NavigationItem</node>
+    <node x="473.9860275689223" y="2131.0">com.vrem.wifianalyzer.navigation.NavigationMenuControl</node>
+    <node x="48.48602756892228" y="1310.0">com.vrem.wifianalyzer.navigation.availability.NavigationOption</node>
+    <node x="81.77769423558902" y="1654.5">com.vrem.wifianalyzer.navigation.NavigationMenu</node>
+    <node x="403.7035714285715" y="0.0">android.view.MenuItem</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="android.support.design.widget.NavigationView" target="android.view.MenuItem">
+      <point x="1.1368683772161603E-13" y="-323.5" />
+      <point x="884.4860275689224" y="1268.0" />
+      <point x="721.7035714285714" y="1268.0" />
+      <point x="106.0" y="609.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.navigation.NavigationMenuView" target="com.vrem.wifianalyzer.navigation.NavigationGroup">
+      <point x="-151.71428571428572" y="-70.5" />
+      <point x="489.27174185463656" y="2289.0" />
+      <point x="156.0" y="2289.0" />
+      <point x="0.0" y="48.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.navigation.NavigationMenuControl" target="android.support.design.widget.NavigationView">
+      <point x="111.33333333333337" y="-59.0" />
+      <point x="752.3193609022557" y="2106.0" />
+      <point x="729.1526942355889" y="2106.0" />
+      <point x="-155.33333333333337" y="323.5" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.navigation.NavigationMenuControl" target="android.view.MenuItem">
+      <point x="0.0" y="-59.0" />
+      <point x="640.9860275689223" y="1268.0" />
+      <point x="651.0369047619047" y="1268.0" />
+      <point x="35.33333333333326" y="609.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.navigation.NavigationMenuView" target="android.support.design.widget.NavigationView">
+      <point x="50.571428571428555" y="-70.5" />
+      <point x="691.5574561403508" y="2269.0" />
+      <point x="929.7562656641604" y="2269.0" />
+      <point x="929.7562656641604" y="2106.0" />
+      <point x="884.4860275689223" y="2106.0" />
+      <point x="0.0" y="323.5" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.navigation.items.NavigationItem" target="com.vrem.wifianalyzer.navigation.NavigationMenu">
+      <point x="121.66666666666669" y="48.0" />
+      <point x="569.652694235589" y="1414.0" />
+      <point x="410.8610275689224" y="1414.0" />
+      <point x="149.58333333333337" y="-103.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.navigation.NavigationMenu" target="android.view.MenuItem">
+      <point x="-149.58333333333348" y="-103.0" />
+      <point x="111.69436090225554" y="1414.0" />
+      <point x="37.98602756892228" y="1414.0" />
+      <point x="37.98602756892228" y="1258.0" />
+      <point x="509.7035714285715" y="1258.0" />
+      <point x="-106.0" y="609.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.navigation.NavigationMenuControl" target="com.vrem.wifianalyzer.navigation.NavigationMenu">
+      <point x="-111.33333333333331" y="-59.0" />
+      <point x="529.652694235589" y="2106.0" />
+      <point x="404.87769423558905" y="2106.0" />
+      <point x="143.60000000000002" y="103.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.navigation.NavigationMenuView" target="com.vrem.wifianalyzer.navigation.NavigationMenuControl">
+      <point x="0.0" y="-70.5" />
+      <point x="0.0" y="59.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.navigation.items.NavigationItem" target="android.view.MenuItem">
+      <point x="0.0" y="-48.0" />
+      <point x="447.9860275689223" y="1268.0" />
+      <point x="580.3702380952382" y="1268.0" />
+      <point x="-35.33333333333337" y="609.0" />
+    </edge>
+    <edge source="android.view.MenuItem" target="android.view.MenuItem">
+      <point x="-176.66666666666669" y="609.0" />
+      <point x="439.0369047619048" y="1238.0" />
+      <point x="383.7035714285715" y="1238.0" />
+      <point x="383.7035714285715" y="609.0" />
+      <point x="-212.0" y="-0.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.navigation.NavigationMenu" target="com.vrem.wifianalyzer.navigation.items.NavigationItem">
+      <point x="29.91666666666663" y="-103.0" />
+      <point x="291.19436090225565" y="1414.0" />
+      <point x="326.3193609022556" y="1414.0" />
+      <point x="-121.66666666666667" y="48.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.navigation.NavigationMenuView" target="android.view.MenuItem">
+      <point x="151.71428571428578" y="-70.5" />
+      <point x="792.7003132832081" y="2289.0" />
+      <point x="1127.9860275689223" y="2289.0" />
+      <point x="1127.9860275689223" y="1258.0" />
+      <point x="792.3702380952382" y="1258.0" />
+      <point x="176.66666666666674" y="609.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.navigation.NavigationMenu" target="com.vrem.wifianalyzer.navigation.availability.NavigationOption">
+      <point x="-29.916666666666686" y="-103.0" />
+      <point x="231.36102756892234" y="1414.0" />
+      <point x="196.23602756892234" y="1414.0" />
+      <point x="49.25000000000006" y="26.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.navigation.NavigationMenuView" target="com.vrem.wifianalyzer.navigation.NavigationMenu">
+      <point x="-50.57142857142867" y="-70.5" />
+      <point x="590.4145989974936" y="2269.0" />
+      <point x="353.12769423558905" y="2269.0" />
+      <point x="353.12769423558905" y="2106.0" />
+      <point x="333.0776942355891" y="2106.0" />
+      <point x="71.80000000000007" y="103.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.navigation.NavigationGroup" target="com.vrem.wifianalyzer.navigation.NavigationMenu">
+      <point x="78.0" y="-48.0" />
+      <point x="234.0" y="2106.0" />
+      <point x="189.47769423558907" y="2106.0" />
+      <point x="-71.79999999999995" y="103.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="629.0" y="1333.0" />
+  <SelectedNodes>
+    <node>com.vrem.wifianalyzer.navigation.NavigationMenuView</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Methods</Category>
+    <Category>Constructors</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>packageLocal</VISIBILITY>
+</Diagram>
+

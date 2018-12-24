@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.vrem.wifianalyzer</OriginalElement>
+  <nodes>
+    <node x="402.95121951219505" y="393.201171875">com.vrem.wifianalyzer.MainReload</node>
+    <node x="0.0" y="764.201171875">com.vrem.wifianalyzer.wifi</node>
+    <node x="20.5" y="393.201171875">com.vrem.wifianalyzer.DrawerNavigation</node>
+    <node x="259.25" y="643.201171875">com.vrem.wifianalyzer.SplashActivity</node>
+    <node x="534.951219512195" y="393.201171875">com.vrem.wifianalyzer.ActivityUtils</node>
+    <node x="600.951219512195" y="273.201171875">com.vrem.wifianalyzer.ActivityUtils.WiFiBandToggle</node>
+    <node x="399.5" y="273.201171875">com.vrem.wifianalyzer.settings</node>
+    <node x="605.3862712490761" y="113.201171875">com.vrem.wifianalyzer.MainContext</node>
+    <node x="843.973115299335" y="273.201171875">com.vrem.wifianalyzer.about</node>
+    <node x="66.59081670362167" y="13.201171875">com.vrem.wifianalyzer.gestures</node>
+    <node x="81.09081670362167" y="113.201171875">com.vrem.wifianalyzer.navigation</node>
+    <node x="621.7196045824095" y="13.201171875">com.vrem.wifianalyzer.Configuration</node>
+    <node x="189.5" y="393.201171875">com.vrem.wifianalyzer.PermissionChecker</node>
+    <node x="716.473115299335" y="643.201171875">com.vrem.wifianalyzer.vendor</node>
+    <node x="291.5" y="563.201171875">com.vrem.wifianalyzer.MainActivity</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.vrem.wifianalyzer.MainReload" target="com.vrem.wifianalyzer.settings">
+      <point x="-27.75" y="-15.0" />
+      <point x="430.70121951219505" y="373.201171875" />
+      <point x="467.0" y="373.201171875" />
+      <point x="7.5" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.settings" target="com.vrem.wifianalyzer.MainContext">
+      <point x="-24.0" y="-15.0" />
+      <point x="435.5" y="213.201171875" />
+      <point x="610.6589985218034" y="213.201171875" />
+      <point x="-52.72727272727275" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.MainContext" target="com.vrem.wifianalyzer.settings">
+      <point x="-42.18181818181819" y="15.0" />
+      <point x="621.204453067258" y="223.201171875" />
+      <point x="459.5" y="223.201171875" />
+      <point x="0.0" y="-15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.SplashActivity" target="com.vrem.wifianalyzer.MainActivity">
+      <point x="0.0" y="-15.0" />
+      <point x="-28.75" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.vendor" target="com.vrem.wifianalyzer.MainActivity">
+      <point x="-29.0" y="-15.0" />
+      <point x="745.473115299335" y="618.201171875" />
+      <point x="377.75" y="618.201171875" />
+      <point x="28.75" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.vendor" target="com.vrem.wifianalyzer.vendor">
+      <point x="-38.666666666666686" y="15.0" />
+      <point x="735.8064486326682" y="693.201171875" />
+      <point x="696.473115299335" y="693.201171875" />
+      <point x="696.473115299335" y="668.201171875" />
+      <point x="-58.0" y="10.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.MainActivity" target="com.vrem.wifianalyzer.PermissionChecker">
+      <point x="-5.0" y="-15.0" />
+      <point x="344.0" y="443.201171875" />
+      <point x="301.25" y="443.201171875" />
+      <point x="37.25" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.ActivityUtils" target="com.vrem.wifianalyzer.ActivityUtils.WiFiBandToggle">
+      <point x="37.0" y="-15.0" />
+      <point x="627.451219512195" y="373.201171875" />
+      <point x="623.451219512195" y="373.201171875" />
+      <point x="-45.0" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.DrawerNavigation" target="com.vrem.wifianalyzer.MainActivity">
+      <point x="53.625" y="15.0" />
+      <point x="145.625" y="483.201171875" />
+      <point x="324.0" y="483.201171875" />
+      <point x="-25.0" y="-15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.vendor" target="com.vrem.wifianalyzer.MainContext">
+      <point x="29.0" y="-15.0" />
+      <point x="803.473115299335" y="223.201171875" />
+      <point x="705.5680894308944" y="223.201171875" />
+      <point x="42.18181818181819" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.ActivityUtils" target="com.vrem.wifianalyzer.settings">
+      <point x="-37.0" y="-15.0" />
+      <point x="553.451219512195" y="363.201171875" />
+      <point x="512.0" y="363.201171875" />
+      <point x="52.5" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.navigation" target="com.vrem.wifianalyzer.gestures">
+      <point x="-50.625" y="-15.0" />
+      <point x="97.96581670362167" y="93.201171875" />
+      <point x="117.84081670362167" y="93.201171875" />
+      <point x="-10.25" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.settings" target="com.vrem.wifianalyzer.navigation">
+      <point x="-48.0" y="-15.0" />
+      <point x="411.5" y="243.201171875" />
+      <point x="209.95445306725804" y="243.201171875" />
+      <point x="61.363636363636374" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.ActivityUtils.WiFiBandToggle" target="com.vrem.wifianalyzer.MainActivity">
+      <point x="0.0" y="15.0" />
+      <point x="668.451219512195" y="373.201171875" />
+      <point x="688.451219512195" y="373.201171875" />
+      <point x="688.451219512195" y="503.201171875" />
+      <point x="384.0" y="503.201171875" />
+      <point x="35.0" y="-15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.gestures" target="com.vrem.wifianalyzer.gestures">
+      <point x="-51.25" y="15.0" />
+      <point x="76.84081670362167" y="63.201171875" />
+      <point x="46.59081670362167" y="63.201171875" />
+      <point x="46.59081670362167" y="35.701171875" />
+      <point x="-61.5" y="7.5" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.about" target="com.vrem.wifianalyzer.MainContext">
+      <point x="-27.50000000000003" y="-15.0" />
+      <point x="871.473115299335" y="213.201171875" />
+      <point x="716.1135439763489" y="213.201171875" />
+      <point x="52.72727272727275" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.navigation" target="com.vrem.wifianalyzer.navigation">
+      <point x="-49.090909090909065" y="15.0" />
+      <point x="99.4999076127126" y="173.201171875" />
+      <point x="51.09081670362167" y="173.201171875" />
+      <point x="51.09081670362167" y="131.951171875" />
+      <point x="-67.5" y="3.75" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.ActivityUtils" target="com.vrem.wifianalyzer.MainContext">
+      <point x="0.0" y="-15.0" />
+      <point x="590.451219512195" y="253.201171875" />
+      <point x="652.8408167036216" y="253.201171875" />
+      <point x="-10.545454545454561" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.MainActivity" target="com.vrem.wifianalyzer.settings">
+      <point x="5.0" y="-15.0" />
+      <point x="354.0" y="443.201171875" />
+      <point x="375.32621951219505" y="443.201171875" />
+      <point x="375.32621951219505" y="363.201171875" />
+      <point x="452.0" y="363.201171875" />
+      <point x="-7.5" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.MainContext" target="com.vrem.wifianalyzer.Configuration">
+      <point x="38.666666666666686" y="-15.0" />
+      <point x="702.0529379157429" y="93.201171875" />
+      <point x="697.9696045824095" y="93.201171875" />
+      <point x="15.25" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.settings" target="com.vrem.wifianalyzer.settings">
+      <point x="-52.5" y="15.0" />
+      <point x="407.0" y="323.201171875" />
+      <point x="379.5" y="323.201171875" />
+      <point x="379.5" y="298.201171875" />
+      <point x="-60.0" y="10.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.about" target="com.vrem.wifianalyzer.about">
+      <point x="-27.5" y="15.0" />
+      <point x="871.473115299335" y="323.201171875" />
+      <point x="823.973115299335" y="323.201171875" />
+      <point x="823.973115299335" y="295.701171875" />
+      <point x="-55.0" y="7.5" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.MainActivity" target="com.vrem.wifianalyzer.ActivityUtils">
+      <point x="25.0" y="-15.0" />
+      <point x="374.0" y="483.201171875" />
+      <point x="562.701219512195" y="483.201171875" />
+      <point x="-27.75" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.ActivityUtils.WiFiBandToggle" target="com.vrem.wifianalyzer.MainContext">
+      <point x="0.0" y="-15.0" />
+      <point x="668.451219512195" y="253.201171875" />
+      <point x="663.3862712490761" y="253.201171875" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.about" target="com.vrem.wifianalyzer.Configuration">
+      <point x="27.5" y="-15.0" />
+      <point x="926.473115299335" y="93.201171875" />
+      <point x="728.4696045824095" y="93.201171875" />
+      <point x="45.74999999999997" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.MainContext" target="com.vrem.wifianalyzer.MainActivity">
+      <point x="31.636363636363626" y="15.0" />
+      <point x="695.0226348854399" y="233.201171875" />
+      <point x="756.451219512195" y="233.201171875" />
+      <point x="756.451219512195" y="543.201171875" />
+      <point x="404.0" y="543.201171875" />
+      <point x="55.0" y="-15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.MainActivity" target="com.vrem.wifianalyzer.DrawerNavigation">
+      <point x="-30.0" y="-15.0" />
+      <point x="319.0" y="493.201171875" />
+      <point x="109.875" y="493.201171875" />
+      <point x="17.875" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.MainActivity" target="com.vrem.wifianalyzer.MainContext">
+      <point x="50.0" y="-15.0" />
+      <point x="399.0" y="533.201171875" />
+      <point x="751.451219512195" y="533.201171875" />
+      <point x="751.451219512195" y="243.201171875" />
+      <point x="684.4771803399854" y="243.201171875" />
+      <point x="21.090909090909122" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.MainActivity" target="com.vrem.wifianalyzer.navigation">
+      <point x="-20.0" y="-15.0" />
+      <point x="329.0" y="473.201171875" />
+      <point x="174.0" y="473.201171875" />
+      <point x="24.545454545454504" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.ActivityUtils" target="com.vrem.wifianalyzer.MainActivity">
+      <point x="27.75" y="15.0" />
+      <point x="618.201219512195" y="493.201171875" />
+      <point x="379.0" y="493.201171875" />
+      <point x="30.0" y="-15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.MainActivity" target="com.vrem.wifianalyzer.MainReload">
+      <point x="15.0" y="-15.0" />
+      <point x="364.0" y="463.201171875" />
+      <point x="486.20121951219505" y="463.201171875" />
+      <point x="27.75" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.navigation" target="com.vrem.wifianalyzer.MainActivity">
+      <point x="49.09090909090912" y="15.0" />
+      <point x="197.6817257945308" y="253.201171875" />
+      <point x="349.0" y="253.201171875" />
+      <point x="0.0" y="-15.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="487.0" y="370.0" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>Production</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

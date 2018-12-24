@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.vrem.wifianalyzer.navigation.NavigationSwipeOnTouchListener</OriginalElement>
+  <nodes>
+    <node x="622.1730769230769" y="170.0">com.vrem.wifianalyzer.navigation.NavigationSwipe</node>
+    <node x="537.5464743589744" y="0.0">com.vrem.wifianalyzer.gestures.SwipeDirection</node>
+    <node x="75.29166666666669" y="170.0">com.vrem.wifianalyzer.gestures.GestureOnTouchListener</node>
+    <node x="174.0" y="80.0">android.view.View.OnTouchListener</node>
+    <node x="20.0" y="80.0">android.view.GestureDetector</node>
+    <node x="243.2323717948718" y="250.0">com.vrem.wifianalyzer.navigation.NavigationSwipeOnTouchListener</node>
+    <node x="426.17307692307696" y="170.0">com.vrem.wifianalyzer.gestures.SwipeOnGestureListener</node>
+    <node x="333.0" y="80.0">android.view.GestureDetector.SimpleOnGestureListener</node>
+    <node x="541.4230769230769" y="80.0">com.vrem.wifianalyzer.gestures.SwipeAction</node>
+    <node x="75.54807692307696" y="0.0">android.view.GestureDetector.OnGestureListener</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="android.view.GestureDetector" target="android.view.GestureDetector.OnGestureListener">
+      <point x="-33.25" y="-15.0" />
+      <point x="53.25" y="55.0" />
+      <point x="93.67307692307696" y="55.0" />
+      <point x="-54.375" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.navigation.NavigationSwipe" target="com.vrem.wifianalyzer.gestures.SwipeAction">
+      <point x="-34.25" y="-15.0" />
+      <point x="656.4230769230769" y="150.0" />
+      <point x="636.4230769230769" y="150.0" />
+      <point x="38.0" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.gestures.SwipeOnGestureListener" target="com.vrem.wifianalyzer.gestures.SwipeAction">
+      <point x="66.0" y="-15.0" />
+      <point x="580.1730769230769" y="150.0" />
+      <point x="598.4230769230769" y="150.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.navigation.NavigationSwipeOnTouchListener" target="com.vrem.wifianalyzer.gestures.SwipeOnGestureListener">
+      <point x="28.5" y="-15.0" />
+      <point x="385.7323717948718" y="220.0" />
+      <point x="514.1730769230769" y="220.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="android.view.GestureDetector.SimpleOnGestureListener" target="android.view.GestureDetector.OnGestureListener">
+      <point x="0.0" y="-15.0" />
+      <point x="423.5" y="55.0" />
+      <point x="202.42307692307696" y="55.0" />
+      <point x="54.375" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.navigation.NavigationSwipeOnTouchListener" target="com.vrem.wifianalyzer.gestures.GestureOnTouchListener">
+      <point x="-85.5" y="-15.0" />
+      <point x="271.7323717948718" y="230.0" />
+      <point x="120.04166666666669" y="230.0" />
+      <point x="-44.75" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.gestures.GestureOnTouchListener" target="android.view.GestureDetector.OnGestureListener">
+      <point x="22.375" y="-15.0" />
+      <point x="187.16666666666669" y="150.0" />
+      <point x="163.50000000000003" y="150.0" />
+      <point x="163.50000000000003" y="55.0" />
+      <point x="166.17307692307696" y="55.0" />
+      <point x="18.125" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.navigation.NavigationSwipeOnTouchListener" target="com.vrem.wifianalyzer.navigation.NavigationSwipe">
+      <point x="85.5" y="-15.0" />
+      <point x="442.7323717948718" y="230.0" />
+      <point x="690.6730769230769" y="230.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.gestures.SwipeOnGestureListener" target="android.view.GestureDetector.SimpleOnGestureListener">
+      <point x="-66.0" y="-15.0" />
+      <point x="448.17307692307696" y="150.0" />
+      <point x="423.5" y="150.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.gestures.GestureOnTouchListener" target="android.view.GestureDetector">
+      <point x="-22.375" y="-15.0" />
+      <point x="142.41666666666669" y="150.0" />
+      <point x="130.83333333333337" y="150.0" />
+      <point x="44.33333333333337" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.navigation.NavigationSwipe" target="com.vrem.wifianalyzer.gestures.SwipeDirection">
+      <point x="34.25" y="-15.0" />
+      <point x="724.9230769230769" y="55.0" />
+      <point x="643.3798076923077" y="55.0" />
+      <point x="42.33333333333337" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.gestures.GestureOnTouchListener" target="android.view.View.OnTouchListener">
+      <point x="67.125" y="-15.0" />
+      <point x="231.91666666666669" y="150.0" />
+      <point x="243.5" y="150.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.gestures.SwipeAction" target="com.vrem.wifianalyzer.gestures.SwipeDirection">
+      <point x="0.0" y="-15.0" />
+      <point x="598.4230769230769" y="55.0" />
+      <point x="601.0464743589744" y="55.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="com.vrem.wifianalyzer.gestures.SwipeOnGestureListener" target="com.vrem.wifianalyzer.gestures.SwipeDirection">
+      <point x="-22.0" y="-15.0" />
+      <point x="492.17307692307696" y="150.0" />
+      <point x="524.5" y="150.0" />
+      <point x="524.5" y="55.0" />
+      <point x="558.713141025641" y="55.0" />
+      <point x="-42.33333333333337" y="15.0" />
+    </edge>
+    <edge source="android.view.GestureDetector" target="android.view.GestureDetector">
+      <point x="-44.333333333333314" y="15.0" />
+      <point x="42.166666666666686" y="130.0" />
+      <point x="0.0" y="130.0" />
+      <point x="0.0" y="95.0" />
+      <point x="-66.5" y="-0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="385.0" y="140.0" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
