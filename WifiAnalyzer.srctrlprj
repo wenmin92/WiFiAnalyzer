@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<config>
+    <source_groups>
+        <source_group_4cb9a95a-4e38-43a1-a00a-f5e402f26532>
+            <class_paths>
+                <class_path>app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes</class_path>
+                <class_path>C:/Program_Files/Android/Sdk/platforms/android-28/android.jar</class_path>
+                <class_path>C:/Users/han-wm/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-collections4/4.2/54ebea0a5b653d3c680131e73fe807bb8f78c4ed/commons-collections4-4.2.jar</class_path>
+            </class_paths>
+            <java_standard>8</java_standard>
+            <name>Java Source Group</name>
+            <source_extensions>
+                <source_extension>.java</source_extension>
+            </source_extensions>
+            <source_paths>
+                <source_path>app/src/main/java/com</source_path>
+            </source_paths>
+            <status>enabled</status>
+            <type>Java Source Group</type>
+            <use_jre_system_library>1</use_jre_system_library>
+        </source_group_4cb9a95a-4e38-43a1-a00a-f5e402f26532>
+    </source_groups>
+    <version>7</version>
+</config>
