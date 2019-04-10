@@ -69,6 +69,9 @@ public class EnumUtils {
         return new HashSet<>(CollectionUtils.collect(values(enumType), new ToOrdinal<>()));
     }
 
+    /**
+     * 枚举的值列表
+     */
     @NonNull
     public static <T extends Enum> Set<T> values(@NonNull Class<T> enumType) {
         return new HashSet<>(Arrays.asList(enumType.getEnumConstants()));

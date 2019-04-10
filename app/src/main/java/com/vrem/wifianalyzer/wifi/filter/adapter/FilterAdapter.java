@@ -56,6 +56,10 @@ public class FilterAdapter {
         IterableUtils.forEach(getFilterAdapters(isAccessPoints()), new SaveClosure());
     }
 
+    /**
+     * 根据当前页面返回过滤适配器
+     * AP列表页面多了对频段的过滤(2.4G, 5G)
+     */
     @NonNull
     List<? extends BasicFilterAdapter<? extends Serializable>> getFilterAdapters(boolean accessPoints) {
         if (accessPoints) {

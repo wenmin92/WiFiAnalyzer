@@ -32,6 +32,9 @@ import org.apache.commons.collections4.Transformer;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 图表适配器基类
+ */
 public class GraphAdapter implements UpdateNotifier {
     private final List<GraphViewNotifier> graphViewNotifiers;
 
@@ -54,6 +57,9 @@ public class GraphAdapter implements UpdateNotifier {
         return graphViewNotifiers;
     }
 
+    /**
+     * GraphViewNotifier 更新
+     */
     private class UpdateClosure implements Closure<GraphViewNotifier> {
         private final WiFiData wiFiData;
 
@@ -67,6 +73,9 @@ public class GraphAdapter implements UpdateNotifier {
         }
     }
 
+    /**
+     * 获取 GraphViewNotifier 中的 GraphView
+     */
     private class ToGraphView implements Transformer<GraphViewNotifier, GraphView> {
         @Override
         public GraphView transform(GraphViewNotifier input) {

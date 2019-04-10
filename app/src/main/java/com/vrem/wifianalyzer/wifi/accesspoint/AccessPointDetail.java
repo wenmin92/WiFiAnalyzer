@@ -39,22 +39,36 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Locale;
 
+/**
+ * 生成view, 并填充数据
+ */
 public class AccessPointDetail {
     private static final int VENDOR_SHORT_MAX = 10;
     private static final int VENDOR_LONG_MAX = 30;
 
+    /**
+     * 生成view, 并填充数据
+     */
     View makeView(View convertView, ViewGroup parent, @NonNull WiFiDetail wiFiDetail, boolean isChild) {
         AccessPointViewType accessPointViewType = MainContext.INSTANCE.getSettings().getAccessPointView();
         return makeView(convertView, parent, wiFiDetail, isChild, accessPointViewType);
     }
 
+    /**
+     * 生成view, 并填充数据
+     * @param accessPointViewType 视图类型: COMPLETE 和 COMPACT
+     */
     View makeView(View convertView, ViewGroup parent, @NonNull WiFiDetail wiFiDetail, boolean isChild, @NonNull AccessPointViewType accessPointViewType) {
         View view = convertView;
         if (view == null) {
             LayoutInflater layoutInflater = MainContext.INSTANCE.getLayoutInflater();
             view = layoutInflater.inflate(accessPointViewType.getLayout(), parent, false);
         }
+
+        // 填充数据
         setViewCompact(view, wiFiDetail, isChild);
+
+        // 附加数据
         if (view.findViewById(R.id.capabilities) != null) {
             setViewExtra(view, wiFiDetail);
             setViewVendorShort(view, wiFiDetail.getWiFiAdditional());
@@ -79,28 +93,37 @@ public class AccessPointDetail {
         view.<TextView>findViewById(R.id.vendorLong).setTextIsSelectable(true);
     }
 
+    /**
+     * 填充数据
+     */
     private void setViewCompact(@NonNull View view, @NonNull WiFiDetail wiFiDetail, boolean isChild) {
         Context context = view.getContext();
 
+        // ssid (bssid)
         view.<TextView>findViewById(R.id.ssid).setText(wiFiDetail.getTitle());
 
         WiFiSignal wiFiSignal = wiFiDetail.getWiFiSignal();
         Strength strength = wiFiSignal.getStrength();
 
+        // 安全图标, 🔒
         Security security = wiFiDetail.getSecurity();
         ImageView securityImage = view.findViewById(R.id.securityImage);
         securityImage.setImageResource(security.getImageResource());
         securityImage.setColorFilter(ContextCompat.getColor(context, R.color.icons_color));
 
+        // 信号强度
         TextView textLevel = view.findViewById(R.id.level);
         textLevel.setText(String.format(Locale.ENGLISH, "%ddBm", wiFiSignal.getLevel()));
         textLevel.setTextColor(ContextCompat.getColor(context, strength.colorResource()));
 
+        // 信道
         view.<TextView>findViewById(R.id.channel)
             .setText(wiFiSignal.getChannelDisplay());
+        // 主频
         view.<TextView>findViewById(R.id.primaryFrequency)
             .setText(String.format(Locale.ENGLISH, "%d%s",
                 wiFiSignal.getPrimaryFrequency(), WiFiSignal.FREQUENCY_UNITS));
+        // 距离
         view.<TextView>findViewById(R.id.distance).setText(wiFiSignal.getDistance());
 
         if (isChild) {
@@ -110,26 +133,37 @@ public class AccessPointDetail {
         }
     }
 
+    /**
+     * 填充数据, 附加数据
+     */
     private void setViewExtra(@NonNull View view, @NonNull WiFiDetail wiFiDetail) {
         Context context = view.getContext();
 
+        // 是否是配置过的, 😊
         view.<ImageView>findViewById(R.id.configuredImage)
             .setVisibility(wiFiDetail.getWiFiAdditional().isConfiguredNetwork() ? View.VISIBLE : View.GONE);
 
+        // 信号强度
         WiFiSignal wiFiSignal = wiFiDetail.getWiFiSignal();
         Strength strength = wiFiSignal.getStrength();
         ImageView imageView = view.findViewById(R.id.levelImage);
         imageView.setImageResource(strength.imageResource());
         imageView.setColorFilter(ContextCompat.getColor(context, strength.colorResource()));
 
+        // 频率范围
         view.<TextView>findViewById(R.id.channel_frequency_range)
             .setText(Integer.toString(wiFiSignal.getFrequencyStart()) + " - " + Integer.toString(wiFiSignal.getFrequencyEnd()));
+        // 频宽
         view.<TextView>findViewById(R.id.width)
             .setText("(" + Integer.toString(wiFiSignal.getWiFiWidth().getFrequencyWidth()) + WiFiSignal.FREQUENCY_UNITS + ")");
+        // 加密方式
         view.<TextView>findViewById(R.id.capabilities)
             .setText(wiFiDetail.getCapabilities());
     }
 
+    /**
+     * 填充数据, 厂商名称
+     */
     private void setViewVendorShort(@NonNull View view, @NonNull WiFiAdditional wiFiAdditional) {
         TextView textVendorShort = view.findViewById(R.id.vendorShort);
         String vendor = wiFiAdditional.getVendorName();

@@ -26,6 +26,9 @@ import com.vrem.wifianalyzer.wifi.model.WiFiDetail;
 
 import org.apache.commons.collections4.Predicate;
 
+/**
+ * 判断某信号是否在给定频率范围内
+ */
 class InRangePredicate implements Predicate<WiFiDetail> {
     private final Pair<WiFiChannel, WiFiChannel> wiFiChannelPair;
 

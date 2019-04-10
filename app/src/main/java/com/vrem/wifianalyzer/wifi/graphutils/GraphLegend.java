@@ -20,6 +20,9 @@ package com.vrem.wifianalyzer.wifi.graphutils;
 
 import com.jjoe64.graphview.LegendRenderer;
 
+/**
+ * 图例的显示方式, [左侧, 右侧, 隐藏]
+ */
 public enum GraphLegend {
     LEFT(new DisplayLeft()),
     RIGHT(new DisplayRight()),

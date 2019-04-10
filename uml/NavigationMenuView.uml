@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.vrem.wifianalyzer.navigation.NavigationMenuView</OriginalElement>
+  <nodes>
+    <node x="188.0" y="155.0">com.vrem.wifianalyzer.navigation.NavigationGroup</node>
+    <node x="182.0" y="230.0">android.support.design.widget.NavigationView</node>
+    <node x="7.5" y="80.0">com.vrem.wifianalyzer.navigation.NavigationMenuView</node>
+    <node x="0.0" y="305.0">com.vrem.wifianalyzer.navigation.items.NavigationItem</node>
+    <node x="0.0" y="0.0">com.vrem.wifianalyzer.navigation.NavigationMenuControl</node>
+    <node x="0.0" y="155.0">com.vrem.wifianalyzer.navigation.availability.NavigationOption</node>
+    <node x="0.0" y="230.0">com.vrem.wifianalyzer.navigation.NavigationMenu</node>
+    <node x="175.0" y="305.0">android.view.MenuItem</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.vrem.wifianalyzer.navigation.NavigationMenuView" target="com.vrem.wifianalyzer.navigation.NavigationMenuControl">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="629.0" y="1333.0" />
+  <SelectedNodes>
+    <node>com.vrem.wifianalyzer.navigation.NavigationMenuView</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>packageLocal</VISIBILITY>
+</Diagram>
+

@@ -23,6 +23,9 @@ import android.support.annotation.NonNull;
 import com.jjoe64.graphview.GraphView;
 import com.vrem.wifianalyzer.wifi.model.WiFiData;
 
+/**
+ * [接口] 图表更新包装
+ */
 public interface GraphViewNotifier {
     @NonNull
     GraphView getGraphView();

@@ -47,6 +47,9 @@ import org.apache.commons.collections4.Predicate;
 import java.util.List;
 import java.util.Set;
 
+/**
+ *
+ */
 class ChannelGraphView implements GraphViewNotifier {
     private final WiFiBand wiFiBand;
     private final Pair<WiFiChannel, WiFiChannel> wiFiChannelPair;
@@ -92,6 +95,9 @@ class ChannelGraphView implements GraphViewNotifier {
         return Math.min(GraphConstants.NUM_X_CHANNEL, channelLast - channelFirst + 1);
     }
 
+    /**
+     * 配置 GraphViewBuilder, 生成 GraphView
+     */
     @NonNull
     private GraphView makeGraphView(@NonNull MainContext mainContext, @NonNull Settings settings) {
         Resources resources = mainContext.getResources();
@@ -102,6 +108,10 @@ class ChannelGraphView implements GraphViewNotifier {
             .build();
     }
 
+    /**
+     * 配置 GraphViewWrapper
+     * TODO: 2019-04-10 理解 GraphViewWrapper 的职责
+     */
     @NonNull
     private GraphViewWrapper makeGraphViewWrapper() {
         MainContext mainContext = MainContext.INSTANCE;
@@ -117,6 +127,9 @@ class ChannelGraphView implements GraphViewNotifier {
         return graphViewWrapper;
     }
 
+    /**
+     * TODO: 2019-04-10 不知道是做什么的
+     */
     private TitleLineGraphSeries<DataPoint> makeDefaultSeries(int frequencyEnd, int minX) {
         DataPoint[] dataPoints = new DataPoint[]{
             new DataPoint(minX, GraphConstants.MIN_Y),

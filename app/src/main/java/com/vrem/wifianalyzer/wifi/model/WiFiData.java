@@ -49,7 +49,11 @@ public class WiFiData {
 
     @NonNull
     public WiFiDetail getConnection() {
-        WiFiDetail wiFiDetail = IterableUtils.find(wiFiDetails, new ConnectionPredicate());
+        WiFiDetail wiFiDetail = IterableUtils.find(wiFiDetails,
+                wiFiDetail1 -> new EqualsBuilder()
+                        .append(wiFiConnection.getSSID(), wiFiDetail1.getSSID())
+                        .append(wiFiConnection.getBSSID(), wiFiDetail1.getBSSID())
+                        .isEquals());
         return wiFiDetail == null ? WiFiDetail.EMPTY : copyWiFiDetail(wiFiDetail);
     }
 
@@ -119,16 +123,6 @@ public class WiFiData {
         String vendorName = vendorService.findVendorName(wiFiDetail.getBSSID());
         WiFiAdditional wiFiAdditional = new WiFiAdditional(vendorName, wiFiConnection);
         return new WiFiDetail(wiFiDetail, wiFiAdditional);
-    }
-
-    private class ConnectionPredicate implements Predicate<WiFiDetail> {
-        @Override
-        public boolean evaluate(WiFiDetail wiFiDetail) {
-            return new EqualsBuilder()
-                .append(wiFiConnection.getSSID(), wiFiDetail.getSSID())
-                .append(wiFiConnection.getBSSID(), wiFiDetail.getBSSID())
-                .isEquals();
-        }
     }
 
     private class Transform implements Transformer<WiFiDetail, WiFiDetail> {

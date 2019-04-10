@@ -50,6 +50,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * "频率范围" 按钮显示与状态更新
+ */
 class ChannelGraphNavigation {
     static final Map<Pair<WiFiChannel, WiFiChannel>, Integer> ids = new HashMap<>();
     private static final String ACTIVITY_NONE = "&#8722";
@@ -70,24 +73,36 @@ class ChannelGraphNavigation {
         IterableUtils.forEach(ids.keySet(), new OnClickListenerClosure());
     }
 
+    /**
+     * 更新按钮显示
+     */
     void update(@NonNull WiFiData wiFiData) {
-        Collection<Pair<WiFiChannel, WiFiChannel>> visible = CollectionUtils.select(ids.keySet(), new PairPredicate());
+        Collection<Pair<WiFiChannel, WiFiChannel>> visible = CollectionUtils.select(ids.keySet(), new PairPredicate()); // 根据国家确定哪些频段显示
         updateButtons(wiFiData, visible);
-        view.setVisibility(visible.size() > 1 ? View.VISIBLE : View.GONE);
+        view.setVisibility(visible.size() > 1 ? View.VISIBLE : View.GONE); // 2个及以上显示选择按钮
     }
 
+    /**
+     * 更新"频段选择"按钮的样式
+     *
+     * @param wiFiData 信号数据集
+     * @param visible  可见的信道集合
+     */
     private void updateButtons(@NonNull WiFiData wiFiData, Collection<Pair<WiFiChannel, WiFiChannel>> visible) {
         if (visible.size() > 1) {
             MainContext mainContext = MainContext.INSTANCE;
             Configuration configuration = mainContext.getConfiguration();
             Settings settings = mainContext.getSettings();
-            Predicate<WiFiDetail> predicate = FilterPredicate.makeOtherPredicate(settings);
-            Pair<WiFiChannel, WiFiChannel> selectedWiFiChannelPair = configuration.getWiFiChannelPair();
-            List<WiFiDetail> wiFiDetails = wiFiData.getWiFiDetails(predicate, settings.getSortBy());
-            IterableUtils.forEach(ids.keySet(), new ButtonClosure(visible, selectedWiFiChannelPair, wiFiDetails));
+            Predicate<WiFiDetail> predicate = FilterPredicate.makeOtherPredicate(settings); // 过滤器
+            Pair<WiFiChannel, WiFiChannel> selectedWiFiChannelPair = configuration.getWiFiChannelPair(); // 获取通过点击button设置的频段
+            List<WiFiDetail> wiFiDetails = wiFiData.getWiFiDetails(predicate, settings.getSortBy()); // 获取过滤, 分组后的数据
+            IterableUtils.forEach(ids.keySet(), new ButtonClosure(visible, selectedWiFiChannelPair, wiFiDetails)); // 更新按钮的样式
         }
     }
 
+    /**
+     * 点击事件
+     */
     static class SetOnClickListener implements OnClickListener {
         private final Pair<WiFiChannel, WiFiChannel> wiFiChannelPair;
 
@@ -98,17 +113,23 @@ class ChannelGraphNavigation {
         @Override
         public void onClick(View view) {
             MainContext mainContext = MainContext.INSTANCE;
-            mainContext.getConfiguration().setWiFiChannelPair(wiFiChannelPair);
-            mainContext.getScannerService().update();
+            mainContext.getConfiguration().setWiFiChannelPair(wiFiChannelPair); // 点击频段按钮设置频段
+            mainContext.getScannerService().update(); // 刷新
         }
     }
 
+    /**
+     * 设置点击事件
+     */
     private class OnClickListenerClosure implements Closure<Pair<WiFiChannel, WiFiChannel>> {
         public void execute(Pair<WiFiChannel, WiFiChannel> input) {
             view.findViewById(ids.get(input)).setOnClickListener(new SetOnClickListener(input));
         }
     }
 
+    /**
+     * "选择频率范围" 按钮更新
+     */
     private class ButtonClosure implements Closure<Pair<WiFiChannel, WiFiChannel>> {
         private final Collection<Pair<WiFiChannel, WiFiChannel>> visible;
         private final Pair<WiFiChannel, WiFiChannel> selectedWiFiChannelPair;
@@ -127,14 +148,17 @@ class ChannelGraphNavigation {
             Button button = view.findViewById(ids.get(input));
             if (visible.contains(input)) {
                 button.setVisibility(View.VISIBLE);
-                setSelected(button, input.equals(selectedWiFiChannelPair));
-                setActivity(button, input, IterableUtils.matchesAny(wiFiDetails, new InRangePredicate(input)));
+                setSelected(button, input.equals(selectedWiFiChannelPair)); // 当前选中的样式
+                setActivity(button, input, IterableUtils.matchesAny(wiFiDetails, new InRangePredicate(input))); // 如果有信号处于频率范围内, 则显示成／＼
             } else {
                 button.setVisibility(View.GONE);
                 setSelected(button, false);
             }
         }
 
+        /**
+         * 当前选中的样式
+         */
         private void setSelected(Button button, boolean selected) {
             if (selected) {
                 button.setBackgroundColor(ContextCompat.getColor(context, R.color.connected));
@@ -145,14 +169,20 @@ class ChannelGraphNavigation {
             }
         }
 
+        /**
+         * 如果有信号处于频率范围内, 则显示成／＼
+         */
         private void setActivity(Button button, Pair<WiFiChannel, WiFiChannel> pair, boolean activity) {
             button.setText(TextUtils.fromHtml(String.format(Locale.ENGLISH, "<strong>%d %s %d</strong>",
-                pair.first.getChannel(),
-                activity ? ACTIVITY_ON : ACTIVITY_NONE,
-                pair.second.getChannel())));
+                    pair.first.getChannel(),
+                    activity ? ACTIVITY_ON : ACTIVITY_NONE,
+                    pair.second.getChannel())));
         }
     }
 
+    /**
+     * 根据国家确定哪些频段显示
+     */
     private class PairPredicate implements Predicate<Pair<WiFiChannel, WiFiChannel>> {
         private final WiFiBand wiFiBand;
         private final String countryCode;

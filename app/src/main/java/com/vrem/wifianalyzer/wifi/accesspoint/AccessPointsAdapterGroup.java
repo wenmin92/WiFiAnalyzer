@@ -40,6 +40,9 @@ class AccessPointsAdapterGroup {
         groupBy = null;
     }
 
+    /**
+     * 当数据变化时, 根据之前做的标记重新展开标记过的分组
+     */
     void update(@NonNull List<WiFiDetail> wiFiDetails, ExpandableListView expandableListView) {
         updateGroupBy();
         if (isGroupExpandable() && expandableListView != null) {
@@ -55,6 +58,9 @@ class AccessPointsAdapterGroup {
         }
     }
 
+    /**
+     * 分组方式是否变化, 如果变化, 清空保存的展开标记
+     */
     void updateGroupBy() {
         GroupBy currentGroupBy = MainContext.INSTANCE.getSettings().getGroupBy();
         if (!currentGroupBy.equals(this.groupBy)) {
@@ -63,11 +69,16 @@ class AccessPointsAdapterGroup {
         }
     }
 
+    /**
+     * 获取分组方式
+     */
     GroupBy getGroupBy() {
         return groupBy;
     }
 
-
+    /**
+     * 回调, 折叠时
+     */
     void onGroupCollapsed(@NonNull List<WiFiDetail> wiFiDetails, int groupPosition) {
         if (isGroupExpandable()) {
             WiFiDetail wiFiDetail = getWiFiDetail(wiFiDetails, groupPosition);
@@ -77,6 +88,9 @@ class AccessPointsAdapterGroup {
         }
     }
 
+    /**
+     * 回调, 展开时
+     */
     void onGroupExpanded(@NonNull List<WiFiDetail> wiFiDetails, int groupPosition) {
         if (isGroupExpandable()) {
             WiFiDetail wiFiDetail = getWiFiDetail(wiFiDetails, groupPosition);
@@ -86,10 +100,16 @@ class AccessPointsAdapterGroup {
         }
     }
 
+    /**
+     * 是否分组(可以展开)
+     */
     boolean isGroupExpandable() {
         return GroupBy.SSID.equals(this.groupBy) || GroupBy.CHANNEL.equals(this.groupBy);
     }
 
+    /**
+     * 根据分组方式获取分组key
+     */
     String getGroupExpandKey(@NonNull WiFiDetail wiFiDetail) {
         String result = StringUtils.EMPTY;
         if (GroupBy.SSID.equals(this.groupBy)) {
@@ -101,10 +121,16 @@ class AccessPointsAdapterGroup {
         return result;
     }
 
+    /**
+     * 获取展开的分组标记
+     */
     Set<String> getExpanded() {
         return expanded;
     }
 
+    /**
+     * 根据列表和索引获取数据
+     */
     private WiFiDetail getWiFiDetail(@NonNull List<WiFiDetail> wiFiDetails, int index) {
         try {
             return wiFiDetails.get(index);

@@ -30,7 +30,6 @@ import com.vrem.wifianalyzer.wifi.model.WiFiDetail;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.Predicate;
 import org.apache.commons.collections4.PredicateUtils;
-import org.apache.commons.collections4.Transformer;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -41,20 +40,39 @@ public class FilterPredicate implements Predicate<WiFiDetail> {
 
     private final Predicate<WiFiDetail> predicate;
 
+    /**
+     * 过滤器, 包含ssid, 频段, 信号强度, 安全
+     */
     private FilterPredicate(@NonNull Settings settings, @NonNull Set<WiFiBand> wiFiBands) {
         Predicate<WiFiDetail> ssidPredicate = makeSSIDPredicate(settings.getSSIDs());
-        Predicate<WiFiDetail> wiFiBandPredicate = EnumUtils.predicate(WiFiBand.class, wiFiBands, new WiFiBandTransformer());
-        Predicate<WiFiDetail> strengthPredicate = EnumUtils.predicate(Strength.class, settings.getStrengths(), new StrengthTransformer());
-        Predicate<WiFiDetail> securityPredicate = EnumUtils.predicate(Security.class, settings.getSecurities(), new SecurityTransformer());
+
+        Predicate<WiFiDetail> wiFiBandPredicate = EnumUtils.predicate(WiFiBand.class, wiFiBands,
+                wiFiBand -> wiFiDetail -> wiFiDetail.getWiFiSignal().getWiFiBand().equals(wiFiBand));
+
+        Predicate<WiFiDetail> strengthPredicate = EnumUtils.predicate(Strength.class, settings.getStrengths(),
+                strength -> wiFiDetail -> wiFiDetail.getWiFiSignal().getStrength().equals(strength));
+
+        Predicate<WiFiDetail> securityPredicate = EnumUtils.predicate(Security.class, settings.getSecurities(),
+                security -> wiFiDetail -> wiFiDetail.getSecurity().equals(security));
+
         List<Predicate<WiFiDetail>> predicates = Arrays.asList(ssidPredicate, wiFiBandPredicate, strengthPredicate, securityPredicate);
-        this.predicate = PredicateUtils.allPredicate(CollectionUtils.select(predicates, new NoTruePredicate()));
+
+        // 排除掉 truePredicate 的, 所有过滤条件都需要满足
+        this.predicate = PredicateUtils.allPredicate(CollectionUtils.select(predicates,
+                object -> !PredicateUtils.truePredicate().equals(object)));
     }
 
+    /**
+     * 过滤规则
+     */
     @NonNull
     public static Predicate<WiFiDetail> makeAccessPointsPredicate(@NonNull Settings settings) {
         return new FilterPredicate(settings, settings.getWiFiBands());
     }
 
+    /**
+     * 过滤规则
+     */
     @NonNull
     public static Predicate<WiFiDetail> makeOtherPredicate(@NonNull Settings settings) {
         return new FilterPredicate(settings, Collections.singleton(settings.getWiFiBand()));
@@ -75,41 +93,7 @@ public class FilterPredicate implements Predicate<WiFiDetail> {
         if (ssids.isEmpty()) {
             return PredicateUtils.truePredicate();
         }
-        return PredicateUtils.anyPredicate(CollectionUtils.collect(ssids, new SSIDTransformer()));
-    }
-
-    private class SSIDTransformer implements Transformer<String, Predicate<WiFiDetail>> {
-        @Override
-        public Predicate<WiFiDetail> transform(String input) {
-            return new SSIDPredicate(input);
-        }
-    }
-
-    private class WiFiBandTransformer implements Transformer<WiFiBand, Predicate<WiFiDetail>> {
-        @Override
-        public Predicate<WiFiDetail> transform(WiFiBand input) {
-            return new WiFiBandPredicate(input);
-        }
-    }
-
-    private class StrengthTransformer implements Transformer<Strength, Predicate<WiFiDetail>> {
-        @Override
-        public Predicate<WiFiDetail> transform(Strength input) {
-            return new StrengthPredicate(input);
-        }
-    }
-
-    private class SecurityTransformer implements Transformer<Security, Predicate<WiFiDetail>> {
-        @Override
-        public Predicate<WiFiDetail> transform(Security input) {
-            return new SecurityPredicate(input);
-        }
-    }
-
-    private class NoTruePredicate implements Predicate<Predicate<WiFiDetail>> {
-        @Override
-        public boolean evaluate(Predicate<WiFiDetail> object) {
-            return !PredicateUtils.truePredicate().equals(object);
-        }
+        return PredicateUtils.anyPredicate(CollectionUtils.collect(ssids,
+                ssid -> wiFiDetail -> wiFiDetail.getSSID().contains(ssid)));
     }
 }

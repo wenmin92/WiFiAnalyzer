@@ -44,6 +44,7 @@ public class ChannelGraphFragment extends Fragment {
         swipeRefreshLayout = view.findViewById(R.id.graphRefresh);
         swipeRefreshLayout.setOnRefreshListener(new ListViewOnRefreshListener());
 
+        // 创建图表View并添加进来
         LinearLayout linearLayout = view.findViewById(R.id.graphNavigation);
         ChannelGraphNavigation channelGraphNavigation = new ChannelGraphNavigation(linearLayout, getActivity());
         channelGraphAdapter = new ChannelGraphAdapter(channelGraphNavigation);
@@ -54,11 +55,17 @@ public class ChannelGraphFragment extends Fragment {
         return view;
     }
 
+    /**
+     * 为ViewFlipper添加作为子view的图表
+     */
     private void addGraphViews(View view, ChannelGraphAdapter channelGraphAdapter) {
         IterableUtils.forEach(channelGraphAdapter.getGraphViews(),
             new GraphViewAdd(view.findViewById(R.id.graphFlipper)));
     }
 
+    /**
+     * 刷新
+     */
     private void refresh() {
         swipeRefreshLayout.setRefreshing(true);
         MainContext.INSTANCE.getScannerService().update();

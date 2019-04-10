@@ -41,6 +41,10 @@ class AccessPointsAdapterData {
         setAccessPointsAdapterGroup(new AccessPointsAdapterGroup());
     }
 
+    /**
+     * 根据过滤, 排序整理数据
+     * 分组展开
+     */
     void update(@NonNull WiFiData wiFiData, ExpandableListView expandableListView) {
         Settings settings = MainContext.INSTANCE.getSettings();
         Predicate<WiFiDetail> predicate = FilterPredicate.makeAccessPointsPredicate(settings);

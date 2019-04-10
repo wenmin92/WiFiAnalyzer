@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.vrem.wifianalyzer.wifi.model.WiFiData</OriginalElement>
+  <nodes>
+    <node x="241.0" y="251.0">com.vrem.wifianalyzer.wifi.model.WiFiAdditional</node>
+    <node x="519.0" y="0.0">com.vrem.wifianalyzer.wifi.band.WiFiWidth</node>
+    <node x="283.0" y="458.0">com.vrem.wifianalyzer.wifi.band.WiFiBand</node>
+    <node x="0.0" y="0.0">com.vrem.wifianalyzer.wifi.model.WiFiDetail</node>
+    <node x="269.0" y="0.0">com.vrem.wifianalyzer.wifi.model.WiFiSignal</node>
+    <node x="0.0" y="251.0">com.vrem.wifianalyzer.wifi.model.WiFiConnection</node>
+    <node x="0.0" y="458.0">com.vrem.wifianalyzer.wifi.model.WiFiData</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Group" zoom="1.0" x="341.0" y="426.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

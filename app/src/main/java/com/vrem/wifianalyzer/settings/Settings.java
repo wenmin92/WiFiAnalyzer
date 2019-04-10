@@ -106,6 +106,9 @@ public class Settings {
         return find(ConnectionViewType.class, R.string.connection_view_key, ConnectionViewType.COMPLETE);
     }
 
+    /**
+     * 图例, [左侧, 右侧, 隐藏]
+     */
     @NonNull
     public GraphLegend getChannelGraphLegend() {
         return find(GraphLegend.class, R.string.channel_graph_legend_key, GraphLegend.HIDE);
@@ -139,11 +142,17 @@ public class Settings {
         return find(NavigationMenu.class, R.string.start_menu_key, NavigationMenu.ACCESS_POINTS);
     }
 
+    /**
+     * 过滤器, SSID, 支持多个
+     */
     @NonNull
     public Set<String> getSSIDs() {
         return repository.getStringSet(R.string.filter_ssid_key, new HashSet<>());
     }
 
+    /**
+     * 过滤器, SSID, 通过标题栏的过滤按钮输入关键字(空格分隔), 相关代码查看 SSIDFilter
+     */
     public void saveSSIDs(@NonNull Set<String> values) {
         repository.saveStringSet(R.string.filter_ssid_key, values);
     }

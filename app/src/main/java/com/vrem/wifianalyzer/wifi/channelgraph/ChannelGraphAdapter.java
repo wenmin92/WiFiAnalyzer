@@ -34,6 +34,9 @@ import org.apache.commons.collections4.IterableUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 信道图表(频率范围)适配器, 为每个 "频率范围" 创建一个 GraphViewNotifier
+ */
 class ChannelGraphAdapter extends GraphAdapter {
     private final ChannelGraphNavigation channelGraphNavigation;
 
@@ -42,8 +45,12 @@ class ChannelGraphAdapter extends GraphAdapter {
         this.channelGraphNavigation = channelGraphNavigation;
     }
 
+    /**
+     * 为每个 "频率范围" 创建一个 GraphViewNotifier
+     */
     private static List<GraphViewNotifier> makeGraphViewNotifiers() {
         List<GraphViewNotifier> graphViewNotifiers = new ArrayList<>();
+        // 具体做法: 遍历频段, 再遍历每个频段的每个频率范围, 分别创建 GraphViewNotifier
         IterableUtils.forEach(EnumUtils.values(WiFiBand.class), new WiFiBandClosure(graphViewNotifiers));
         return graphViewNotifiers;
     }
@@ -54,6 +61,9 @@ class ChannelGraphAdapter extends GraphAdapter {
         channelGraphNavigation.update(wiFiData);
     }
 
+    /**
+     * 遍历频段, 获取其中的频率范围
+     */
     private static class WiFiBandClosure implements Closure<WiFiBand> {
         private final List<GraphViewNotifier> graphViewNotifiers;
 
@@ -67,6 +77,9 @@ class ChannelGraphAdapter extends GraphAdapter {
         }
     }
 
+    /**
+     * 遍历频段的频率范围, 每个范围对应一个 GraphViewNotifier
+     */
     private static class WiFiChannelClosure implements Closure<Pair<WiFiChannel, WiFiChannel>> {
         private final List<GraphViewNotifier> graphViewNotifiers;
         private final WiFiBand wiFiBand;
