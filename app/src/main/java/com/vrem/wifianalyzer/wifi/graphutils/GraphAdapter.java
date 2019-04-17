@@ -42,6 +42,9 @@ public class GraphAdapter implements UpdateNotifier {
         this.graphViewNotifiers = graphViewNotifiers;
     }
 
+    /**
+     * 获取所有 graphView.
+     */
     @NonNull
     public List<GraphView> getGraphViews() {
         return new ArrayList<>(CollectionUtils.collect(graphViewNotifiers, new ToGraphView()));

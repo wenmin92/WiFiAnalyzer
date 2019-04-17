@@ -39,11 +39,18 @@ import java.util.Set;
 import java.util.TreeSet;
 
 class DataManager {
+
+    /**
+     * 从wifi数据集中筛选出特定信道范围的子集
+     */
     @NonNull
     Set<WiFiDetail> getNewSeries(@NonNull List<WiFiDetail> wiFiDetails, @NonNull Pair<WiFiChannel, WiFiChannel> wiFiChannelPair) {
         return new TreeSet<>(CollectionUtils.select(wiFiDetails, new InRangePredicate(wiFiChannelPair)));
     }
 
+    /**
+     * 将wifi数据转换为坐标点
+     */
     @NonNull
     DataPoint[] getDataPoints(@NonNull WiFiDetail wiFiDetail, int levelMax) {
         WiFiSignal wiFiSignal = wiFiDetail.getWiFiSignal();
@@ -59,6 +66,9 @@ class DataManager {
         };
     }
 
+    /**
+     * 添加坐标数据
+     */
     void addSeriesData(@NonNull GraphViewWrapper graphViewWrapper, @NonNull Set<WiFiDetail> wiFiDetails, int levelMax) {
         IterableUtils.forEach(wiFiDetails, new SeriesClosure(graphViewWrapper, levelMax));
     }
@@ -75,9 +85,9 @@ class DataManager {
         @Override
         public void execute(WiFiDetail wiFiDetail) {
             DataPoint[] dataPoints = getDataPoints(wiFiDetail, levelMax);
-            if (graphViewWrapper.isNewSeries(wiFiDetail)) {
+            if (graphViewWrapper.isNewSeries(wiFiDetail)) { // 全新数据
                 graphViewWrapper.addSeries(wiFiDetail, new TitleLineGraphSeries<>(dataPoints), true);
-            } else {
+            } else { // 旧数据更新
                 graphViewWrapper.updateSeries(wiFiDetail, dataPoints, true);
             }
         }

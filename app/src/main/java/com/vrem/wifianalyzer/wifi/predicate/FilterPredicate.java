@@ -63,7 +63,7 @@ public class FilterPredicate implements Predicate<WiFiDetail> {
     }
 
     /**
-     * 过滤规则
+     * 过滤规则定义的过滤器, 多或单band
      */
     @NonNull
     public static Predicate<WiFiDetail> makeAccessPointsPredicate(@NonNull Settings settings) {
@@ -71,7 +71,7 @@ public class FilterPredicate implements Predicate<WiFiDetail> {
     }
 
     /**
-     * 过滤规则
+     * 过滤规则定义的过滤器, 仅一个band
      */
     @NonNull
     public static Predicate<WiFiDetail> makeOtherPredicate(@NonNull Settings settings) {

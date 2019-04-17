@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 信道图表(频率范围)适配器, 为每个 "频率范围" 创建一个 GraphViewNotifier
+ * 信道图表(频率范围)适配器, 为每个 "频率范围" 创建 GraphView
  */
 class ChannelGraphAdapter extends GraphAdapter {
     private final ChannelGraphNavigation channelGraphNavigation;
@@ -46,7 +46,8 @@ class ChannelGraphAdapter extends GraphAdapter {
     }
 
     /**
-     * 为每个 "频率范围" 创建一个 GraphViewNotifier
+     * 为每个 "频率范围" 创建一个 GraphViewNotifier;
+     * 通过 GraphAdapter 获取 GraphView
      */
     private static List<GraphViewNotifier> makeGraphViewNotifiers() {
         List<GraphViewNotifier> graphViewNotifiers = new ArrayList<>();
@@ -91,7 +92,7 @@ class ChannelGraphAdapter extends GraphAdapter {
 
         @Override
         public void execute(Pair<WiFiChannel, WiFiChannel> wiFiChannelPair) {
-            graphViewNotifiers.add(new ChannelGraphView(wiFiBand, wiFiChannelPair));
+            graphViewNotifiers.add(new ChannelGraphView(wiFiBand, wiFiChannelPair)); // ChannelGraphView 是 GraphViewNotifier 的实现
         }
     }
 }

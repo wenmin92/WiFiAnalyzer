@@ -66,15 +66,18 @@ class ChannelGraphView implements GraphViewNotifier {
     @Override
     public void update(@NonNull WiFiData wiFiData) {
         Settings settings = MainContext.INSTANCE.getSettings();
-        Predicate<WiFiDetail> predicate = FilterPredicate.makeOtherPredicate(settings);
-        List<WiFiDetail> wiFiDetails = wiFiData.getWiFiDetails(predicate, settings.getSortBy());
-        Set<WiFiDetail> newSeries = dataManager.getNewSeries(wiFiDetails, wiFiChannelPair);
-        dataManager.addSeriesData(graphViewWrapper, newSeries, settings.getGraphMaximumY());
-        graphViewWrapper.removeSeries(newSeries);
-        graphViewWrapper.updateLegend(settings.getChannelGraphLegend());
-        graphViewWrapper.setVisibility(isSelected() ? View.VISIBLE : View.GONE);
+        Predicate<WiFiDetail> predicate = FilterPredicate.makeOtherPredicate(settings); // 过滤规则定义的过滤器
+        List<WiFiDetail> wiFiDetails = wiFiData.getWiFiDetails(predicate, settings.getSortBy()); // 根据过滤和排序规则整理数据
+        Set<WiFiDetail> newSeries = dataManager.getNewSeries(wiFiDetails, wiFiChannelPair); // 筛选信道范围内数据
+        dataManager.addSeriesData(graphViewWrapper, newSeries, settings.getGraphMaximumY()); // 增加/更新数据
+        graphViewWrapper.removeSeries(newSeries); // 去除失效数据
+        graphViewWrapper.updateLegend(settings.getChannelGraphLegend()); // 更新图例
+        graphViewWrapper.setVisibility(isSelected() ? View.VISIBLE : View.GONE); // 可见性设置
     }
 
+    /**
+     * 当前是否选中该视图
+     */
     private boolean isSelected() {
         Settings settings = MainContext.INSTANCE.getSettings();
         WiFiBand currentWiFiBand = settings.getWiFiBand();
@@ -89,6 +92,9 @@ class ChannelGraphView implements GraphViewNotifier {
         return graphViewWrapper.getGraphView();
     }
 
+    /**
+     * X坐标轴刻度数量
+     */
     private int getNumX() {
         int channelFirst = wiFiChannelPair.first.getChannel() - WiFiChannels.CHANNEL_OFFSET;
         int channelLast = wiFiChannelPair.second.getChannel() + WiFiChannels.CHANNEL_OFFSET;

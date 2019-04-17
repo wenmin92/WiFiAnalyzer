@@ -109,6 +109,9 @@ public class GraphViewWrapper {
         return true;
     }
 
+    /**
+     * 是否为新wifi数据
+     */
     public boolean isNewSeries(@NonNull WiFiDetail wiFiDetail) {
         return !seriesCache.contains(wiFiDetail);
     }
