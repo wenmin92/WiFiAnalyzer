@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,5 +21,5 @@ import com.vrem.wifianalyzer.wifi.band.WiFiChannel
 
 data class ChannelAPCount(val wiFiChannel: WiFiChannel, val count: Int) : Comparable<ChannelAPCount> {
     override fun compareTo(other: ChannelAPCount): Int =
-            compareBy<ChannelAPCount> { it.count }.thenBy { it.wiFiChannel }.compare(this, other)
+        compareBy<ChannelAPCount> { it.count }.thenBy { it.wiFiChannel }.compare(this, other)
 }

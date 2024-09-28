@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,9 +26,9 @@ import com.vrem.wifianalyzer.wifi.model.WiFiDetail
 class AccessPointPopup {
     fun show(view: View): AlertDialog {
         val alertDialog: AlertDialog = AlertDialog.Builder(view.context)
-                .setView(view)
-                .setPositiveButton(android.R.string.ok) { dialog, _ -> dialog.cancel(); }
-                .create()
+            .setView(view)
+            .setPositiveButton(android.R.string.ok) { dialog, _ -> dialog.cancel(); }
+            .create()
         alertDialog.show()
         return alertDialog
     }

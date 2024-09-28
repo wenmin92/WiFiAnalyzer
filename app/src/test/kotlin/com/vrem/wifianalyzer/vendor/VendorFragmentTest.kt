@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,23 +19,23 @@ package com.vrem.wifianalyzer.vendor
 
 import android.os.Build
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
 import com.vrem.util.EMPTY
 import com.vrem.wifianalyzer.MainContextHelper.INSTANCE
 import com.vrem.wifianalyzer.RobolectricUtil
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
-@Config(sdk = [Build.VERSION_CODES.Q])
+@Config(sdk = [Build.VERSION_CODES.UPSIDE_DOWN_CAKE])
 class VendorFragmentTest {
+    @Suppress("unused")
     private val mainActivity = RobolectricUtil.INSTANCE.activity
     private val vendorService = INSTANCE.vendorService
     private val fixture = VendorFragment()
@@ -53,7 +53,7 @@ class VendorFragmentTest {
     }
 
     @Test
-    fun testListenerOnQueryTextChange() {
+    fun listenerOnQueryTextChange() {
         // setup
         val values = "     ABS       ADF      "
         val expected = "ABS ADF"
@@ -62,30 +62,30 @@ class VendorFragmentTest {
         // execute
         val actual = fixture.onQueryTextChange(values)
         // verify
-        assertTrue(actual)
+        assertThat(actual).isTrue()
         verify(vendorAdapter).update(expected)
     }
 
     @Test
-    fun testListenerOnQueryTextChangeWithNull() {
+    fun listenerOnQueryTextChangeWithNull() {
         // setup
         val vendorAdapter: VendorAdapter = mock()
         val fixture = VendorFragment.Listener(vendorAdapter)
         // execute
         val actual = fixture.onQueryTextChange(String.EMPTY)
         // verify
-        assertTrue(actual)
+        assertThat(actual).isTrue()
         verify(vendorAdapter).update(String.EMPTY)
     }
 
     @Test
-    fun testListenerOnQueryTextSubmit() {
+    fun listenerOnQueryTextSubmit() {
         // setup
         val vendorAdapter: VendorAdapter = mock()
         val fixture = VendorFragment.Listener(vendorAdapter)
         // execute
         val actual = fixture.onQueryTextSubmit(String.EMPTY)
         // verify
-        assertFalse(actual)
+        assertThat(actual).isFalse()
     }
 }

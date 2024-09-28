@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,14 +26,14 @@ internal class TimeGraphCache {
     private val notSeen: MutableMap<WiFiDetail, Int> = mutableMapOf()
 
     fun active(): Set<WiFiDetail> =
-            notSeen.filterValues { it <= MAX_NOT_SEEN_COUNT }
-                    .keys
-                    .toSet()
+        notSeen.filterValues { it <= MAX_NOT_SEEN_COUNT }
+            .keys
+            .toSet()
 
     fun clear() =
-            notSeen.filterValues { it > MAX_NOT_SEEN_COUNT }
-                    .keys
-                    .forEach { notSeen.remove(it) }
+        notSeen.filterValues { it > MAX_NOT_SEEN_COUNT }
+            .keys
+            .forEach { notSeen.remove(it) }
 
     fun add(wiFiDetail: WiFiDetail) {
         notSeen[wiFiDetail] = (notSeen[wiFiDetail] ?: 0) + 1

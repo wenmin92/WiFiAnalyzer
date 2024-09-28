@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,13 +62,13 @@ class AccessPointsAdapterGroup(val expanded: MutableSet<String> = mutableSetOf()
     }
 
     private fun toggle(wiFiDetails: List<WiFiDetail>, expandableListView: ExpandableListView) =
-            (0 until expandableListView.expandableListAdapter.groupCount).forEach {
-                val group = groupBy.group(wiFiDetails.getOrNull(it) ?: WiFiDetail.EMPTY)
-                if (expanded.contains(group)) {
-                    expandableListView.expandGroup(it)
-                } else {
-                    expandableListView.collapseGroup(it)
-                }
+        (0 until expandableListView.expandableListAdapter.groupCount).forEach {
+            val group = groupBy.group(wiFiDetails.getOrNull(it) ?: WiFiDetail.EMPTY)
+            if (expanded.contains(group)) {
+                expandableListView.expandGroup(it)
+            } else {
+                expandableListView.collapseGroup(it)
             }
+        }
 
 }

@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,19 +34,23 @@ internal class PeriodicScan(private val scanner: ScannerService, private val han
         nextRun(DELAY_INITIAL)
     }
 
-    private fun nextRun(delayInitial: Long) {
-        stop()
-        handler.postDelayed(this, delayInitial)
-        running = true
+    fun startWithDelay() {
+        nextRun(settings.scanSpeed() * DELAY_INTERVAL)
     }
 
     override fun run() {
         scanner.update()
-        nextRun(settings.scanSpeed() * DELAY_INTERVAL)
+        startWithDelay()
+    }
+
+    private fun nextRun(delay: Long) {
+        stop()
+        handler.postDelayed(this, delay)
+        running = true
     }
 
     companion object {
         private const val DELAY_INITIAL = 1L
-        private const val DELAY_INTERVAL = 1000L
+        const val DELAY_INTERVAL = 1000L
     }
 }

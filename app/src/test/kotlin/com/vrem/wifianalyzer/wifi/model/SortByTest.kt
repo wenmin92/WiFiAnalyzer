@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,20 +17,19 @@
  */
 package com.vrem.wifianalyzer.wifi.model
 
-import org.junit.Assert
-import org.junit.Assert.assertTrue
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class SortByTest {
     @Test
-    fun testSortByNumber() {
-        Assert.assertEquals(3, SortBy.values().size)
+    fun sortByNumber() {
+        assertThat(SortBy.entries).hasSize(3)
     }
 
     @Test
-    fun testComparator() {
-        assertTrue(SortBy.STRENGTH.sort.javaClass.isInstance(sortByStrength()))
-        assertTrue(SortBy.SSID.sort.javaClass.isInstance(sortBySSID()))
-        assertTrue(SortBy.CHANNEL.sort.javaClass.isInstance(sortByChannel()))
+    fun comparator() {
+        assertThat(SortBy.STRENGTH.sort.javaClass.isInstance(sortByStrength())).isTrue()
+        assertThat(SortBy.SSID.sort.javaClass.isInstance(sortBySSID())).isTrue()
+        assertThat(SortBy.CHANNEL.sort.javaClass.isInstance(sortByChannel())).isTrue()
     }
 }

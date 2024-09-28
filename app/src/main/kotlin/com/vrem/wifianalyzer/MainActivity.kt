@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
@@ -37,24 +38,23 @@ import com.vrem.wifianalyzer.navigation.NavigationMenu
 import com.vrem.wifianalyzer.navigation.NavigationMenuControl
 import com.vrem.wifianalyzer.navigation.NavigationMenuController
 import com.vrem.wifianalyzer.navigation.options.OptionMenu
-import com.vrem.wifianalyzer.permission.PermissionService
 import com.vrem.wifianalyzer.settings.Repository
 import com.vrem.wifianalyzer.settings.Settings
 import com.vrem.wifianalyzer.wifi.accesspoint.ConnectionView
-import com.vrem.wifianalyzer.wifi.band.WiFiBand
+import com.vrem.wifianalyzer.wifi.scanner.ScannerService
 
 @OpenClass
 class MainActivity : AppCompatActivity(), NavigationMenuControl, OnSharedPreferenceChangeListener {
-    lateinit var drawerNavigation: DrawerNavigation
-    lateinit var mainReload: MainReload
-    lateinit var navigationMenuController: NavigationMenuController
-    lateinit var optionMenu: OptionMenu
-    lateinit var permissionService: PermissionService
+    internal lateinit var drawerNavigation: DrawerNavigation
+    internal lateinit var mainReload: MainReload
+    internal lateinit var navigationMenuController: NavigationMenuController
+    internal lateinit var optionMenu: OptionMenu
+    internal lateinit var connectionView: ConnectionView
 
     private var currentCountryCode: String = String.EMPTY
 
     override fun attachBaseContext(newBase: Context) =
-            super.attachBaseContext(newBase.createContext(Settings(Repository(newBase)).languageLocale()))
+        super.attachBaseContext(newBase.createContext(Settings(Repository(newBase)).languageLocale()))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val mainContext = MainContext.INSTANCE
@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity(), NavigationMenuControl, OnSharedPrefere
         mainReload = MainReload(settings)
 
         super.onCreate(savedInstanceState)
-
+        installSplashScreen()
         setContentView(R.layout.main_activity)
 
         settings.registerOnSharedPreferenceChangeListener(this)
@@ -84,11 +84,9 @@ class MainActivity : AppCompatActivity(), NavigationMenuControl, OnSharedPrefere
         navigationMenuController.currentNavigationMenu(settings.selectedMenu())
         onNavigationItemSelected(currentMenuItem())
 
-        val connectionView = ConnectionView(this)
-        mainContext.scannerService.register(connectionView)
+        connectionView = ConnectionView(this)
 
-        permissionService = PermissionService(this)
-        permissionService.check()
+        onBackPressedDispatcher.addCallback(this, MainActivityBackPressed(this))
     }
 
     public override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -102,7 +100,7 @@ class MainActivity : AppCompatActivity(), NavigationMenuControl, OnSharedPrefere
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        if (!permissionService.granted(requestCode, grantResults)) {
+        if (!MainContext.INSTANCE.permissionService.granted(requestCode, grantResults)) {
             finish()
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -112,8 +110,7 @@ class MainActivity : AppCompatActivity(), NavigationMenuControl, OnSharedPrefere
         val settings = mainContext.settings
         val countryCode = settings.countryCode()
         if (countryCode != currentCountryCode) {
-            val pair = WiFiBand.GHZ5.wiFiChannels.wiFiChannelPairFirst(countryCode)
-            mainContext.configuration.wiFiChannelPair = pair
+            mainContext.configuration.wiFiChannelPair(countryCode)
             currentCountryCode = countryCode
         }
     }
@@ -123,10 +120,10 @@ class MainActivity : AppCompatActivity(), NavigationMenuControl, OnSharedPrefere
             val configuration = resources.configuration
             val screenLayoutSize = configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK
             return screenLayoutSize == Configuration.SCREENLAYOUT_SIZE_LARGE ||
-                    screenLayoutSize == Configuration.SCREENLAYOUT_SIZE_XLARGE
+                screenLayoutSize == Configuration.SCREENLAYOUT_SIZE_XLARGE
         }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
         val mainContext = MainContext.INSTANCE
         if (mainReload.shouldReload(mainContext.settings)) {
             MainContext.INSTANCE.scannerService.stop()
@@ -143,26 +140,14 @@ class MainActivity : AppCompatActivity(), NavigationMenuControl, OnSharedPrefere
         updateActionBar()
     }
 
-    override fun onBackPressed() {
-        if (!closeDrawer()) {
-            val selectedMenu = MainContext.INSTANCE.settings.selectedMenu()
-            if (selectedMenu == currentNavigationMenu()) {
-                super.onBackPressed()
-            } else {
-                currentNavigationMenu(selectedMenu)
-                onNavigationItemSelected(currentMenuItem())
-            }
-        }
-    }
-
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
         closeDrawer()
-        val currentNavigationMenu = findOne(NavigationMenu.values(), menuItem.itemId, NavigationMenu.ACCESS_POINTS)
+        val currentNavigationMenu = findOne(NavigationMenu.entries, menuItem.itemId, NavigationMenu.ACCESS_POINTS)
         currentNavigationMenu.activateNavigationMenu(this, menuItem)
         return true
     }
 
-    private fun closeDrawer(): Boolean {
+    fun closeDrawer(): Boolean {
         val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START)
@@ -172,25 +157,40 @@ class MainActivity : AppCompatActivity(), NavigationMenuControl, OnSharedPrefere
     }
 
     public override fun onPause() {
-        MainContext.INSTANCE.scannerService.pause()
+        val scannerService: ScannerService = MainContext.INSTANCE.scannerService
+        scannerService.pause()
+        scannerService.unregister(connectionView)
         updateActionBar()
         super.onPause()
     }
 
     public override fun onResume() {
         super.onResume()
-        if (permissionService.permissionGranted()) {
-            if (!permissionService.systemEnabled()) {
+        val scannerService: ScannerService = MainContext.INSTANCE.scannerService
+        if (MainContext.INSTANCE.permissionService.permissionGranted()) {
+            if (!MainContext.INSTANCE.permissionService.locationEnabled()) {
                 startLocationSettings()
             }
-            MainContext.INSTANCE.scannerService.resume()
+            scannerService.resume()
+        } else {
+            scannerService.pause()
         }
         updateActionBar()
+        scannerService.register(connectionView)
     }
 
     public override fun onStop() {
         MainContext.INSTANCE.scannerService.stop()
         super.onStop()
+    }
+
+    public override fun onStart() {
+        super.onStart()
+        if (MainContext.INSTANCE.permissionService.permissionGranted()) {
+            MainContext.INSTANCE.scannerService.resume()
+        } else {
+            MainContext.INSTANCE.permissionService.check()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

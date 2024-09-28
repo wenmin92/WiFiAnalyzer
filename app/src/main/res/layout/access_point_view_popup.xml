@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ WiFiAnalyzer
-  ~ Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+  ~ Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -34,22 +33,37 @@
         android:textStyle="bold"
         tools:text="2.4 GHz" />
 
-    <TextView
-        android:id="@+id/wiFiStandard"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/frequency"
-        tools:text="Wi-Fi 802.11a/b/g" />
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/flag80211mc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/mc_flag"
-        android:textColor="@color/distance"
-        android:textStyle="bold"
-        android:visibility="gone"
-        tools:visibility="visible" />
+        <TextView
+            android:id="@+id/wiFiStandardFull"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/list_view_item_horizontal_spacer"
+            android:textStyle="bold"
+            android:textColor="@color/frequency"
+            tools:text="802.11a/b/g" />
+
+        <TextView
+            android:id="@+id/flag80211mc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/list_view_item_horizontal_spacer"
+            android:textColor="@color/frequency"
+            android:text="@string/mc_flag"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/fastRoaming"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/frequency"
+            tools:text="802.11k 802.11v 802.11r" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/capabilitiesLong"
@@ -60,10 +74,21 @@
         tools:text="[WPA-PSK-CCMP+TKIP][WPA2-PSK-CCMP+TKIP][RSN-PSK+FT/PSK+FT/SAE-CCMP][WPS][ESS]" />
 
     <TextView
+        android:id="@+id/securityTypes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/security"
+        android:textStyle="italic"
+        tools:text="[WPA][WPA2][WPS][WPA3]" />
+
+    <TextView
         android:id="@+id/vendorLong"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        tools:text="Very Long Vendor Name1234567890"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:maxLines="1"
+        tools:text="Very Long Vendor Name 1-0123456789 2-1234567890 3-0123456789"
         tools:visibility="visible" />
 </LinearLayout>

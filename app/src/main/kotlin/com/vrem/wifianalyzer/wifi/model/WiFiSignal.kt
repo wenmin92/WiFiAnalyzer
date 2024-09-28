@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,15 +17,37 @@
  */
 package com.vrem.wifianalyzer.wifi.model
 
+import android.content.Context
 import com.vrem.wifianalyzer.wifi.band.WiFiBand
 import com.vrem.wifianalyzer.wifi.band.WiFiChannel
 
-data class WiFiSignal(val primaryFrequency: Int = 0,
-                      val centerFrequency: Int = 0,
-                      val wiFiWidth: WiFiWidth = WiFiWidth.MHZ_20,
-                      val level: Int = 0,
-                      val is80211mc: Boolean = false,
-                      val wiFiStandard: WiFiStandard = WiFiStandard.UNKNOWN) {
+data class WiFiSignalExtra(
+    val is80211mc: Boolean = false,
+    val wiFiStandard: WiFiStandard = WiFiStandard.UNKNOWN,
+    val fastRoaming: List<FastRoaming> = listOf()
+) {
+    fun wiFiStandardDisplay(context: Context): String =
+        context.getString(wiFiStandard.fullResource)
+
+    fun fastRoamingDisplay(context: Context): String =
+        fastRoaming
+            .map { fastRoaming -> context.getString(fastRoaming.textResource) }
+            .filter { text -> text.isNotBlank() }
+            .toList()
+            .joinToString(" ")
+
+    companion object {
+        val EMPTY = WiFiSignalExtra()
+    }
+}
+
+data class WiFiSignal(
+    val primaryFrequency: Int = 0,
+    val centerFrequency: Int = 0,
+    val wiFiWidth: WiFiWidth = WiFiWidth.MHZ_20,
+    val level: Int = 0,
+    val extra: WiFiSignalExtra = WiFiSignalExtra.EMPTY
+) {
 
     val wiFiBand: WiFiBand = WiFiBand.find(primaryFrequency)
 
@@ -48,7 +70,7 @@ data class WiFiSignal(val primaryFrequency: Int = 0,
         get() = String.format("~%.1fm", calculateDistance(primaryFrequency, level))
 
     fun inRange(frequency: Int): Boolean =
-            frequency in frequencyStart..frequencyEnd
+        frequency in frequencyStart..frequencyEnd
 
     fun channelDisplay(): String {
         val primaryChannel: Int = primaryWiFiChannel.channel
@@ -62,8 +84,7 @@ data class WiFiSignal(val primaryFrequency: Int = 0,
         if (javaClass != other?.javaClass) return false
         other as WiFiSignal
         if (primaryFrequency != other.primaryFrequency) return false
-        if (wiFiWidth != other.wiFiWidth) return false
-        return true
+        return wiFiWidth == other.wiFiWidth
     }
 
     override fun hashCode(): Int = 31 * primaryFrequency + wiFiWidth.hashCode()

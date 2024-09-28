@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,20 +17,20 @@
  */
 package com.vrem.wifianalyzer.wifi.channelgraph
 
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
-import com.nhaarman.mockitokotlin2.whenever
 import com.vrem.util.EMPTY
 import com.vrem.wifianalyzer.MainContextHelper
 import com.vrem.wifianalyzer.wifi.band.WiFiBand
 import com.vrem.wifianalyzer.wifi.band.WiFiChannels
 import com.vrem.wifianalyzer.wifi.graphutils.MAX_Y
 import com.vrem.wifianalyzer.wifi.graphutils.MIN_Y
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
-import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.util.*
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoMoreInteractions
+import org.mockito.kotlin.whenever
+import java.util.Locale
 
 class ChannelAxisLabelTest {
     private val settings = MainContextHelper.INSTANCE.settings
@@ -43,55 +43,55 @@ class ChannelAxisLabelTest {
     }
 
     @Test
-    fun testYAxis() {
+    fun yAxis() {
         // execute & verify
-        assertEquals(String.EMPTY, fixture.formatLabel(MIN_Y.toDouble(), false))
-        assertEquals("-99", fixture.formatLabel(MIN_Y + 1.toDouble(), false))
-        assertEquals("0", fixture.formatLabel(MAX_Y.toDouble(), false))
-        assertEquals(String.EMPTY, fixture.formatLabel(MAX_Y + 1.toDouble(), false))
+        assertThat(fixture.formatLabel(MIN_Y.toDouble(), false)).isEqualTo(String.EMPTY)
+        assertThat(fixture.formatLabel(MIN_Y + 1.toDouble(), false)).isEqualTo("-99")
+        assertThat(fixture.formatLabel(MAX_Y.toDouble(), false)).isEqualTo("0")
+        assertThat(fixture.formatLabel(MAX_Y + 1.toDouble(), false)).isEqualTo(String.EMPTY)
     }
 
     @Test
-    fun testXAxis() {
+    fun xAxis() {
         // setup
         val (channel, frequency) = WiFiBand.GHZ2.wiFiChannels.wiFiChannelFirst()
         whenever(settings.countryCode()).thenReturn(Locale.US.country)
         // execute
         val actual = fixture.formatLabel(frequency.toDouble(), true)
         // validate
-        assertEquals("" + channel, actual)
+        assertThat(actual).isEqualTo("" + channel)
         verify(settings).countryCode()
     }
 
     @Test
-    fun testXAxisWithFrequencyInRange() {
+    fun xAxisWithFrequencyInRange() {
         // setup
         val (channel, frequency) = WiFiBand.GHZ2.wiFiChannels.wiFiChannelFirst()
         whenever(settings.countryCode()).thenReturn(Locale.US.country)
         // execute & validate
-        assertEquals("" + channel, fixture.formatLabel(frequency - 2.toDouble(), true))
-        assertEquals("" + channel, fixture.formatLabel(frequency + 2.toDouble(), true))
+        assertThat(fixture.formatLabel(frequency - 2.toDouble(), true)).isEqualTo("" + channel)
+        assertThat(fixture.formatLabel(frequency + 2.toDouble(), true)).isEqualTo("" + channel)
         verify(settings, times(2)).countryCode()
     }
 
     @Test
-    fun testXAxisWithFrequencyNotAllowedInLocale() {
+    fun xAxisWithFrequencyNotAllowedInLocale() {
         // setup
         val (_, frequency) = WiFiBand.GHZ2.wiFiChannels.wiFiChannelLast()
         // execute
         val actual = fixture.formatLabel(frequency.toDouble(), true)
         // validate
-        assertEquals(String.EMPTY, actual)
+        assertThat(actual).isEqualTo(String.EMPTY)
     }
 
     @Test
-    fun testXAxisWithUnknownFrequencyReturnEmptyString() {
+    fun xAxisWithUnknownFrequencyReturnEmptyString() {
         // setup
         val wiFiChannels = WiFiBand.GHZ2.wiFiChannels
         val (_, frequency) = wiFiChannels.wiFiChannelFirst()
         // execute
         val actual = fixture.formatLabel(frequency - WiFiChannels.FREQUENCY_OFFSET.toDouble(), true)
         // validate
-        assertEquals(String.EMPTY, actual)
+        assertThat(actual).isEqualTo(String.EMPTY)
     }
 }

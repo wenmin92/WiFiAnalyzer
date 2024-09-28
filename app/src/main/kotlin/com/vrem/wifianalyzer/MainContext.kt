@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ import android.net.wifi.WifiManager
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
+import com.vrem.wifianalyzer.permission.PermissionService
 import com.vrem.wifianalyzer.settings.Repository
 import com.vrem.wifianalyzer.settings.Settings
 import com.vrem.wifianalyzer.vendor.model.VendorService
@@ -37,6 +38,7 @@ enum class MainContext {
     lateinit var settings: Settings
     lateinit var mainActivity: MainActivity
     lateinit var wiFiManagerWrapper: WiFiManagerWrapper
+    lateinit var permissionService: PermissionService
     lateinit var scannerService: ScannerService
     lateinit var vendorService: VendorService
     lateinit var configuration: Configuration
@@ -60,7 +62,8 @@ enum class MainContext {
         settings = Settings(Repository(context))
         vendorService = VendorService(activity.resources)
         wiFiManagerWrapper = WiFiManagerWrapper(wiFiManager)
-        scannerService = makeScannerService(wiFiManagerWrapper, Handler(Looper.getMainLooper()), settings)
+        permissionService = PermissionService(activity)
+        scannerService = makeScannerService(mainActivity, wiFiManagerWrapper, Handler(Looper.getMainLooper()), settings)
         filtersAdapter = FiltersAdapter(settings)
     }
 

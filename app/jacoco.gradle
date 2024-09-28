@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,22 +19,12 @@
 apply plugin: "jacoco"
 
 jacoco {
-    toolVersion = "0.8.7"
+    toolVersion = "0.8.11"
 }
 
-tasks.withType(Test) {
-    jacoco.includeNoLocationClasses = true
-    jacoco.excludes = ['jdk.internal.*']
-}
+def executionPath = 'outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec'
 
-task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
-
-    reports {
-        xml.enabled = true
-        html.enabled = true
-    }
-
-    def fileFilter = [
+def fileFilter = [
         '**/R.class',
         '**/R$*.class',
         '**/BuildConfig.*',
@@ -42,19 +32,87 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
         '**/Manifest*.*',
         '**/*Test*.*',
         'android/**/*.*',
-        '**/com/jjoe64/*'
-    ]
+        '**/com/jjoe64/*',
+        '**/com/vrem/wifianalyzer/settings/SharedPreferences*'
+]
 
-    def classJavaDir = "$project.buildDir/intermediates/javac/debug/classes"
-    def classKotlinDir = "$project.buildDir/tmp/kotlin-classes/debug"
-    def mainJavaSrc = "$project.projectDir/src/main/java"
-    def mainKotlinSrc = "$project.projectDir/src/main/kotlin"
-    def debugTree = fileTree(dir: classJavaDir, excludes: fileFilter) +
-            fileTree(dir: classKotlinDir, excludes: fileFilter)
+def classJavaDir = "$project.buildDir/intermediates/javac/debug/compileDebugJavaWithJavac/classes"
+def classKotlinDir = "$project.buildDir/tmp/kotlin-classes/debug"
+def mainJavaSrc = "$project.projectDir/src/main/java"
+def mainKotlinSrc = "$project.projectDir/src/main/kotlin"
+def debugTree = fileTree(dir: classJavaDir, excludes: fileFilter) + fileTree(dir: classKotlinDir, excludes: fileFilter)
 
+tasks.withType(Test).configureEach {
+    jacoco.includeNoLocationClasses = true
+    jacoco.excludes = ['jdk.internal.*']
+}
+
+task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
+    reports {
+        csv.required = false
+        xml.required = true
+        html.required = true
+    }
     sourceDirectories.from = files([mainJavaSrc, mainKotlinSrc])
     classDirectories.from = files([debugTree])
-    executionData.from = fileTree(dir: project.buildDir, includes: [
-        'outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec'
-    ])
+    executionData.from = fileTree(dir: project.buildDir, includes: [executionPath])
+}
+
+task jacocoTestCoverageVerification(type: JacocoCoverageVerification, dependsOn: 'jacocoTestReport') {
+    sourceDirectories.from = files([[mainJavaSrc, mainKotlinSrc]])
+    classDirectories.from = files([debugTree])
+    executionData.from = fileTree(dir: project.buildDir, includes: [executionPath])
+    violationRules {
+        failOnViolation = true
+        rule {
+            element = 'BUNDLE'
+            limit {
+                counter = 'INSTRUCTION'
+                minimum = 0.96
+            }
+            limit {
+                counter = 'BRANCH'
+                minimum = 0.84
+            }
+            limit {
+                counter = 'COMPLEXITY'
+                minimum = 0.89
+            }
+            limit {
+                counter = 'LINE'
+                minimum = 0.98
+            }
+            limit {
+                counter = 'METHOD'
+                minimum = 0.97
+            }
+            limit {
+                counter = 'CLASS'
+                minimum = 0.99
+            }
+        }
+        rule {
+            element = 'CLASS'
+            limit {
+                counter = 'INSTRUCTION'
+                minimum = 0.67
+            }
+            limit {
+                counter = 'BRANCH'
+                minimum = 0.50
+            }
+            limit {
+                counter = 'COMPLEXITY'
+                minimum = 0.33
+            }
+            limit {
+                counter = 'LINE'
+                minimum = 0.60
+            }
+            limit {
+                counter = 'METHOD'
+                minimum = 0.33
+            }
+        }
+    }
 }

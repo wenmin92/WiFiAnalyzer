@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +20,10 @@ package com.vrem.wifianalyzer.wifi.manager
 import android.net.wifi.ScanResult
 import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
-import com.nhaarman.mockitokotlin2.*
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
-import org.junit.Assert.*
 import org.junit.Test
+import org.mockito.kotlin.*
 
 class WiFiManagerWrapperTest {
     private val wifiManager: WifiManager = mock()
@@ -38,233 +38,244 @@ class WiFiManagerWrapperTest {
     }
 
     @Test
-    fun testWiFiEnabled() {
+    fun wiFiEnabled() {
         // setup
         whenever(wifiManager.isWifiEnabled).thenReturn(true)
         // execute
         val actual = fixture.wiFiEnabled()
         // validate
-        assertTrue(actual)
+        assertThat(actual).isTrue()
         verify(wifiManager).isWifiEnabled
     }
 
     @Test
-    fun testWiFiEnabledWithException() {
+    fun wiFiEnabledWithException() {
         // setup
         whenever(wifiManager.isWifiEnabled).thenThrow(RuntimeException())
         // execute
         val actual = fixture.wiFiEnabled()
         // validate
-        assertFalse(actual)
+        assertThat(actual).isFalse()
         verify(wifiManager).isWifiEnabled
     }
 
-    @Suppress("DEPRECATION")
     @Test
-    fun testEnableWiFi() {
+    fun enableWiFi() {
         // setup
         whenever(wifiManager.isWifiEnabled).thenReturn(true)
         // execute
         val actual = fixture.enableWiFi()
         // validate
-        assertTrue(actual)
+        assertThat(actual).isTrue()
         verify(wifiManager).isWifiEnabled
-        verify(wifiManager, never()).isWifiEnabled = any()
     }
 
     @Test
-    fun testEnableWiFiWhenDisabled() {
+    fun enableWiFiWhenDisabled() {
         // setup
         whenever(wifiManager.isWifiEnabled).thenReturn(false)
         whenever(wiFiSwitch.on()).thenReturn(true)
         // execute
         val actual = fixture.enableWiFi()
         // validate
-        assertTrue(actual)
+        assertThat(actual).isTrue()
         verify(wifiManager).isWifiEnabled
         verify(wiFiSwitch).on()
     }
 
     @Test
-    fun testEnableWiFiWithException() {
+    fun enableWiFiWithException() {
         // setup
         whenever(wifiManager.isWifiEnabled).thenReturn(false)
         whenever(wiFiSwitch.on()).thenThrow(RuntimeException())
         // execute
         val actual = fixture.enableWiFi()
         // validate
-        assertFalse(actual)
+        assertThat(actual).isFalse()
         verify(wifiManager).isWifiEnabled
         verify(wiFiSwitch).on()
     }
 
     @Test
-    fun testDisableWiFi() {
+    fun disableWiFi() {
         // setup
         whenever(wifiManager.isWifiEnabled).thenReturn(true)
         whenever(wiFiSwitch.off()).thenReturn(true)
         // execute
         val actual = fixture.disableWiFi()
         // validate
-        assertTrue(actual)
+        assertThat(actual).isTrue()
         verify(wifiManager).isWifiEnabled
         verify(wiFiSwitch).off()
     }
 
     @Test
-    fun testDisableWiFiWhenDisabled() {
+    fun disableWiFiWhenDisabled() {
         // setup
         whenever(wifiManager.isWifiEnabled).thenReturn(false)
         // execute
         val actual = fixture.disableWiFi()
         // validate
-        assertTrue(actual)
+        assertThat(actual).isTrue()
         verify(wifiManager).isWifiEnabled
         verify(wiFiSwitch, never()).off()
     }
 
     @Test
-    fun testDisableWiFiWithException() {
+    fun disableWiFiWithException() {
         // setup
         whenever(wifiManager.isWifiEnabled).thenReturn(true)
         whenever(wiFiSwitch.off()).thenThrow(RuntimeException())
         // execute
         val actual = fixture.disableWiFi()
         // validate
-        assertFalse(actual)
+        assertThat(actual).isFalse()
         verify(wifiManager).isWifiEnabled
         verify(wiFiSwitch).off()
     }
 
     @Suppress("DEPRECATION")
     @Test
-    fun testStartScan() {
+    fun startScan() {
         // setup
         whenever(wifiManager.startScan()).thenReturn(true)
         // execute
         val actual = fixture.startScan()
         // validate
-        assertTrue(actual)
+        assertThat(actual).isTrue()
         verify(wifiManager).startScan()
     }
 
     @Suppress("DEPRECATION")
     @Test
-    fun testStartScanWithException() {
+    fun startScanWithException() {
         // setup
         whenever(wifiManager.startScan()).thenThrow(RuntimeException())
         // execute
         val actual = fixture.startScan()
         // validate
-        assertFalse(actual)
+        assertThat(actual).isFalse()
         verify(wifiManager).startScan()
     }
 
     @Test
-    fun testScanResults() {
+    fun scanResults() {
         // setup
         val expected = listOf<ScanResult>()
         whenever(wifiManager.scanResults).thenReturn(expected)
         // execute
         val actual = fixture.scanResults()
         // validate
-        assertSame(expected, actual)
+        assertThat(actual).isSameAs(expected)
         verify(wifiManager).scanResults
     }
 
     @Test
-    fun testScanResultsWhenWiFiManagerReturnsNullScanResults() {
+    fun scanResultsWhenWiFiManagerReturnsNullScanResults() {
         // setup
         whenever(wifiManager.scanResults).thenReturn(null)
         // execute
         val actual = fixture.scanResults()
         // validate
-        assertNotNull(actual)
-        assertTrue(actual.isEmpty())
+        assertThat(actual).isNotNull()
+        assertThat(actual).isEmpty()
         verify(wifiManager).scanResults
     }
 
     @Test
-    fun testScanResultsWithException() {
+    fun scanResultsWithException() {
         // setup
         whenever(wifiManager.scanResults).thenThrow(RuntimeException())
         // execute
         val actual = fixture.scanResults()
         // validate
-        assertNotNull(actual)
-        assertTrue(actual.isEmpty())
+        assertThat(actual).isNotNull()
+        assertThat(actual).isEmpty()
         verify(wifiManager).scanResults
     }
 
+    @Suppress("DEPRECATION")
     @Test
-    fun testWiFiInfo() {
+    fun wiFiInfo() {
         // setup
         whenever(wifiManager.connectionInfo).thenReturn(wifiInfo)
         // execute
         val actual = fixture.wiFiInfo()
         // validate
-        assertSame(wifiInfo, actual)
+        assertThat(actual).isSameAs(wifiInfo)
         verify(wifiManager).connectionInfo
     }
 
+    @Suppress("DEPRECATION")
     @Test
-    fun testWiFiInfoWithException() {
+    fun wiFiInfoWithException() {
         // setup
         whenever(wifiManager.connectionInfo).thenThrow(RuntimeException())
         // execute
         val actual = fixture.wiFiInfo()
         // validate
-        assertNull(actual)
+        assertThat(actual).isNull()
         verify(wifiManager).connectionInfo
     }
 
     @Test
-    fun testIs5GHzBandSupported() {
+    fun is5GHzBandSupported() {
         // setup
-        doReturn(false).whenever(fixture).minVersionL()
-        // execute
-        val actual = fixture.is5GHzBandSupported()
-        // validate
-        assertFalse(actual)
-        verify(wifiManager, never()).is5GHzBandSupported
-        verify(fixture).minVersionL()
-    }
-
-    @Test
-    fun testIs5GHzBandSupportedWithAndroidL() {
-        // setup
-        doReturn(true).whenever(fixture).minVersionL()
         whenever(wifiManager.is5GHzBandSupported).thenReturn(true)
         // execute
         val actual = fixture.is5GHzBandSupported()
         // validate
-        assertTrue(actual)
+        assertThat(actual).isTrue()
         verify(wifiManager).is5GHzBandSupported
-        verify(fixture).minVersionL()
     }
 
     @Test
-    fun testIs6GHzBandSupported() {
+    fun is6GHzBandSupported() {
         // setup
         doReturn(false).whenever(fixture).minVersionR()
         // execute
         val actual = fixture.is6GHzBandSupported()
         // validate
-        assertFalse(actual)
+        assertThat(actual).isFalse()
         verify(wifiManager, never()).is6GHzBandSupported
         verify(fixture).minVersionR()
     }
 
     @Test
-    fun testIs6GHzBandSupportedWithAndroidR() {
+    fun is6GHzBandSupportedWithAndroidR() {
         // setup
         doReturn(true).whenever(fixture).minVersionR()
         whenever(wifiManager.is6GHzBandSupported).thenReturn(true)
         // execute
         val actual = fixture.is6GHzBandSupported()
         // validate
-        assertTrue(actual)
+        assertThat(actual).isTrue()
         verify(wifiManager).is6GHzBandSupported
+        verify(fixture).minVersionR()
+    }
+
+    @Test
+    fun isScanThrottleEnabledSupported() {
+        // setup
+        doReturn(false).whenever(fixture).minVersionR()
+        // execute
+        val actual = fixture.isScanThrottleEnabled()
+        // validate
+        assertThat(actual).isFalse()
+        verify(wifiManager, never()).isScanThrottleEnabled
+        verify(fixture).minVersionR()
+    }
+
+    @Test
+    fun isScanThrottleEnabledSupportedWithAndroidR() {
+        // setup
+        doReturn(true).whenever(fixture).minVersionR()
+        whenever(wifiManager.isScanThrottleEnabled).thenReturn(true)
+        // execute
+        val actual = fixture.isScanThrottleEnabled()
+        // validate
+        assertThat(actual).isTrue()
+        verify(wifiManager).isScanThrottleEnabled
         verify(fixture).minVersionR()
     }
 

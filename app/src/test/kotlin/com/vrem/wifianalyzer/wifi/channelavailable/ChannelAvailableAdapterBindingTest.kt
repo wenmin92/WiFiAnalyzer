@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,17 +19,17 @@ package com.vrem.wifianalyzer.wifi.channelavailable
 
 import android.view.View
 import android.widget.TextView
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
 import com.vrem.wifianalyzer.R
-import org.junit.Assert.assertEquals
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 
 class ChannelAvailableAdapterBindingTest {
 
     @Test
-    fun testChannelAvailableAdapterBinding() {
+    fun channelAvailableAdapterBinding() {
         // setup
         val view: View = mock()
         val channelAvailableCountry: TextView = mock()
@@ -49,14 +49,14 @@ class ChannelAvailableAdapterBindingTest {
         // execute
         val fixture = ChannelAvailableAdapterBinding(view)
         // validate
-        assertEquals(view, fixture.root)
-        assertEquals(channelAvailableCountry, fixture.channelAvailableCountry)
-        assertEquals(channelAvailableTitleGhz2, fixture.channelAvailableTitleGhz2)
-        assertEquals(channelAvailableGhz2, fixture.channelAvailableGhz2)
-        assertEquals(channelAvailableTitleGhz5, fixture.channelAvailableTitleGhz5)
-        assertEquals(channelAvailableGhz5, fixture.channelAvailableGhz5)
-        assertEquals(channelAvailableTitleGhz6, fixture.channelAvailableTitleGhz6)
-        assertEquals(channelAvailableGhz6, fixture.channelAvailableGhz6)
+        assertThat(fixture.root).isEqualTo(view)
+        assertThat(fixture.channelAvailableCountry).isEqualTo(channelAvailableCountry)
+        assertThat(fixture.channelAvailableTitleGhz2).isEqualTo(channelAvailableTitleGhz2)
+        assertThat(fixture.channelAvailableGhz2).isEqualTo(channelAvailableGhz2)
+        assertThat(fixture.channelAvailableTitleGhz5).isEqualTo(channelAvailableTitleGhz5)
+        assertThat(fixture.channelAvailableGhz5).isEqualTo(channelAvailableGhz5)
+        assertThat(fixture.channelAvailableTitleGhz6).isEqualTo(channelAvailableTitleGhz6)
+        assertThat(fixture.channelAvailableGhz6).isEqualTo(channelAvailableGhz6)
         verify(view).findViewById<TextView>(R.id.channel_available_country)
         verify(view).findViewById<TextView>(R.id.channel_available_title_ghz_2)
         verify(view).findViewById<TextView>(R.id.channel_available_ghz_2)

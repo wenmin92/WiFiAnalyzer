@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,8 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.preference.ListPreference
 
-abstract class CustomPreference(context: Context, attrs: AttributeSet, values: List<Data>, defaultValue: String) : ListPreference(context, attrs) {
+abstract class CustomPreference(context: Context, attrs: AttributeSet, values: List<Data>, defaultValue: String) :
+    ListPreference(context, attrs) {
     init {
         this.entries = names(values)
         this.entryValues = codes(values)

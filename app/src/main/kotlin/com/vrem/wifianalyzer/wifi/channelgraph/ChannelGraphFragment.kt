@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ class ChannelGraphFragment : Fragment(), OnRefreshListener {
     lateinit var channelGraphAdapter: ChannelGraphAdapter
         private set
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding = GraphContentBinding.inflate(inflater, container, false)
         swipeRefreshLayout = binding.graphRefresh
         swipeRefreshLayout.setOnRefreshListener(this)
@@ -44,10 +44,8 @@ class ChannelGraphFragment : Fragment(), OnRefreshListener {
         }
         val linearLayout: LinearLayout = binding.graphNavigation
         val channelGraphNavigation = ChannelGraphNavigation(linearLayout, requireActivity().applicationContext)
-        channelGraphNavigation.initialize()
         channelGraphAdapter = ChannelGraphAdapter(channelGraphNavigation)
         channelGraphAdapter.graphViews().forEach { binding.graphFlipper.addView(it) }
-        MainContext.INSTANCE.scannerService.register(channelGraphAdapter)
         return binding.root
     }
 
@@ -59,12 +57,13 @@ class ChannelGraphFragment : Fragment(), OnRefreshListener {
 
     override fun onResume() {
         super.onResume()
+        MainContext.INSTANCE.scannerService.register(channelGraphAdapter)
         onRefresh()
     }
 
-    override fun onDestroy() {
+    override fun onPause() {
         MainContext.INSTANCE.scannerService.unregister(channelGraphAdapter)
-        super.onDestroy()
+        super.onPause()
     }
 
 }

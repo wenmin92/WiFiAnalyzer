@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,16 +17,18 @@
  */
 package com.vrem.util
 
-fun <T : Enum<T>> findSet(values: Array<T>, indexes: Set<String>, defaultValue: T): Set<T> {
+import kotlin.enums.EnumEntries
+
+fun <T : Enum<T>> findSet(values: EnumEntries<T>, indexes: Set<String>, defaultValue: T): Set<T> {
     val results: Set<T> = indexes.map { findOne(values, it.toInt(), defaultValue) }.toSet()
-    return if (results.isEmpty()) values.toSet() else results
+    return results.ifEmpty { values.toSet() }
 }
 
-fun <T : Enum<T>> findOne(values: Array<T>, index: Int, defaultValue: T): T =
-        if (index in values.indices) values[index] else defaultValue
+fun <T : Enum<T>> findOne(values: EnumEntries<T>, index: Int, defaultValue: T): T =
+    if (index in values.indices) values[index] else defaultValue
 
-fun <T : Enum<T>> ordinals(values: Array<T>): Set<String> =
-        ordinals(values.toSet())
+fun <T : Enum<T>> ordinals(values: EnumEntries<T>): Set<String> =
+    ordinals(values.toSet())
 
 fun <T : Enum<T>> ordinals(values: Set<T>): Set<String> =
-        values.map { it.ordinal.toString() }.toSet()
+    values.map { it.ordinal.toString() }.toSet()

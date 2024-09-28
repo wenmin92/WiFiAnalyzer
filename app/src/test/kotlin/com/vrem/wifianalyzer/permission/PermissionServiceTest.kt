@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,89 +18,88 @@
 package com.vrem.wifianalyzer.permission
 
 import android.app.Activity
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
-import com.nhaarman.mockitokotlin2.whenever
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
-import org.junit.Assert
-import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoMoreInteractions
+import org.mockito.kotlin.whenever
 
 class PermissionServiceTest {
     private val activity: Activity = mock()
-    private val systemPermission: SystemPermission = mock()
+    private val locationPermission: LocationPermission = mock()
     private val applicationPermission: ApplicationPermission = mock()
-    private val fixture = PermissionService(activity, systemPermission, applicationPermission)
+    private val fixture = PermissionService(activity, locationPermission, applicationPermission)
 
     @After
     fun tearDown() {
         verifyNoMoreInteractions(activity)
         verifyNoMoreInteractions(applicationPermission)
-        verifyNoMoreInteractions(systemPermission)
+        verifyNoMoreInteractions(locationPermission)
     }
 
     @Test
-    fun testEnabled() {
+    fun enabled() {
         // setup
-        whenever(systemPermission.enabled()).thenReturn(true)
+        whenever(locationPermission.enabled()).thenReturn(true)
         whenever(applicationPermission.granted()).thenReturn(true)
         // execute
         val actual = fixture.enabled()
         // validate
-        assertTrue(actual)
-        verify(systemPermission).enabled()
+        assertThat(actual).isTrue()
+        verify(locationPermission).enabled()
         verify(applicationPermission).granted()
     }
 
     @Test
-    fun testEnabledWhenSystemPermissionIsNotEnabled() {
+    fun enabledWhenLocationPermissionIsNotEnabled() {
         // setup
-        whenever(systemPermission.enabled()).thenReturn(false)
+        whenever(locationPermission.enabled()).thenReturn(false)
         // execute
         val actual = fixture.enabled()
         // validate
-        Assert.assertFalse(actual)
-        verify(systemPermission).enabled()
+        assertThat(actual).isFalse()
+        verify(locationPermission).enabled()
     }
 
     @Test
-    fun testEnabledWhenApplicationPermissionAreNotGranted() {
+    fun enabledWhenApplicationPermissionAreNotGranted() {
         // setup
-        whenever(systemPermission.enabled()).thenReturn(true)
+        whenever(locationPermission.enabled()).thenReturn(true)
         whenever(applicationPermission.granted()).thenReturn(false)
         // execute
         val actual = fixture.enabled()
         // validate
-        Assert.assertFalse(actual)
-        verify(systemPermission).enabled()
+        assertThat(actual).isFalse()
+        verify(locationPermission).enabled()
         verify(applicationPermission).granted()
     }
 
     @Test
-    fun testSystemEnabled() {
+    fun systemEnabled() {
         // setup
-        whenever(systemPermission.enabled()).thenReturn(true)
+        whenever(locationPermission.enabled()).thenReturn(true)
         // execute
-        val actual = fixture.systemEnabled()
+        val actual = fixture.locationEnabled()
         // validate
-        assertTrue(actual)
-        verify(systemPermission).enabled()
+        assertThat(actual).isTrue()
+        verify(locationPermission).enabled()
     }
 
     @Test
-    fun testPermissionGranted() {
+    fun permissionGranted() {
         // setup
         whenever(applicationPermission.granted()).thenReturn(true)
         // execute
         val actual = fixture.permissionGranted()
         // validate
-        assertTrue(actual)
+        assertThat(actual).isTrue()
         verify(applicationPermission).granted()
     }
 
     @Test
-    fun testPermissionCheck() {
+    fun permissionCheck() {
         // execute
         fixture.check()
         // validate
@@ -108,7 +107,7 @@ class PermissionServiceTest {
     }
 
     @Test
-    fun testGranted() {
+    fun granted() {
         // setup
         val requestCode = 111
         val results = intArrayOf(1, 2, 3)
@@ -116,7 +115,7 @@ class PermissionServiceTest {
         // execute
         val actual = fixture.granted(requestCode, results)
         // validate
-        assertTrue(actual)
+        assertThat(actual).isTrue()
         verify(applicationPermission).granted(requestCode, results)
     }
 }

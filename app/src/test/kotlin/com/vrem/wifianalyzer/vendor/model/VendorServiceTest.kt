@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,22 +20,21 @@ package com.vrem.wifianalyzer.vendor.model
 import android.os.Build
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.vrem.wifianalyzer.RobolectricUtil
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
-@Config(sdk = [Build.VERSION_CODES.Q])
+@Config(sdk = [Build.VERSION_CODES.UPSIDE_DOWN_CAKE])
 class VendorServiceTest {
     private val vendorName = "CISCO SYSTEMS INC"
     private val macAddress = "00:23:AB:8C:DF:10"
     private val vendorNameInvalid = "XXXXX"
     private val macAddressInvalid = "XX:XX:XX"
-    private val vendorSize = 18124
-    private val macsSize = 30293
-    private val macsCiscoSize = 987
+    private val vendorSize = 19076
+    private val macsSize = 35611
+    private val macsCiscoSize = 1132
     private val filterVendor = "1394 "
     private val filterMac = "00:A0:2"
     private val expectedVendorName1 = "1394 TRADE ASSOCIATION"
@@ -43,130 +42,130 @@ class VendorServiceTest {
     private val expectedVendorName3 = "1394 PRINTER WORKING GROUP"
     private val expectedMac1 = "00:00:0C"
     private val expectedMac2 = "FC:FB:FB"
-    private val expectedMac3 = "04:76:B0"
+    private val expectedMac3 = "24:16:1B"
 
     private val mainActivity = RobolectricUtil.INSTANCE.activity
     private val fixture = VendorService(mainActivity.resources)
 
     @Test
-    fun testFindVendorNameUsingLowerCase() {
+    fun findVendorNameUsingLowerCase() {
         // execute
         val actual = fixture.findVendorName(macAddress.lowercase())
         // validate
-        assertEquals(vendorName, actual)
+        assertThat(actual).isEqualTo(vendorName)
     }
 
     @Test
-    fun testFindVendorNameWithInvalidMac() {
+    fun findVendorNameWithInvalidMac() {
         // execute
         val actual = fixture.findVendorName(macAddressInvalid)
         // validate
-        assertTrue(actual.isEmpty())
+        assertThat(actual).isEmpty()
     }
 
     @Test
-    fun testFindVendorNameUsingDefault() {
+    fun findVendorNameUsingDefault() {
         // execute
         val actual = fixture.findVendorName()
         // validate
-        assertTrue(actual.isEmpty())
+        assertThat(actual).isEmpty()
     }
 
     @Test
-    fun testFindMacAddresses() {
+    fun findMacAddresses() {
         // setup
         // execute
         val actual = fixture.findMacAddresses(vendorName)
         // validate
-        assertEquals(macsCiscoSize, actual.size)
-        assertEquals(expectedMac1, actual[0])
-        assertEquals(expectedMac2, actual[macsCiscoSize - 1])
-        assertEquals(expectedMac3, actual[macsCiscoSize / 2])
+        assertThat(actual).hasSize(macsCiscoSize)
+        assertThat(actual[0]).isEqualTo(expectedMac1)
+        assertThat(actual[macsCiscoSize - 1]).isEqualTo(expectedMac2)
+        assertThat(actual[macsCiscoSize / 2]).isEqualTo(expectedMac3)
     }
 
     @Test
-    fun testFindMacAddressesUsingLowerCase() {
+    fun findMacAddressesUsingLowerCase() {
         // setup
         // execute
         val actual = fixture.findMacAddresses(vendorName.lowercase())
         // validate
-        assertEquals(macsCiscoSize, actual.size)
-        assertEquals(expectedMac1, actual[0])
-        assertEquals(expectedMac2, actual[macsCiscoSize - 1])
-        assertEquals(expectedMac3, actual[macsCiscoSize / 2])
+        assertThat(actual).hasSize(macsCiscoSize)
+        assertThat(actual[0]).isEqualTo(expectedMac1)
+        assertThat(actual[macsCiscoSize - 1]).isEqualTo(expectedMac2)
+        assertThat(actual[macsCiscoSize / 2]).isEqualTo(expectedMac3)
     }
 
     @Test
-    fun testFindMacAddressesWithInvalidName() {
+    fun findMacAddressesWithInvalidName() {
         // execute
         val actual = fixture.findMacAddresses(vendorNameInvalid)
         // validate
-        assertTrue(actual.isEmpty())
+        assertThat(actual).isEmpty()
     }
 
     @Test
-    fun testFindMacAddressesWithDefault() {
+    fun findMacAddressesWithDefault() {
         // setup
         // execute
         val actual = fixture.findMacAddresses()
         // validate
-        assertTrue(actual.isEmpty())
+        assertThat(actual).isEmpty()
     }
 
     @Test
-    fun testFindVendors() {
+    fun findVendors() {
         // execute
         val actual = fixture.findVendors()
         // validate
-        assertEquals(vendorSize, actual.size)
+        assertThat(actual).hasSize(vendorSize)
     }
 
     @Test
-    fun testFindVendorsWithVendorFilter() {
+    fun findVendorsWithVendorFilter() {
         // execute
         val actual = fixture.findVendors(filterVendor)
         // validate
-        assertEquals(2, actual.size)
-        assertEquals(expectedVendorName3, actual[0])
-        assertEquals(expectedVendorName1, actual[1])
+        assertThat(actual).hasSize(2)
+        assertThat(actual[0]).isEqualTo(expectedVendorName3)
+        assertThat(actual[1]).isEqualTo(expectedVendorName1)
     }
 
     @Test
-    fun testFindVendorsWithVendorFilterUsingLowerCase() {
+    fun findVendorsWithVendorFilterUsingLowerCase() {
         // execute
         val actual = fixture.findVendors(filterVendor.lowercase())
         // validate
-        assertEquals(2, actual.size)
-        assertEquals(expectedVendorName3, actual[0])
-        assertEquals(expectedVendorName1, actual[1])
+        assertThat(actual).hasSize(2)
+        assertThat(actual[0]).isEqualTo(expectedVendorName3)
+        assertThat(actual[1]).isEqualTo(expectedVendorName1)
     }
 
     @Test
-    fun testFindVendorsWithMacFilter() {
+    fun findVendorsWithMacFilter() {
         // execute
         val actual = fixture.findVendors(filterMac)
         // validate
-        assertEquals(16, actual.size)
-        assertEquals(expectedVendorName1, actual[0])
-        assertEquals(expectedVendorName2, actual[15])
+        assertThat(actual).hasSize(16)
+        assertThat(actual[0]).isEqualTo(expectedVendorName1)
+        assertThat(actual[15]).isEqualTo(expectedVendorName2)
     }
 
     @Test
-    fun testFindVendorsWithMacFilterUsingLowerCase() {
+    fun findVendorsWithMacFilterUsingLowerCase() {
         // execute
         val actual = fixture.findVendors(filterMac.lowercase())
         // validate
-        assertEquals(16, actual.size)
-        assertEquals(expectedVendorName1, actual[0])
-        assertEquals(expectedVendorName2, actual[15])
+        assertThat(actual).hasSize(16)
+        assertThat(actual[0]).isEqualTo(expectedVendorName1)
+        assertThat(actual[15]).isEqualTo(expectedVendorName2)
     }
 
     @Test
-    fun testFindMacs() {
+    fun findMacs() {
         // execute
         val actual = fixture.findMacs()
         // validate
-        assertEquals(macsSize, actual.size)
+        assertThat(actual).hasSize(macsSize)
     }
 
 }

@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,11 @@
 package com.vrem.wifianalyzer.wifi.scanner
 
 import android.os.Handler
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
 import com.vrem.wifianalyzer.settings.Settings
 import org.junit.Test
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 
 class PeriodicScanTest {
     private val handler: Handler = mock()
@@ -31,8 +31,8 @@ class PeriodicScanTest {
     private val fixture: PeriodicScan = PeriodicScan(scanner, handler, settings)
 
     @Test
-    fun testRun() {
-        //_setup
+    fun run() {
+        // setup
         val delayInterval = 1000L
         val scanSpeed = 15
         whenever(settings.scanSpeed()).thenReturn(scanSpeed)
@@ -45,7 +45,7 @@ class PeriodicScanTest {
     }
 
     @Test
-    fun testStop() {
+    fun stop() {
         // execute
         fixture.stop()
         // validate
@@ -53,7 +53,7 @@ class PeriodicScanTest {
     }
 
     @Test
-    fun testStart() {
+    fun start() {
         // setup
         val delayInitial = 1L
         // execute
@@ -62,4 +62,18 @@ class PeriodicScanTest {
         verify(handler).removeCallbacks(fixture)
         verify(handler).postDelayed(fixture, delayInitial)
     }
+
+    @Test
+    fun startWithDelay() {
+        // setup
+        val scanSpeed = 15
+        whenever(settings.scanSpeed()).thenReturn(scanSpeed)
+        // execute
+        fixture.startWithDelay()
+        // validate
+        verify(handler).removeCallbacks(fixture)
+        verify(handler).postDelayed(fixture, scanSpeed * PeriodicScan.DELAY_INTERVAL)
+        verify(settings).scanSpeed()
+    }
+
 }

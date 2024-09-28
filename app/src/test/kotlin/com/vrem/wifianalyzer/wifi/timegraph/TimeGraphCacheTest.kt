@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,68 +17,65 @@
  */
 package com.vrem.wifianalyzer.wifi.timegraph
 
-import com.vrem.util.EMPTY
 import com.vrem.wifianalyzer.wifi.graphutils.MAX_NOT_SEEN_COUNT
-import com.vrem.wifianalyzer.wifi.model.WiFiDetail
-import com.vrem.wifianalyzer.wifi.model.WiFiIdentifier
-import com.vrem.wifianalyzer.wifi.model.WiFiSignal
-import com.vrem.wifianalyzer.wifi.model.WiFiWidth
-import org.junit.Assert.*
+import com.vrem.wifianalyzer.wifi.model.*
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class TimeGraphCacheTest {
     private val fixture = TimeGraphCache()
 
     @Test
-    fun testAll() {
+    fun all() {
         // setup
         val expected = withWiFiDetails()
         // execute
         val actual = fixture.wiFiDetails
         // validate
-        assertEquals(expected.size, actual.size)
+        assertThat(actual).hasSize(expected.size)
     }
 
     @Test
-    fun testActive() {
+    fun active() {
         // setup
         val expected = withWiFiDetails()
         // execute
         val actual = fixture.active()
         // validate
-        assertEquals(expected.size - 1, actual.size)
-        assertFalse(actual.contains(expected[0]))
+        assertThat(actual).hasSize(expected.size - 1)
+        assertThat(actual).doesNotContain(expected[0])
     }
 
     @Test
-    fun testClear() {
+    fun clear() {
         // setup
         val expected = withWiFiDetails()
         // execute
         fixture.clear()
         // validate
         val actual = fixture.wiFiDetails
-        assertEquals(expected.size - 1, actual.size)
-        assertFalse(actual.contains(expected[0]))
+        assertThat(actual).hasSize(expected.size - 1)
+        assertThat(actual).doesNotContain(expected[0])
     }
 
     @Test
-    fun testReset() {
+    fun reset() {
         // setup
         val expected = withWiFiDetails()
         // execute
         fixture.reset(expected[0])
         // validate
         val actual = fixture.wiFiDetails
-        assertEquals(expected.size, actual.size)
-        assertTrue(actual.contains(expected[0]))
+        assertThat(actual).hasSize(expected.size)
+        assertThat(actual).contains(expected[0])
     }
 
-    private fun withWiFiDetail(SSID: String): WiFiDetail {
+    private fun withWiFiDetail(ssid: String): WiFiDetail {
         return WiFiDetail(
-                WiFiIdentifier(SSID, "BSSID"),
-                String.EMPTY,
-                WiFiSignal(100, 100, WiFiWidth.MHZ_20, 5, true))
+            WiFiIdentifier(ssid, "BSSID"),
+            WiFiSecurity.EMPTY,
+            WiFiSignal(100, 100, WiFiWidth.MHZ_20, 5)
+        )
     }
 
     private fun withWiFiDetails(): List<WiFiDetail> {

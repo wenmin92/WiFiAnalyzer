@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,32 +18,31 @@
 package com.vrem.wifianalyzer.wifi.predicate
 
 import com.vrem.wifianalyzer.wifi.model.WiFiDetail
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class AmyPredicateTest {
 
     @Test
-    fun testAnyPredicateIsTrue() {
+    fun anyPredicateIsTrue() {
         // setup
         val wiFiDetail = WiFiDetail.EMPTY
         val fixture = listOf(falsePredicate, truePredicate, falsePredicate).anyPredicate()
         // execute
         val actual = fixture(wiFiDetail)
         // validate
-        assertTrue(actual)
+        assertThat(actual).isTrue()
     }
 
     @Test
-    fun testAnyPredicateIsFalse() {
+    fun anyPredicateIsFalse() {
         // setup
         val wiFiDetail = WiFiDetail.EMPTY
         val fixture = listOf(falsePredicate, falsePredicate, falsePredicate).anyPredicate()
         // execute
         val actual = fixture(wiFiDetail)
         // validate
-        assertFalse(actual)
+        assertThat(actual).isFalse()
     }
 
 }

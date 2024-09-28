@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@ package com.vrem.wifianalyzer
 import com.vrem.wifianalyzer.settings.Settings
 import com.vrem.wifianalyzer.settings.ThemeStyle
 import com.vrem.wifianalyzer.wifi.accesspoint.ConnectionViewType
-import java.util.*
+import java.util.Locale
 
 class MainReload(settings: Settings) {
     var themeStyle: ThemeStyle
@@ -31,7 +31,7 @@ class MainReload(settings: Settings) {
         private set
 
     fun shouldReload(settings: Settings): Boolean =
-            themeChanged(settings) || connectionViewTypeChanged(settings) || languageChanged(settings)
+        themeChanged(settings) || connectionViewTypeChanged(settings) || languageChanged(settings)
 
     private fun connectionViewTypeChanged(settings: Settings): Boolean {
         val currentConnectionViewType = settings.connectionViewType()

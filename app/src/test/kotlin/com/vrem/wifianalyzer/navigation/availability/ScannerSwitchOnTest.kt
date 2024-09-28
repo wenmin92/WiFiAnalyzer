@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,13 +19,13 @@ package com.vrem.wifianalyzer.navigation.availability
 
 import android.view.Menu
 import android.view.MenuItem
-import com.nhaarman.mockitokotlin2.*
 import com.vrem.wifianalyzer.MainActivity
 import com.vrem.wifianalyzer.MainContextHelper.INSTANCE
 import com.vrem.wifianalyzer.R
 import com.vrem.wifianalyzer.navigation.options.OptionMenu
 import org.junit.After
 import org.junit.Test
+import org.mockito.kotlin.*
 
 class ScannerSwitchOnTest {
     private val mainActivity: MainActivity = mock()
@@ -45,7 +45,7 @@ class ScannerSwitchOnTest {
     }
 
     @Test
-    fun testNavigationOptionScannerSwitchOn() {
+    fun navigationOptionScannerSwitchOn() {
         // setup
         whenever(mainActivity.optionMenu).thenReturn(optionMenu)
         whenever(optionMenu.menu).thenReturn(menu)
@@ -63,7 +63,7 @@ class ScannerSwitchOnTest {
     }
 
     @Test
-    fun testNavigationOptionScannerSwitchOnWithScannerRunningUpdateMenuItemIconAndTitle() {
+    fun navigationOptionScannerSwitchOnWithScannerRunningUpdateMenuItemIconAndTitle() {
         // setup
         whenever(scanner.running()).thenReturn(true)
         whenever(mainActivity.optionMenu).thenReturn(optionMenu)
@@ -82,7 +82,7 @@ class ScannerSwitchOnTest {
     }
 
     @Test
-    fun testNavigationOptionScannerSwitchOnWithScannerNotRunningUpdateMenuItemIconAndTitle() {
+    fun navigationOptionScannerSwitchOnWithScannerNotRunningUpdateMenuItemIconAndTitle() {
         // setup
         whenever(scanner.running()).thenReturn(false)
         whenever(mainActivity.optionMenu).thenReturn(optionMenu)
@@ -101,7 +101,7 @@ class ScannerSwitchOnTest {
     }
 
     @Test
-    fun testNavigationOptionScannerSwitchOnWithNoMenuDoesNotSetVisibleTrue() {
+    fun navigationOptionScannerSwitchOnWithNoMenuDoesNotSetVisibleTrue() {
         // setup
         whenever(mainActivity.optionMenu).thenReturn(optionMenu)
         whenever(optionMenu.menu).thenReturn(null)

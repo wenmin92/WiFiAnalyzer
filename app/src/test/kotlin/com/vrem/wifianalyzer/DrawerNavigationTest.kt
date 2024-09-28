@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,10 +22,10 @@ import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
-import com.nhaarman.mockitokotlin2.*
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import org.mockito.kotlin.*
 
 class DrawerNavigationTest {
     private val mainActivity: MainActivity = mock()
@@ -55,13 +55,13 @@ class DrawerNavigationTest {
     }
 
     @Test
-    fun testCreate() {
+    fun create() {
         // validate
         verify(actionBarDrawerToggle).syncState()
     }
 
     @Test
-    fun testSyncState() {
+    fun syncState() {
         // execute
         fixture.syncState()
         // validate
@@ -69,7 +69,7 @@ class DrawerNavigationTest {
     }
 
     @Test
-    fun testOnConfigurationChanged() {
+    fun onConfigurationChanged() {
         // execute
         fixture.onConfigurationChanged(configuration)
         // validate

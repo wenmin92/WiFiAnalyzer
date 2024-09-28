@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,17 @@
 package com.vrem.wifianalyzer.vendor.model
 
 import com.vrem.util.EMPTY
-import java.util.*
+import java.util.Locale
 
 internal const val MAX_SIZE = 6
 private const val SEPARATOR = ":"
 
 internal fun String.clean(): String =
-        orEmpty().replace(SEPARATOR, String.EMPTY).take(MAX_SIZE).uppercase(Locale.getDefault())
+    orEmpty().replace(SEPARATOR, String.EMPTY).take(MAX_SIZE).uppercase(Locale.getDefault())
 
 internal fun String.toMacAddress(): String =
-        when {
-            isEmpty() -> String.EMPTY
-            length < MAX_SIZE -> "*$this*"
-            else -> substring(0, 2) + SEPARATOR + substring(2, 4) + SEPARATOR + substring(4, 6)
-        }
+    when {
+        isEmpty() -> String.EMPTY
+        length < MAX_SIZE -> "*$this*"
+        else -> substring(0, 2) + SEPARATOR + substring(2, 4) + SEPARATOR + substring(4, 6)
+    }

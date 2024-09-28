@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,19 +17,19 @@
  */
 package com.vrem.wifianalyzer.wifi.filter.adapter
 
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import com.vrem.wifianalyzer.R
 import com.vrem.wifianalyzer.settings.Settings
 import com.vrem.wifianalyzer.wifi.band.WiFiBand
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
-import org.junit.Assert.*
 import org.junit.Test
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoMoreInteractions
 
 class WiFiBandAdapterTest {
     private val settings: Settings = mock()
-    private val fixture = WiFiBandAdapter(WiFiBand.values().toSet())
+    private val fixture = WiFiBandAdapter(WiFiBand.entries.toSet())
 
     @After
     fun tearDown() {
@@ -37,85 +37,85 @@ class WiFiBandAdapterTest {
     }
 
     @Test
-    fun testIsActive() {
-        assertFalse(fixture.isActive())
+    fun isActive() {
+        assertThat(fixture.isActive()).isFalse()
     }
 
     @Test
-    fun testIsActiveWithChanges() {
+    fun isActiveWithChanges() {
         // setup
         fixture.toggle(WiFiBand.GHZ2)
         // execute & validate
-        assertTrue(fixture.isActive())
+        assertThat(fixture.isActive()).isTrue()
     }
 
     @Test
-    fun testGetValues() {
+    fun getValues() {
         // setup
-        val expected = WiFiBand.values()
+        val expected = WiFiBand.entries
         // execute
         val actual = fixture.selections
         // validate
-        assertTrue(actual.containsAll(expected.toList()))
+        assertThat(actual).containsAll(expected)
     }
 
     @Test
-    fun testGetValuesDefault() {
+    fun getValuesDefault() {
         // setup
-        val expected = WiFiBand.values()
+        val expected = WiFiBand.entries
         // execute
         val actual = fixture.defaults
         // validate
-        assertArrayEquals(expected, actual)
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun testToggleRemoves() {
+    fun toggleRemoves() {
         // execute
         val actual = fixture.toggle(WiFiBand.GHZ2)
         // validate
-        assertTrue(actual)
-        assertFalse(fixture.contains(WiFiBand.GHZ2))
+        assertThat(actual).isTrue()
+        assertThat(fixture.contains(WiFiBand.GHZ2)).isFalse()
     }
 
     @Test
-    fun testToggleAdds() {
+    fun toggleAdds() {
         // setup
         fixture.toggle(WiFiBand.GHZ5)
         // execute
         val actual = fixture.toggle(WiFiBand.GHZ5)
         // validate
-        assertTrue(actual)
-        assertTrue(fixture.contains(WiFiBand.GHZ5))
+        assertThat(actual).isTrue()
+        assertThat(fixture.contains(WiFiBand.GHZ5)).isTrue()
     }
 
     @Test
-    fun testRemovingAllWillNotRemoveLast() {
+    fun removingAllWillNotRemoveLast() {
         // setup
-        val values: Set<WiFiBand> = WiFiBand.values().toSet()
+        val values: Set<WiFiBand> = WiFiBand.entries.toSet()
         // execute
         values.forEach { fixture.toggle(it) }
         // validate
-        values.toList().subList(0, values.size - 1).forEach { assertFalse(fixture.contains(it)) }
-        assertTrue(fixture.contains(values.last()))
+        values.toList().subList(0, values.size - 1).forEach { assertThat(fixture.contains(it)).isFalse() }
+        assertThat(fixture.contains(values.last())).isTrue()
     }
 
     @Test
-    fun testGetColorWithExisting() {
+    fun getColorWithExisting() {
         // execute & validate
-        assertEquals(R.color.selected, fixture.color(WiFiBand.GHZ2))
+        assertThat(fixture.color(WiFiBand.GHZ2)).isEqualTo(R.color.selected)
     }
 
     @Test
-    fun testGetColorWithNonExisting() {
+    fun getColorWithNonExisting() {
         // setup
         fixture.toggle(WiFiBand.GHZ2)
         // execute & validate
-        assertEquals(R.color.regular, fixture.color(WiFiBand.GHZ2))
+        assertThat(fixture.color(WiFiBand.GHZ2)).isEqualTo(R.color.regular)
     }
 
     @Test
-    fun testSave() {
+    fun save() {
         // setup
         val expected = fixture.selections
         // execute

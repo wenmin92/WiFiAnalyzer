@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ WiFiAnalyzer
-  ~ Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+  ~ Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -42,7 +42,6 @@
     <string name="action_vendors">"Vendors"</string>
     <string name="action_settings">"Settings"</string>
     <string name="action_about">"About"</string>
-    <string name="action_port_authority" translatable="false">"PortAuthority"</string>
     <!-- action end -->
 
     <string name="no_data">"No Data"</string>
@@ -54,6 +53,7 @@
     <string name="wifi_channels_list_url" translatable="false">"https://en.wikipedia.org/wiki/List_of_WLAN_channels"</string>
     <string name="vendor_search_hint" translatable="false">"00:0C:41 CISCO"</string>
     <string name="export_not_available">"Export not available"</string>
+    <string name="current_connection">"Current connection"</string>
 
     <string name="channel_rating_best">"Best Channels:"</string>
     <string name="channel_rating_best_none">"None"</string>
@@ -83,9 +83,9 @@
     <string name="scan_speed_key" translatable="false">"scan_speed"</string>
     <string name="scan_speed_default" translatable="false">"5"</string>
 
-    <string name="wifi_throttle_disabled_title" translatable="false">"Disable Wi-Fi scan throttling"</string>
-    <string name="wifi_throttle_disabled_key" translatable="false">"wifi_throttle_disabled_key"</string>
-    <bool name="wifi_throttle_disabled_default" translatable="false">false</bool>
+    <string name="cache_off_title" translatable="false">"Cache off"</string>
+    <string name="cache_off_key" translatable="false">"cache_off"</string>
+    <bool name="cache_off_default" translatable="false">false</bool>
 
     <string name="experimental_title" translatable="false">"Experimental"</string>
     <string name="experimental_key" translatable="false">"experimental_key"</string>
@@ -177,6 +177,8 @@
     <string name="about_how_to_url" translatable="false">"https://vremsoftwaredevelopment.github.io/WiFiAnalyzer/#how-to"</string>
     <string name="about_faq" translatable="false">"FAQ:"</string>
     <string name="about_faq_url" translatable="false">"https://vremsoftwaredevelopment.github.io/WiFiAnalyzer/#faq"</string>
+    <string name="about_privacy_policy" translatable="false">"Privacy Policy:"</string>
+    <string name="about_privacy_policy_url" translatable="false">"https://vremsoftwaredevelopment.github.io/WiFiAnalyzer/#privacy-policy"</string>
     <string name="about_contributor_title">"Contributors"</string>
     <string name="about_write_review">"Write a Review"</string>
     <!-- about end -->
@@ -189,7 +191,7 @@
     <!-- license end -->
 
     <!-- Wi-Fi band start -->
-    <string name="wifi_band_title" translatable="false">"2.4/5 GHz"</string>
+    <string name="wifi_band_title" translatable="false">"2.4/5/6 GHz"</string>
     <string name="wifi_band_2ghz" translatable="false">"2.4 GHz"</string>
     <string name="wifi_band_5ghz" translatable="false">"5 GHz"</string>
     <string name="wifi_band_6ghz" translatable="false">"6 GHz"</string>
@@ -197,10 +199,16 @@
 
     <!-- Wi-Fi standard start -->
     <string name="wifi_standard_unknown" translatable="false">""</string>
-    <string name="wifi_standard_legacy" translatable="false">"Wi-Fi 802.11a/b/g"</string>
-    <string name="wifi_standard_n" translatable="false">"Wi-Fi 802.11n"</string>
-    <string name="wifi_standard_ac" translatable="false">"Wi-Fi 802.11ac"</string>
-    <string name="wifi_standard_ax" translatable="false">"Wi-Fi 802.11ax"</string>
+    <string name="wifi_standard_legacy" translatable="false">"802.11a/b/g"</string>
+    <string name="wifi_standard_n" translatable="false">"802.11n"</string>
+    <string name="wifi_standard_ac" translatable="false">"802.11ac"</string>
+    <string name="wifi_standard_ax" translatable="false">"802.11ax"</string>
+    <string name="wifi_standard_ad" translatable="false">"802.11ad"</string>
+    <string name="wifi_standard_be" translatable="false">"802.11be"</string>
+    <string name="wifi_standard_value_n" translatable="false">"4"</string>
+    <string name="wifi_standard_value_ac" translatable="false">"5"</string>
+    <string name="wifi_standard_value_ax" translatable="false">"6"</string>
+    <string name="wifi_standard_value_be" translatable="false">"7"</string>
     <!-- Wi-Fi standard end -->
 
     <!-- security start -->
@@ -212,12 +220,30 @@
     <string name="security_wpa3" translatable="false">"WPA3"</string>
     <!-- security end -->
 
+    <!-- security type start -->
+    <string name="security_type_unknown" translatable="false">""</string>
+    <string name="security_type_open" translatable="false">"OPEN"</string>
+    <string name="security_type_wep" translatable="false">"WEP"</string>
+    <string name="security_type_psk" translatable="false">"PSK"</string>
+    <string name="security_type_eap" translatable="false">"EAP"</string>
+    <string name="security_type_sae" translatable="false">"SAE"</string>
+    <string name="security_type_eap_wpa3_enterprise_192_bit" translatable="false">"EAP_WPA3_ENTERPRISE_192_BIT"</string>
+    <string name="security_type_owe" translatable="false">"OWE"</string>
+    <string name="security_type_wapi_psk" translatable="false">"WAPI_PSK"</string>
+    <string name="security_type_wapi_cert" translatable="false">"WAPI_CERT"</string>
+    <string name="security_type_eap_wpa3_enterprise" translatable="false">"EAP_WPA3_ENTERPRISE"</string>
+    <string name="security_type_osen" translatable="false">"OSEN"</string>
+    <string name="security_type_passpoint_r1_r2" translatable="false">"PASSPOINT_R1_R2"</string>
+    <string name="security_type_passpoint_r3" translatable="false">"PASSPOINT_R3"</string>
+    <string name="security_type_dpp" translatable="false">"DPP"</string>
+    <!-- security type end -->
+
     <!-- filter start -->
     <string name="filter_title">"Filter"</string>
     <string name="filter_close">"Close"</string>
     <string name="filter_reset">"Reset"</string>
     <string name="filter_apply">"Apply"</string>
-    <string name="filter_ssid_title" translatable="false">"SSID"</string>
+    <string name="filter_ssid_title" translatable="true">"SSID (case sensitive)"</string>
     <string name="filter_ssid_key" translatable="false">"filter_ssid"</string>
     <string name="filter_ssid_hint" translatable="false">"ssid SSID"</string>
     <string name="filter_wifi_band_title">"Wi-Fi Band"</string>
@@ -227,5 +253,16 @@
     <string name="filter_security_title">"Security"</string>
     <string name="filter_security_key" translatable="false">"filter_security"</string>
     <!-- filter end -->
+
+    <!-- wifi throttling start -->
+    <string name="wifi_throttling_on">"Wi-Fi scan throttling is enabled"</string>
+    <string name="wifi_throttling_off">"Wi-Fi scan throttling is disabled"</string>
+    <!-- wifi throttling end -->
+
+    <!-- fast roaming start -->
+    <string name="fast_roaming_k" translatable="false">"802.11k"</string>
+    <string name="fast_roaming_r" translatable="false">"802.11r"</string>
+    <string name="fast_roaming_v" translatable="false">"802.11v"</string>
+    <!-- fast roaming -->
 
 </resources>

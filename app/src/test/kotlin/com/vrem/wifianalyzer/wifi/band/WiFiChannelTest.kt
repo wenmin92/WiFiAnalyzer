@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,38 +17,45 @@
  */
 package com.vrem.wifianalyzer.wifi.band
 
-import org.junit.Assert.*
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class WiFiChannelTest {
     private val channel = 1
     private val frequency = 200
-    private val fixture: WiFiChannel = WiFiChannel(channel, frequency)
-    private val other: WiFiChannel = WiFiChannel(channel, frequency)
+    private val fixture = WiFiChannel(channel, frequency)
 
     @Test
-    fun testInRange() {
-        assertTrue(fixture.inRange(frequency))
-        assertTrue(fixture.inRange(frequency - 2))
-        assertTrue(fixture.inRange(frequency + 2))
-        assertFalse(fixture.inRange(frequency - 3))
-        assertFalse(fixture.inRange(frequency + 3))
+    fun inRange() {
+        assertThat(fixture.inRange(frequency)).isTrue()
+        assertThat(fixture.inRange(frequency - 2)).isTrue()
+        assertThat(fixture.inRange(frequency + 2)).isTrue()
+        assertThat(fixture.inRange(frequency - 3)).isFalse()
+        assertThat(fixture.inRange(frequency + 3)).isFalse()
     }
 
     @Test
-    fun testEquals() {
-        assertEquals(fixture, other)
-        assertNotSame(fixture, other)
+    fun compareToUsingSameChannelAndFrequency() {
+        // setup
+        val other = WiFiChannel(channel, frequency)
+        // execute & validate
+        assertThat(fixture.compareTo(other)).isEqualTo(0)
     }
 
     @Test
-    fun testHashCode() {
-        assertEquals(fixture.hashCode(), other.hashCode())
+    fun compareToUsingDifferentChannel() {
+        // setup
+        val other = WiFiChannel(channel + 1, frequency)
+        // execute & validate
+        assertThat(fixture.compareTo(other)).isEqualTo(-1)
     }
 
     @Test
-    fun testCompareTo() {
-        assertEquals(0, fixture.compareTo(other))
+    fun compareToUsingDifferentFrequency() {
+        // setup
+        val other = WiFiChannel(channel, frequency + 1)
+        // execute & validate
+        assertThat(fixture.compareTo(other)).isEqualTo(-1)
     }
 
 }

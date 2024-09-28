@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ class SeriesCache {
     fun difference(series: Set<WiFiDetail>): List<WiFiDetail> = cache.keys.minus(series).toList()
 
     fun remove(series: List<WiFiDetail>): List<BaseSeries<GraphDataPoint>> =
-            series.filter { cache.containsKey(it) }.mapNotNull { cache.remove(it) }
+        series.filter { cache.containsKey(it) }.mapNotNull { cache.remove(it) }
 
     fun find(series: Series<*>): WiFiDetail = cache.keys.first { series == cache[it] }
 
@@ -38,6 +38,6 @@ class SeriesCache {
     operator fun get(wiFiDetail: WiFiDetail): BaseSeries<GraphDataPoint> = cache[wiFiDetail]!!
 
     fun put(wiFiDetail: WiFiDetail, series: BaseSeries<GraphDataPoint>) =
-            cache.put(wiFiDetail, series)
+        cache.put(wiFiDetail, series)
 
 }

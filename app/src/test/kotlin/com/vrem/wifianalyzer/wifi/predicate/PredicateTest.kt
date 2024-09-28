@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,20 +17,16 @@
  */
 package com.vrem.wifianalyzer.wifi.predicate
 
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
-import com.nhaarman.mockitokotlin2.whenever
 import com.vrem.wifianalyzer.settings.Settings
 import com.vrem.wifianalyzer.wifi.band.WiFiBand
 import com.vrem.wifianalyzer.wifi.model.*
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
-import org.junit.Assert.*
 import org.junit.Test
-
-internal enum class TestObject {
-    VALUE1, VALUE3, VALUE2
-}
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoMoreInteractions
+import org.mockito.kotlin.whenever
 
 class PredicateTest {
     private val ssid = "SSID"
@@ -44,18 +40,18 @@ class PredicateTest {
     }
 
     @Test
-    fun testMakeAccessPointsPredicate() {
+    fun makeAccessPointsPredicate() {
         // setup
         whenSettings()
         // execute
         val fixture: Predicate = makeAccessPointsPredicate(settings)
         // validate
-        assertNotNull(fixture)
+        assertThat(fixture).isNotNull()
         verifySettings()
     }
 
     @Test
-    fun testMakeAccessPointsPredicateIsTrue() {
+    fun makeAccessPointsPredicateIsTrue() {
         // setup
         whenSettings()
         val fixture: Predicate = makeAccessPointsPredicate(settings)
@@ -63,12 +59,12 @@ class PredicateTest {
         // execute
         val actual = fixture(wiFiDetail)
         // validate
-        assertTrue(actual)
+        assertThat(actual).isTrue()
         verifySettings()
     }
 
     @Test
-    fun testMakeAccessPointsPredicateWithSecurityToFalse() {
+    fun makeAccessPointsPredicateWithSecurityToFalse() {
         // setup
         whenSettings()
         val fixture: Predicate = makeAccessPointsPredicate(settings)
@@ -76,12 +72,12 @@ class PredicateTest {
         // execute
         val actual = fixture(wiFiDetail)
         // validate
-        assertFalse(actual)
+        assertThat(actual).isFalse()
         verifySettings()
     }
 
     @Test
-    fun testMakeAccessPointsPredicateWithSSIDToFalse() {
+    fun makeAccessPointsPredicateWithSSIDToFalse() {
         // setup
         whenSettings()
         val fixture: Predicate = makeAccessPointsPredicate(settings)
@@ -89,24 +85,24 @@ class PredicateTest {
         // execute
         val actual = fixture(wiFiDetail)
         // validate
-        assertFalse(actual)
+        assertThat(actual).isFalse()
         verifySettings()
     }
 
     @Test
-    fun testMakeAccessPointsPredicateIsAllPredicate() {
+    fun makeAccessPointsPredicateIsAllPredicate() {
         // setup
         val wiFiDetail = WiFiDetail.EMPTY
         whenSettingsWithFullSets()
         // execute
         val fixture: Predicate = makeAccessPointsPredicate(settings)
         // validate
-        assertTrue(fixture(wiFiDetail))
+        assertThat(fixture(wiFiDetail)).isTrue()
         verifySettings()
     }
 
     @Test
-    fun testMakeAccessPointsPredicateIsTrueWhenFullSet() {
+    fun makeAccessPointsPredicateIsTrueWhenFullSet() {
         // setup
         whenSettingsWithFullSets()
         val wiFiDetail = makeWiFiDetail(ssid, wpa2)
@@ -114,12 +110,12 @@ class PredicateTest {
         // execute
         val actual = fixture(wiFiDetail)
         // validate
-        assertTrue(actual)
+        assertThat(actual).isTrue()
         verifySettings()
     }
 
     @Test
-    fun testMakeOtherPredicate() {
+    fun makeOtherPredicate() {
         // setup
         whenever(settings.wiFiBand()).thenReturn(WiFiBand.GHZ5)
         whenever(settings.findSSIDs()).thenReturn(setOf(ssid, ssid))
@@ -128,7 +124,7 @@ class PredicateTest {
         // execute
         val fixture: Predicate = makeOtherPredicate(settings)
         // validate
-        assertNotNull(fixture)
+        assertThat(fixture).isNotNull()
         verify(settings).wiFiBand()
         verify(settings).findSSIDs()
         verify(settings).findStrengths()
@@ -137,9 +133,9 @@ class PredicateTest {
 
     private fun whenSettingsWithFullSets() {
         whenever(settings.findSSIDs()).thenReturn(setOf())
-        whenever(settings.findWiFiBands()).thenReturn(WiFiBand.values().toSet())
-        whenever(settings.findStrengths()).thenReturn(Strength.values().toSet())
-        whenever(settings.findSecurities()).thenReturn(Security.values().toSet())
+        whenever(settings.findWiFiBands()).thenReturn(WiFiBand.entries.toSet())
+        whenever(settings.findStrengths()).thenReturn(Strength.entries.toSet())
+        whenever(settings.findSecurities()).thenReturn(Security.entries.toSet())
     }
 
     private fun whenSettings() {
@@ -156,10 +152,11 @@ class PredicateTest {
         verify(settings).findSecurities()
     }
 
-    private fun makeWiFiDetail(ssid: String, security: String): WiFiDetail =
-            WiFiDetail(
-                    WiFiIdentifier(ssid, "bssid"),
-                    security,
-                    WiFiSignal(2445, 2445, WiFiWidth.MHZ_20, -40, true))
+    private fun makeWiFiDetail(ssid: String, capabilities: String): WiFiDetail =
+        WiFiDetail(
+            WiFiIdentifier(ssid, "bssid"),
+            WiFiSecurity(capabilities),
+            WiFiSignal(2445, 2445, WiFiWidth.MHZ_20, -40)
+        )
 
 }

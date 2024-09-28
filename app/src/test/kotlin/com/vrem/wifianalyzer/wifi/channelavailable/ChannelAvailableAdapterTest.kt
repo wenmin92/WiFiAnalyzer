@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,25 +21,24 @@ import android.os.Build
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.nhaarman.mockitokotlin2.atLeastOnce
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
 import com.vrem.wifianalyzer.MainContextHelper.INSTANCE
 import com.vrem.wifianalyzer.R
 import com.vrem.wifianalyzer.RobolectricUtil
 import com.vrem.wifianalyzer.wifi.band.WiFiBand
 import com.vrem.wifianalyzer.wifi.band.WiFiChannelCountry.Companion.find
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.atLeastOnce
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 import org.robolectric.annotation.Config
 import java.util.*
 
 @RunWith(AndroidJUnit4::class)
-@Config(sdk = [Build.VERSION_CODES.Q])
+@Config(sdk = [Build.VERSION_CODES.UPSIDE_DOWN_CAKE])
 class ChannelAvailableAdapterTest {
     private val mainActivity = RobolectricUtil.INSTANCE.activity
     private val settings = INSTANCE.settings
@@ -59,7 +58,7 @@ class ChannelAvailableAdapterTest {
     }
 
     @Test
-    fun testGetView() {
+    fun getView() {
         // setup
         val resources = mainActivity.resources
         val wiFiBand2 = resources.getString(WiFiBand.GHZ2.textResource)
@@ -73,14 +72,14 @@ class ChannelAvailableAdapterTest {
         // execute
         val actual = fixture.getView(0, null, viewGroup)
         // validate
-        assertNotNull(actual)
-        assertEquals(expected, actual.findViewById<TextView>(R.id.channel_available_country).text)
-        assertEquals("$wiFiBand2 : ", actual.findViewById<TextView>(R.id.channel_available_title_ghz_2).text)
-        assertEquals(expectedGHZ2, actual.findViewById<TextView>(R.id.channel_available_ghz_2).text)
-        assertEquals("$wiFiBand5 : ", actual.findViewById<TextView>(R.id.channel_available_title_ghz_5).text)
-        assertEquals(expectedGHZ5, actual.findViewById<TextView>(R.id.channel_available_ghz_5).text)
-        assertEquals("$wiFiBand6 : ", actual.findViewById<TextView>(R.id.channel_available_title_ghz_6).text)
-        assertEquals(expectedGHZ6, actual.findViewById<TextView>(R.id.channel_available_ghz_6).text)
+        assertThat(actual).isNotNull()
+        assertThat(actual.findViewById<TextView>(R.id.channel_available_country).text).isEqualTo(expected)
+        assertThat(actual.findViewById<TextView>(R.id.channel_available_title_ghz_2).text).isEqualTo("$wiFiBand2 : ")
+        assertThat(actual.findViewById<TextView>(R.id.channel_available_ghz_2).text).isEqualTo(expectedGHZ2)
+        assertThat(actual.findViewById<TextView>(R.id.channel_available_title_ghz_5).text).isEqualTo("$wiFiBand5 : ")
+        assertThat(actual.findViewById<TextView>(R.id.channel_available_ghz_5).text).isEqualTo(expectedGHZ5)
+        assertThat(actual.findViewById<TextView>(R.id.channel_available_title_ghz_6).text).isEqualTo("$wiFiBand6 : ")
+        assertThat(actual.findViewById<TextView>(R.id.channel_available_ghz_6).text).isEqualTo(expectedGHZ6)
     }
 
 }

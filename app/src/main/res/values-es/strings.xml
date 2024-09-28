@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ WiFiAnalyzer
-  ~ Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+  ~ Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -44,6 +44,7 @@
     <string name="location_msg">"Mientras la utilizas, esta aplicación puede obtener tu ubicación exacta mediante servicios de ubicación, siempre que el dispositivo los tenga activados. Es posible que esto aumente el consumo de batería."</string>
     <string name="throttling_msg">"Android 9 introdujo la limitación de escaneo de Wi-Fi. Android 10 tiene una nueva opción de desarrollador para desactivar la aceleración en (Configuración > Opciones de desarrollador > Redes > Aceleración de escaneo de Wi-Fi)."</string>
     <string name="export_not_available">"Exportación no disponible"</string>
+    <string name="current_connection">"Conexión actual"</string>
 
     <string name="channel_rating_best">"Mejores canales:"</string>
     <string name="channel_rating_best_none">"Ninguno"</string>
@@ -119,9 +120,14 @@
     <string name="filter_close">"Cerrar"</string>
     <string name="filter_reset">"Reset"</string>
     <string name="filter_apply">"Aplicar"</string>
+    <string name="filter_ssid_title">"SSID (sensible a mayúsculas)"</string>
     <string name="filter_wifi_band_title">"Banda de Wi-Fi"</string>
     <string name="filter_strength_title">"Intensidad de señal"</string>
     <string name="filter_security_title">"Seguridad"</string>
     <!-- filter end -->
 
+    <!-- wifi throttling start -->
+    <string name="wifi_throttling_on">"La aceleración del escaneo de Wi-Fi está habilitada"</string>
+    <string name="wifi_throttling_off">"La aceleración del escaneo de Wi-Fi está deshabilitada"</string>
+    <!-- wifi throttling end -->
 </resources>

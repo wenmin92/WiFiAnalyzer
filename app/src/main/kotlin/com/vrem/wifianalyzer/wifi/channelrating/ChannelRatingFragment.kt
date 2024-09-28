@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ class ChannelRatingFragment : Fragment(), OnRefreshListener {
     lateinit var channelRatingAdapter: ChannelRatingAdapter
         private set
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding: ChannelRatingContentBinding = ChannelRatingContentBinding.inflate(inflater, container, false)
         swipeRefreshLayout = binding.channelRatingRefresh
         swipeRefreshLayout.setOnRefreshListener(this)
@@ -48,7 +48,6 @@ class ChannelRatingFragment : Fragment(), OnRefreshListener {
         channelRatingAdapter = ChannelRatingAdapter(requireActivity(), bestChannels)
         val listView: ListView = binding.channelRatingRefresh.findViewById(R.id.channelRatingView)
         listView.adapter = channelRatingAdapter
-        MainContext.INSTANCE.scannerService.register(channelRatingAdapter)
         return binding.root
     }
 
@@ -60,12 +59,13 @@ class ChannelRatingFragment : Fragment(), OnRefreshListener {
 
     override fun onResume() {
         super.onResume()
+        MainContext.INSTANCE.scannerService.register(channelRatingAdapter)
         onRefresh()
     }
 
-    override fun onDestroy() {
+    override fun onPause() {
         MainContext.INSTANCE.scannerService.unregister(channelRatingAdapter)
-        super.onDestroy()
+        super.onPause()
     }
 
 }

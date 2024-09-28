@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +23,16 @@ import com.vrem.wifianalyzer.wifi.filter.adapter.SecurityAdapter
 import com.vrem.wifianalyzer.wifi.model.Security
 
 internal class SecurityFilter(securityAdapter: SecurityAdapter, alertDialog: AlertDialog) :
-        EnumFilter<Security, SecurityAdapter>(
-                mapOf(
-                        Security.NONE to R.id.filterSecurityNone,
-                        Security.WPS to R.id.filterSecurityWPS,
-                        Security.WEP to R.id.filterSecurityWEP,
-                        Security.WPA to R.id.filterSecurityWPA,
-                        Security.WPA2 to R.id.filterSecurityWPA2,
-                        Security.WPA3 to R.id.filterSecurityWPA3
-                ),
-                securityAdapter,
-                alertDialog,
-                R.id.filterSecurity
-        )
+    EnumFilter<Security, SecurityAdapter>(
+        mapOf(
+            Security.NONE to R.id.filterSecurityNone,
+            Security.WPS to R.id.filterSecurityWPS,
+            Security.WEP to R.id.filterSecurityWEP,
+            Security.WPA to R.id.filterSecurityWPA,
+            Security.WPA2 to R.id.filterSecurityWPA2,
+            Security.WPA3 to R.id.filterSecurityWPA3
+        ),
+        securityAdapter,
+        alertDialog,
+        R.id.filterSecurity
+    )

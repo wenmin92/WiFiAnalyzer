@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,77 +18,42 @@
 package com.vrem.wifianalyzer.wifi.model
 
 import com.vrem.wifianalyzer.R
-import com.vrem.wifianalyzer.wifi.model.Security.Companion.findAll
-import com.vrem.wifianalyzer.wifi.model.Security.Companion.findOne
-import org.junit.Assert.assertArrayEquals
-import org.junit.Assert.assertEquals
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class SecurityTest {
     @Test
-    fun testSecurity() {
-        assertEquals(6, Security.values().size)
+    fun size() {
+        assertThat(Security.entries).hasSize(6)
     }
 
     @Test
-    fun testImageResource() {
-        assertEquals(R.drawable.ic_lock_open, Security.NONE.imageResource)
-        assertEquals(R.drawable.ic_lock_outline, Security.WPS.imageResource)
-        assertEquals(R.drawable.ic_lock_outline, Security.WEP.imageResource)
-        assertEquals(R.drawable.ic_lock, Security.WPA.imageResource)
-        assertEquals(R.drawable.ic_lock, Security.WPA2.imageResource)
-        assertEquals(R.drawable.ic_lock, Security.WPA3.imageResource)
+    fun imageResource() {
+        assertThat(Security.NONE.imageResource).isEqualTo(R.drawable.ic_lock_open)
+        assertThat(Security.WPS.imageResource).isEqualTo(R.drawable.ic_lock_outline)
+        assertThat(Security.WEP.imageResource).isEqualTo(R.drawable.ic_lock_outline)
+        assertThat(Security.WPA.imageResource).isEqualTo(R.drawable.ic_lock)
+        assertThat(Security.WPA2.imageResource).isEqualTo(R.drawable.ic_lock)
+        assertThat(Security.WPA3.imageResource).isEqualTo(R.drawable.ic_lock)
     }
 
     @Test
-    fun testFindAll() {
+    fun order() {
         // setup
-        val capabilities = "WPA-WPA2-WPA-WEP-YZX-WPA3-WPS-WPA2"
-        val expected: Set<Security> = setOf(Security.WPS, Security.WEP, Security.WPA, Security.WPA2, Security.WPA3)
+        val expected = listOf(Security.NONE, Security.WPS, Security.WEP, Security.WPA, Security.WPA2, Security.WPA3)
         // execute
-        val actual: Set<Security> = findAll(capabilities)
+        val actual = Security.entries
         // validate
-        assertEquals(expected, actual)
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun testFindAllWithAdditional() {
-        // setup
-        val capabilities = "WPA-[FT/WPA2]-[WPA]-[WEP-FT/SAE+TST][KPG-WPS]"
-        val expected: Set<Security> = setOf(Security.WPS, Security.WEP, Security.WPA, Security.WPA2, Security.WPA3)
-        // execute
-        val actual: Set<Security> = findAll(capabilities)
-        // validate
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun testFindAllNoneFound() {
-        // setup
-        val capabilities = "ESS"
-        val expected: Set<Security> = setOf(Security.NONE)
-        // execute
-        val actual: Set<Security> = findAll(capabilities)
-        // validate
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun testFindOne() {
-        assertEquals(Security.NONE, findOne("xyz"))
-        assertEquals(Security.NONE, findOne("ESS"))
-        assertEquals(Security.NONE, findOne("WPA3-WPA2+WPA[ESS]WEP[]WPS-NONE"))
-        assertEquals(Security.WPS, findOne("WPA3-WPA2+WPA[ESS]WEP[]WPS"))
-        assertEquals(Security.WEP, findOne("WPA3-WPA2+WPA[ESS]WEP[]"))
-        assertEquals(Security.WPA, findOne("WPA3-WPA2+WPA[ESS]"))
-        assertEquals(Security.WPA2, findOne("WPA3-WPA2+[ESS]"))
-        assertEquals(Security.WPA3, findOne("WPA3+[ESS]"))
-        assertEquals(Security.WPA3, findOne("[FT/SAE]+ESS"))
-    }
-
-    @Test
-    fun testOrder() {
-        val expected: Array<Security> = arrayOf(Security.NONE, Security.WPS, Security.WEP, Security.WPA, Security.WPA2, Security.WPA3)
-        assertArrayEquals(expected, Security.values())
+    fun extras() {
+        assertThat(Security.NONE.extras).isEmpty()
+        assertThat(Security.WPS.extras).isEmpty()
+        assertThat(Security.WEP.extras).isEmpty()
+        assertThat(Security.WPA.extras).isEmpty()
+        assertThat(Security.WPA2.extras).isEmpty()
+        assertThat(Security.WPA3.extras).isEqualTo(listOf("SAE", "EAP_SUITE_B_192", "OWE"))
     }
 }

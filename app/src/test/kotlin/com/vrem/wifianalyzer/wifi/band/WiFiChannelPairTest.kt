@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
 
 package com.vrem.wifianalyzer.wifi.band
 
-import org.junit.Assert.assertEquals
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class WiFiChannelPairTest {
 
     @Test
-    fun testChannelCount() {
+    fun channelCount() {
         // setup
         val expected = 20 - 10 + 5
         val first = WiFiChannel(10, 10)
@@ -33,6 +33,6 @@ class WiFiChannelPairTest {
         // execute
         val actual = fixture.channelCount()
         // validate
-        assertEquals(expected, actual)
+        assertThat(actual).isEqualTo(expected)
     }
 }

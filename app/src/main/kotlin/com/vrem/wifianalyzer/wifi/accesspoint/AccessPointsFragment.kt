@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ class AccessPointsFragment : Fragment(), OnRefreshListener {
     lateinit var accessPointsAdapter: AccessPointsAdapter
         private set
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding = AccessPointsContentBinding.inflate(inflater, container, false)
         swipeRefreshLayout = binding.accessPointsRefresh
         swipeRefreshLayout.setOnRefreshListener(this)
@@ -44,7 +44,6 @@ class AccessPointsFragment : Fragment(), OnRefreshListener {
         accessPointsAdapter = AccessPointsAdapter()
         binding.accessPointsView.setAdapter(accessPointsAdapter)
         accessPointsAdapter.expandableListView = binding.accessPointsView
-        MainContext.INSTANCE.scannerService.register(accessPointsAdapter)
         return binding.root
     }
 
@@ -56,12 +55,13 @@ class AccessPointsFragment : Fragment(), OnRefreshListener {
 
     override fun onResume() {
         super.onResume()
+        MainContext.INSTANCE.scannerService.register(accessPointsAdapter)
         onRefresh()
     }
 
-    override fun onDestroy() {
+    override fun onPause() {
         MainContext.INSTANCE.scannerService.unregister(accessPointsAdapter)
-        super.onDestroy()
+        super.onPause()
     }
 
 }

@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,12 @@
 package com.vrem.wifianalyzer.wifi.graphutils
 
 import com.jjoe64.graphview.LegendRenderer
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
-import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoMoreInteractions
 
 class GraphLegendTest {
     private val legendRenderer: LegendRenderer = mock()
@@ -34,19 +34,19 @@ class GraphLegendTest {
     }
 
     @Test
-    fun testSortByNumber() {
-        assertEquals(3, GraphLegend.values().size)
+    fun sortByNumber() {
+        assertThat(GraphLegend.entries).hasSize(3)
     }
 
     @Test
-    fun testGetDisplay() {
-        assertEquals(GraphLegend.HIDE.legendDisplay, legendDisplayNone)
-        assertEquals(GraphLegend.LEFT.legendDisplay, legendDisplayLeft)
-        assertEquals(GraphLegend.RIGHT.legendDisplay, legendDisplayRight)
+    fun getDisplay() {
+        assertThat(legendDisplayNone).isEqualTo(GraphLegend.HIDE.legendDisplay)
+        assertThat(legendDisplayLeft).isEqualTo(GraphLegend.LEFT.legendDisplay)
+        assertThat(legendDisplayRight).isEqualTo(GraphLegend.RIGHT.legendDisplay)
     }
 
     @Test
-    fun testDisplayHide() {
+    fun displayHide() {
         // execute
         GraphLegend.HIDE.display(legendRenderer)
         // validate
@@ -54,7 +54,7 @@ class GraphLegendTest {
     }
 
     @Test
-    fun testDisplayLeft() {
+    fun displayLeft() {
         // execute
         GraphLegend.LEFT.display(legendRenderer)
         // validate
@@ -63,7 +63,7 @@ class GraphLegendTest {
     }
 
     @Test
-    fun testDisplayRight() {
+    fun displayRight() {
         // execute
         GraphLegend.RIGHT.display(legendRenderer)
         // validate

@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,7 @@
 package com.vrem.wifianalyzer.wifi.model
 
 import com.vrem.wifianalyzer.wifi.band.WiFiChannel
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotSame
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class ChannelAPCountTest {
@@ -30,31 +29,39 @@ class ChannelAPCountTest {
     private val fixture: ChannelAPCount = ChannelAPCount(wiFiChannel, count)
 
     @Test
-    fun testEquals() {
+    fun compareToUsingSameCountAndChannel() {
         // setup
         val wiFiChannel = WiFiChannel(channel, frequency)
         val other = ChannelAPCount(wiFiChannel, count)
         // execute & validate
-        assertEquals(fixture, other)
-        assertNotSame(fixture, other)
+        assertThat(fixture.compareTo(other)).isEqualTo(0)
     }
 
     @Test
-    fun testHashCode() {
+    fun compareToUsingDifferentCount() {
         // setup
         val wiFiChannel = WiFiChannel(channel, frequency)
-        val other = ChannelAPCount(wiFiChannel, count)
+        val other = ChannelAPCount(wiFiChannel, count + 1)
         // execute & validate
-        assertEquals(fixture.hashCode(), other.hashCode())
+        assertThat(fixture.compareTo(other)).isEqualTo(-1)
     }
 
     @Test
-    fun testCompareTo() {
+    fun compareToUsingDifferentChannel() {
         // setup
-        val wiFiChannel = WiFiChannel(channel, frequency)
+        val wiFiChannel = WiFiChannel(channel + 1, frequency)
         val other = ChannelAPCount(wiFiChannel, count)
         // execute & validate
-        assertEquals(0, fixture.compareTo(other))
+        assertThat(fixture.compareTo(other)).isEqualTo(-1)
+    }
+
+    @Test
+    fun compareToUsingDifferentFrequency() {
+        // setup
+        val wiFiChannel = WiFiChannel(channel, frequency + 1)
+        val other = ChannelAPCount(wiFiChannel, count)
+        // execute & validate
+        assertThat(fixture.compareTo(other)).isEqualTo(-1)
     }
 
 }

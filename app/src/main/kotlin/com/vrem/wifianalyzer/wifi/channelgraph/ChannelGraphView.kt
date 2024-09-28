@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,23 +41,29 @@ internal fun WiFiChannelPair.numX(): Int {
 
 internal fun WiFiChannelPair.selected(wiFiBand: WiFiBand): Boolean {
     val currentWiFiBand = MainContext.INSTANCE.settings.wiFiBand()
-    val currentWiFiChannelPair = MainContext.INSTANCE.configuration.wiFiChannelPair
+    val currentWiFiChannelPair = MainContext.INSTANCE.configuration.wiFiChannelPair(currentWiFiBand)
     return wiFiBand == currentWiFiBand && (WiFiBand.GHZ2 == wiFiBand || this == currentWiFiChannelPair)
 }
 
-internal fun makeGraphView(mainContext: MainContext, graphMaximumY: Int, themeStyle: ThemeStyle, wiFiBand: WiFiBand, wiFiChannelPair: WiFiChannelPair): GraphView {
+internal fun makeGraphView(
+    mainContext: MainContext,
+    graphMaximumY: Int,
+    themeStyle: ThemeStyle,
+    wiFiBand: WiFiBand,
+    wiFiChannelPair: WiFiChannelPair
+): GraphView {
     val resources = mainContext.resources
     return GraphViewBuilder(wiFiChannelPair.numX(), graphMaximumY, themeStyle, true)
-            .setLabelFormatter(ChannelAxisLabel(wiFiBand, wiFiChannelPair))
-            .setVerticalTitle(resources.getString(R.string.graph_axis_y))
-            .setHorizontalTitle(resources.getString(R.string.graph_channel_axis_x))
-            .build(mainContext.context)
+        .setLabelFormatter(ChannelAxisLabel(wiFiBand, wiFiChannelPair))
+        .setVerticalTitle(resources.getString(R.string.graph_axis_y))
+        .setHorizontalTitle(resources.getString(R.string.graph_channel_axis_x))
+        .build(mainContext.context)
 }
 
 internal fun makeDefaultSeries(frequencyEnd: Int, minX: Int): TitleLineGraphSeries<GraphDataPoint> {
     val dataPoints = arrayOf(
-            GraphDataPoint(minX, MIN_Y),
-            GraphDataPoint(frequencyEnd + WiFiChannels.FREQUENCY_OFFSET, MIN_Y)
+        GraphDataPoint(minX, MIN_Y),
+        GraphDataPoint(frequencyEnd + WiFiChannels.FREQUENCY_OFFSET, MIN_Y)
     )
     val series = TitleLineGraphSeries(dataPoints)
     series.color = transparent.primary.toInt()
@@ -81,11 +87,12 @@ internal fun makeGraphViewWrapper(wiFiBand: WiFiBand, wiFiChannelPair: WiFiChann
 }
 
 @OpenClass
-internal class ChannelGraphView(private val wiFiBand: WiFiBand,
-                                private val wiFiChannelPair: WiFiChannelPair,
-                                private var dataManager: DataManager = DataManager(),
-                                private var graphViewWrapper: GraphViewWrapper = makeGraphViewWrapper(wiFiBand, wiFiChannelPair))
-    : GraphViewNotifier {
+internal class ChannelGraphView(
+    private val wiFiBand: WiFiBand,
+    private val wiFiChannelPair: WiFiChannelPair,
+    private var dataManager: DataManager = DataManager(),
+    private var graphViewWrapper: GraphViewWrapper = makeGraphViewWrapper(wiFiBand, wiFiChannelPair)
+) : GraphViewNotifier {
 
     override fun update(wiFiData: WiFiData) {
         val predicate = predicate(MainContext.INSTANCE.settings)

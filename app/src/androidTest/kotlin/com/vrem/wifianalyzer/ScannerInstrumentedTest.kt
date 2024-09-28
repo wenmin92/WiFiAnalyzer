@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,13 +32,16 @@ internal class ScannerInstrumentedTest : Runnable {
     private fun scannerAction(tag: String) {
         pauseShort()
         val actionMenuItemView = Espresso.onView(
-                Matchers.allOf(
-                        ViewMatchers.withId(R.id.action_scanner),
-                        ViewMatchers.withContentDescription(tag),
-                        ChildAtPosition(
-                                ChildAtPosition(ViewMatchers.withId(R.id.toolbar), SCANNER_BUTTON),
-                                SCANNER_ACTION),
-                        ViewMatchers.isDisplayed()))
+            Matchers.allOf(
+                ViewMatchers.withId(R.id.action_scanner),
+                ViewMatchers.withContentDescription(tag),
+                ChildAtPosition(
+                    ChildAtPosition(ViewMatchers.withId(R.id.toolbar), SCANNER_BUTTON),
+                    SCANNER_ACTION
+                ),
+                ViewMatchers.isDisplayed()
+            )
+        )
         actionMenuItemView.perform(ViewActions.click())
     }
 

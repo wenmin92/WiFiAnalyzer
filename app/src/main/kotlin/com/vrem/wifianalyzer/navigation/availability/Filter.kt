@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,8 +17,7 @@
  */
 package com.vrem.wifianalyzer.navigation.availability
 
-import com.vrem.util.compatColor
-import com.vrem.util.compatTint
+import androidx.core.content.ContextCompat
 import com.vrem.wifianalyzer.MainContext
 import com.vrem.wifianalyzer.R
 
@@ -28,10 +27,9 @@ internal val navigationOptionFilterOff: NavigationOption = {
 
 internal val navigationOptionFilterOn: NavigationOption = {
     it.optionMenu.menu?.let { menu ->
+        val color = if (MainContext.INSTANCE.filtersAdapter.isActive()) R.color.selected else R.color.regular
         val menuItem = menu.findItem(R.id.action_filter)
         menuItem.isVisible = true
-        val color = if (MainContext.INSTANCE.filtersAdapter.isActive()) R.color.selected else R.color.regular
-        val tint = it.compatColor(color)
-        menuItem.icon.compatTint(tint)
+        menuItem.icon?.setTint(ContextCompat.getColor(it, color))
     }
 }

@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,6 @@ import android.text.Editable
 import android.view.View
 import android.widget.EditText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.nhaarman.mockitokotlin2.*
 import com.vrem.wifianalyzer.R
 import com.vrem.wifianalyzer.RobolectricUtil
 import com.vrem.wifianalyzer.wifi.filter.SSIDFilter.OnChange
@@ -32,10 +31,11 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.*
 import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
-@Config(sdk = [Build.VERSION_CODES.Q])
+@Config(sdk = [Build.VERSION_CODES.UPSIDE_DOWN_CAKE])
 class SSIDFilterTest {
     private val alertDialog: AlertDialog = mock()
     private val editText: EditText = mock()
@@ -58,7 +58,7 @@ class SSIDFilterTest {
     }
 
     @Test
-    fun testSSIDFilterWithValues() {
+    fun sSIDFilterWithValues() {
         // setup
         val values: Set<String> = setOf("", " ", "ABC", " JDS ")
         whenever(ssidAdapter.selections).thenReturn(values)
@@ -77,7 +77,7 @@ class SSIDFilterTest {
     }
 
     @Test
-    fun testOnChangeAfterTextChangedWithValues() {
+    fun onChangeAfterTextChangedWithValues() {
         // setup
         val value = " ABS ADF "
         val onChange = OnChange(ssidAdapter)

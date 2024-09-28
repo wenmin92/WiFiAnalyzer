@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,42 +22,27 @@ import androidx.preference.Preference
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.vrem.wifianalyzer.R
 import com.vrem.wifianalyzer.RobolectricUtil
-import org.junit.Assert
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
-@Config(sdk = [Build.VERSION_CODES.Q])
+@Config(sdk = [Build.VERSION_CODES.UPSIDE_DOWN_CAKE])
 class SettingsFragmentTest {
 
     @Test
-    fun testOnCreate() {
+    fun onCreate() {
         // setup
         val fixture = SettingsFragment()
         RobolectricUtil.INSTANCE.startFragment(fixture)
         // validate
-        Assert.assertNotNull(fixture.view)
+        assertThat(fixture.view).isNotNull()
     }
 
     @Config(sdk = [Build.VERSION_CODES.P])
     @Test
-    fun testExperimentalIsVisible() {
-        // setup
-        val fixture = SettingsFragment()
-        RobolectricUtil.INSTANCE.startFragment(fixture)
-        val key = fixture.getString(R.string.experimental_key)
-        // execute
-        val actual = fixture.findPreference<Preference>(key)
-        // validate
-        assertTrue(actual!!.isVisible)
-    }
-
-    @Config(sdk = [Build.VERSION_CODES.P])
-    @Test
-    fun testWiFiOnExitIsVisible() {
+    fun wiFiOnExitIsVisible() {
         // setup
         val fixture = SettingsFragment()
         RobolectricUtil.INSTANCE.startFragment(fixture)
@@ -65,23 +50,11 @@ class SettingsFragmentTest {
         // execute
         val actual = fixture.findPreference<Preference>(key)
         // validate
-        assertTrue(actual!!.isVisible)
+        assertThat(actual!!.isVisible).isTrue()
     }
 
     @Test
-    fun testExperimentalIsNotVisible() {
-        // setup
-        val fixture = SettingsFragment()
-        RobolectricUtil.INSTANCE.startFragment(fixture)
-        val key = fixture.getString(R.string.experimental_key)
-        // execute
-        val actual = fixture.findPreference<Preference>(key)
-        // validate
-        assertFalse(actual!!.isVisible)
-    }
-
-    @Test
-    fun testWiFiOnExitIsNotVisible() {
+    fun wiFiOnExitIsNotVisible() {
         // setup
         val fixture = SettingsFragment()
         RobolectricUtil.INSTANCE.startFragment(fixture)
@@ -89,7 +62,7 @@ class SettingsFragmentTest {
         // execute
         val actual = fixture.findPreference<Preference>(key)
         // validate
-        assertFalse(actual!!.isVisible)
+        assertThat(actual!!.isVisible).isFalse()
     }
 
 }

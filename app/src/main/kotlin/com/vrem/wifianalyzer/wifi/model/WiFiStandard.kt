@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,28 +18,33 @@
 package com.vrem.wifianalyzer.wifi.model
 
 import android.net.wifi.ScanResult
-import androidx.annotation.DrawableRes
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import com.vrem.util.buildMinVersionR
 import com.vrem.wifianalyzer.R
 
 typealias WiFiStandardId = Int
 
-private val unknown: WiFiStandardId = if (buildMinVersionR()) ScanResult.WIFI_STANDARD_UNKNOWN else 0
-private val legacy: WiFiStandardId = if (buildMinVersionR()) ScanResult.WIFI_STANDARD_LEGACY else 1
-private val n: WiFiStandardId = if (buildMinVersionR()) ScanResult.WIFI_STANDARD_11N else 4
-private val ac: WiFiStandardId = if (buildMinVersionR()) ScanResult.WIFI_STANDARD_11AC else 5
-private val ax: WiFiStandardId = if (buildMinVersionR()) ScanResult.WIFI_STANDARD_11AX else 6
-
-enum class WiFiStandard(val wiFiStandardId: WiFiStandardId, @StringRes val textResource: Int, @DrawableRes val imageResource: Int) {
-    UNKNOWN(unknown, R.string.wifi_standard_unknown, R.drawable.ic_wifi_unknown),
-    LEGACY(legacy, R.string.wifi_standard_legacy, R.drawable.ic_wifi_legacy),
-    N(n, R.string.wifi_standard_n, R.drawable.ic_wifi_4),
-    AC(ac, R.string.wifi_standard_ac, R.drawable.ic_wifi_5),
-    AX(ax, R.string.wifi_standard_ax, R.drawable.ic_wifi_6);
+enum class WiFiStandard(val wiFiStandardId: WiFiStandardId, @StringRes val fullResource: Int, @StringRes val valueResource: Int) {
+    UNKNOWN(0, R.string.wifi_standard_unknown, R.string.wifi_standard_unknown),
+    LEGACY(1, R.string.wifi_standard_legacy, R.string.wifi_standard_unknown),
+    N(4, R.string.wifi_standard_n, R.string.wifi_standard_value_n),
+    AC(5, R.string.wifi_standard_ac, R.string.wifi_standard_value_ac),
+    AX(6, R.string.wifi_standard_ax, R.string.wifi_standard_value_ax),
+    AD(7, R.string.wifi_standard_ad, R.string.wifi_standard_unknown),
+    BE(8, R.string.wifi_standard_be, R.string.wifi_standard_value_be);
 
     companion object {
-        fun findOne(wiFiStandardId: WiFiStandardId): WiFiStandard =
-            values().firstOrNull { it.wiFiStandardId == wiFiStandardId } ?: UNKNOWN
+        fun findOne(scanResult: ScanResult): WiFiStandard =
+            if (buildMinVersionR()) {
+                find(scanResult.wifiStandard)
+            } else {
+                UNKNOWN
+            }
+
+        @RequiresApi(Build.VERSION_CODES.R)
+        private fun find(wifiStandard: Int): WiFiStandard =
+            entries.firstOrNull { it.wiFiStandardId == wifiStandard } ?: UNKNOWN
     }
 }

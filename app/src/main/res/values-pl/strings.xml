@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ WiFiAnalyzer
-  ~ Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+  ~ Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -44,6 +44,7 @@
     <string name="location_msg">"Aplikacja ma dostęp do dokładnej lokalizacji z usług lokalizacyjnych, kiedy jest używana. Aby aplikacja mogła używać lokalizacji, musisz mieć na urządzeniu włączone usługi lokalizacyjne. Może to zwiększyć wykorzystanie baterii."</string>
     <string name="throttling_msg">"W systemie Android 9 wprowadzono dławienie skanowania Wi-Fi. Android 10 ma nową opcję programisty umożliwiającą wyłączenie ograniczania przepustowości w (Ustawienia > Opcje programisty > Sieć > Ograniczanie przepustowości skanowania Wi-Fi)."</string>
     <string name="export_not_available">"Eksport niedostępny"</string>
+    <string name="current_connection">"Aktualne połączenie"</string>
 
     <string name="channel_rating_best">"Najlepsze kanały:"</string>
     <string name="channel_rating_best_none">"Brak"</string>
@@ -119,9 +120,14 @@
     <string name="filter_close">"Zamknij"</string>
     <string name="filter_reset">"Resetuj"</string>
     <string name="filter_apply">"Zastosuj"</string>
+    <string name="filter_ssid_title">"SSID (sprawa ma znaczenie)"</string>
     <string name="filter_wifi_band_title">"Pasmo Wi-Fi"</string>
     <string name="filter_strength_title">"Siła sygnału"</string>
     <string name="filter_security_title">"Bezpieczeństwo"</string>
     <!-- filter end -->
 
+    <!-- wifi throttling start -->
+    <string name="wifi_throttling_on">"Ograniczanie skanowania Wi-Fi jest włączone"</string>
+    <string name="wifi_throttling_off">"Ograniczanie skanowania Wi-Fi jest wyłączone"</string>
+    <!-- wifi throttling end -->
 </resources>

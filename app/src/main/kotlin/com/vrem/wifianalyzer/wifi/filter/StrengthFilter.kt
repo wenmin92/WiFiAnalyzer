@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,15 +23,15 @@ import com.vrem.wifianalyzer.wifi.filter.adapter.StrengthAdapter
 import com.vrem.wifianalyzer.wifi.model.Strength
 
 internal class StrengthFilter(strengthAdapter: StrengthAdapter, alertDialog: AlertDialog) :
-        EnumFilter<Strength, StrengthAdapter>(
-                mapOf(
-                        Strength.ZERO to R.id.filterStrength0,
-                        Strength.ONE to R.id.filterStrength1,
-                        Strength.TWO to R.id.filterStrength2,
-                        Strength.THREE to R.id.filterStrength3,
-                        Strength.FOUR to R.id.filterStrength4
-                ),
-                strengthAdapter,
-                alertDialog,
-                R.id.filterStrength
-        )
+    EnumFilter<Strength, StrengthAdapter>(
+        mapOf(
+            Strength.ZERO to R.id.filterStrength0,
+            Strength.ONE to R.id.filterStrength1,
+            Strength.TWO to R.id.filterStrength2,
+            Strength.THREE to R.id.filterStrength3,
+            Strength.FOUR to R.id.filterStrength4
+        ),
+        strengthAdapter,
+        alertDialog,
+        R.id.filterStrength
+    )

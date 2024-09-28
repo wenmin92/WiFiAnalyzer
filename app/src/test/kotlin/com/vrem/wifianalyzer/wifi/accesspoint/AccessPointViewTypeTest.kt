@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,19 @@
 package com.vrem.wifianalyzer.wifi.accesspoint
 
 import com.vrem.wifianalyzer.R
-import org.junit.Assert.assertEquals
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class AccessPointViewTypeTest {
     @Test
-    fun testAccessPointViewCount() {
-        assertEquals(2, AccessPointViewType.values().size)
+    fun accessPointViewCount() {
+        assertThat(AccessPointViewType.entries).hasSize(2)
     }
 
     @Test
-    fun testGetLayout() {
-        assertEquals(R.layout.access_point_view_complete, AccessPointViewType.COMPLETE.layout)
-        assertEquals(R.layout.access_point_view_compact, AccessPointViewType.COMPACT.layout)
+    fun getLayout() {
+        assertThat(AccessPointViewType.COMPLETE.layout).isEqualTo(R.layout.access_point_view_complete)
+        assertThat(AccessPointViewType.COMPACT.layout).isEqualTo(R.layout.access_point_view_compact)
     }
 
 }

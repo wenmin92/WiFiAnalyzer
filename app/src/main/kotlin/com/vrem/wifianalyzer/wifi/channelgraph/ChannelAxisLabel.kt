@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,10 +49,10 @@ internal class ChannelAxisLabel(private val wiFiBand: WiFiBand, private val wiFi
         } else {
             val channel = wiFiChannel.channel
             val countryCode = MainContext.INSTANCE.settings.countryCode()
-            if (!wiFiChannels.channelAvailable(countryCode, channel)) {
-                String.EMPTY
-            } else {
+            if (wiFiChannels.channelAvailable(countryCode, channel)) {
                 channel.toString()
+            } else {
+                String.EMPTY
             }
         }
     }

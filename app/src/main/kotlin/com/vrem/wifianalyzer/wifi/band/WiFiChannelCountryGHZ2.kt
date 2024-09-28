@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,8 @@
 package com.vrem.wifianalyzer.wifi.band
 
 import com.vrem.util.toCapitalize
-import java.util.*
+import java.util.Locale
+import java.util.SortedSet
 
 internal class WiFiChannelCountryGHZ2 {
     private val countries = setOf("AS", "CA", "CO", "DO", "FM", "GT", "GU", "MP", "MX", "PA", "PR", "UM", "US", "UZ", "VI")

@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,21 +33,21 @@ class MainInstrumentedTest {
     val activityTestRule: ActivityScenarioRule<MainActivity> = activityScenarioRule()
 
     @Test
-    fun testNavigation() {
+    fun navigation() {
         pauseShort()
         NavigationInstrumentedTest().run()
         pauseShort()
     }
 
     @Test
-    fun testScanner() {
+    fun scanner() {
         pauseShort()
         ScannerInstrumentedTest().run()
         pauseShort()
     }
 
     @Test
-    fun testFilter() {
+    fun filter() {
         pauseShort()
         FilterInstrumentedTest().run()
         pauseShort()

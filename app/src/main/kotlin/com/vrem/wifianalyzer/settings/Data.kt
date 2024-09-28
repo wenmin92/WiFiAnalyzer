@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,9 +17,9 @@
  */
 package com.vrem.wifianalyzer.settings
 
-class Data(val code: String, val name: String) : Comparable<Data> {
+data class Data(val code: String, val name: String) : Comparable<Data> {
 
     override fun compareTo(other: Data): Int =
-            compareBy<Data> { it.name }.thenBy { it.code }.compare(this, other)
+        compareBy<Data> { it.name }.thenBy { it.code }.compare(this, other)
 
 }

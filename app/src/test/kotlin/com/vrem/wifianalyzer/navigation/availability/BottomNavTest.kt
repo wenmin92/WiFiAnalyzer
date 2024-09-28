@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
 package com.vrem.wifianalyzer.navigation.availability
 
 import android.view.View
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
-import com.nhaarman.mockitokotlin2.whenever
 import com.vrem.wifianalyzer.MainActivity
 import com.vrem.wifianalyzer.R
 import org.junit.After
 import org.junit.Test
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoMoreInteractions
+import org.mockito.kotlin.whenever
 
 class BottomNavTest {
     private val mainActivity: MainActivity = mock()
@@ -38,7 +38,7 @@ class BottomNavTest {
     }
 
     @Test
-    fun testNavigationOptionBottomNavOff() {
+    fun navigationOptionBottomNavOff() {
         // setup
         whenever<View>(mainActivity.findViewById(R.id.nav_bottom)).thenReturn(view)
         // execute
@@ -49,7 +49,7 @@ class BottomNavTest {
     }
 
     @Test
-    fun testNavigationOptionBottomNavOn() {
+    fun navigationOptionBottomNavOn() {
         // setup
         whenever<View>(mainActivity.findViewById(R.id.nav_bottom)).thenReturn(view)
         // execute

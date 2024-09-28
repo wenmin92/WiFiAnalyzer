@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,19 +19,14 @@ package com.vrem.wifianalyzer.wifi.channelrating
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.LayerDrawable
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
 import com.vrem.util.EMPTY
-import com.vrem.util.buildMinVersionL
-import com.vrem.util.compatColor
 import com.vrem.wifianalyzer.MainContext
 import com.vrem.wifianalyzer.R
 import com.vrem.wifianalyzer.databinding.ChannelRatingDetailsBinding
@@ -44,11 +39,12 @@ import com.vrem.wifianalyzer.wifi.predicate.predicate
 import com.vrem.wifianalyzer.wifi.scanner.UpdateNotifier
 
 class ChannelRatingAdapter(
-        context: Context,
-        private val bestChannels: TextView,
-        private val channelRating: ChannelRating = ChannelRating()) :
-        ArrayAdapter<WiFiChannel>(context, R.layout.channel_rating_details, mutableListOf()),
-        UpdateNotifier {
+    context: Context,
+    private val bestChannels: TextView,
+    private val channelRating: ChannelRating = ChannelRating()
+) :
+    ArrayAdapter<WiFiChannel>(context, R.layout.channel_rating_details, mutableListOf()),
+    UpdateNotifier {
 
     private val maxChannelsToDisplay = 11
 
@@ -62,7 +58,7 @@ class ChannelRatingAdapter(
         channelRating.wiFiDetails(wiFiDetails)
         val bestChannel = bestChannels(wiFiBand, wiFiChannels)
         bestChannels.text = bestChannel.message
-        bestChannels.setTextColor(context.compatColor(bestChannel.color))
+        bestChannels.setTextColor(ContextCompat.getColor(context, bestChannel.color))
         notifyDataSetChanged()
     }
 
@@ -85,35 +81,12 @@ class ChannelRatingAdapter(
 
     private fun ratingBar(wiFiChannel: WiFiChannel, ratingBar: RatingBar) {
         val strength = reverse(channelRating.strength(wiFiChannel))
-        val size = Strength.values().size
+        val size = Strength.entries.size
         ratingBar.max = size
         ratingBar.numStars = size
         ratingBar.rating = strength.ordinal + 1.toFloat()
-        val color = context.compatColor(strength.colorResource)
-        ratingBarColor(ratingBar, color)
-    }
-
-    private fun ratingBarColor(ratingBar: RatingBar, color: Int): Unit =
-            if (buildMinVersionL()) {
-                ratingBar.progressTintList = ColorStateList.valueOf(color)
-            } else {
-                setRatingBarColorLegacy(ratingBar.progressDrawable, color)
-            }
-
-    private fun setRatingBarColorLegacy(drawable: Drawable, color: Int) {
-        try {
-            val background = context.compatColor(R.color.background)
-            val layerDrawable = drawable as LayerDrawable
-            layerDrawable.getDrawable(0).colorFilter(background)
-            layerDrawable.getDrawable(1).colorFilter(background)
-            layerDrawable.getDrawable(2).colorFilter(color)
-        } catch (e: Exception) {
-            drawable.colorFilter(color)
-        }
-    }
-
-    private fun Drawable.colorFilter(color: Int) {
-        this.colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+        val color = ContextCompat.getColor(context, strength.colorResource)
+        ratingBar.progressTintList = ColorStateList.valueOf(color)
     }
 
     internal fun bestChannels(wiFiBand: WiFiBand, wiFiChannels: List<WiFiChannel>): Message {
@@ -129,15 +102,15 @@ class ChannelRatingAdapter(
 
     private fun errorMessage(wiFiBand: WiFiBand): String = with(context.resources) {
         getText(R.string.channel_rating_best_none).toString() +
-                if (WiFiBand.GHZ2 == wiFiBand) {
-                    getText(R.string.channel_rating_best_alternative).toString() +
-                            " " + getString(WiFiBand.GHZ5.textResource)
-                } else {
-                    String.EMPTY
-                }
+            if (WiFiBand.GHZ2 == wiFiBand) {
+                getText(R.string.channel_rating_best_alternative).toString() +
+                    " " + getString(WiFiBand.GHZ5.textResource)
+            } else {
+                String.EMPTY
+            }
     }
 
     private fun create(parent: ViewGroup): ChannelRatingDetailsBinding =
-            ChannelRatingDetailsBinding.inflate(MainContext.INSTANCE.layoutInflater, parent, false)
+        ChannelRatingDetailsBinding.inflate(MainContext.INSTANCE.layoutInflater, parent, false)
 
 }

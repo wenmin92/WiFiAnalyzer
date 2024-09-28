@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +20,15 @@ package com.vrem.wifianalyzer.navigation
 import android.view.Menu
 
 enum class NavigationGroup(val navigationMenus: List<NavigationMenu>) {
-    GROUP_FEATURE(listOf(NavigationMenu.ACCESS_POINTS, NavigationMenu.CHANNEL_RATING, NavigationMenu.CHANNEL_GRAPH, NavigationMenu.TIME_GRAPH)),
-    GROUP_OTHER(listOf(NavigationMenu.EXPORT, NavigationMenu.CHANNEL_AVAILABLE, NavigationMenu.VENDORS, NavigationMenu.PORT_AUTHORITY)),
+    GROUP_FEATURE(
+        listOf(
+            NavigationMenu.ACCESS_POINTS,
+            NavigationMenu.CHANNEL_RATING,
+            NavigationMenu.CHANNEL_GRAPH,
+            NavigationMenu.TIME_GRAPH
+        )
+    ),
+    GROUP_OTHER(listOf(NavigationMenu.EXPORT, NavigationMenu.CHANNEL_AVAILABLE, NavigationMenu.VENDORS)),
     GROUP_SETTINGS(listOf(NavigationMenu.SETTINGS, NavigationMenu.ABOUT));
 
     fun next(navigationMenu: NavigationMenu): NavigationMenu {
@@ -49,9 +56,9 @@ enum class NavigationGroup(val navigationMenus: List<NavigationMenu>) {
     }
 
     fun populateMenuItems(menu: Menu): Unit =
-            navigationMenus.forEach {
-                val menuItem = menu.add(ordinal, it.ordinal, it.ordinal, it.title)
-                menuItem.setIcon(it.icon)
-            }
+        navigationMenus.forEach {
+            val menuItem = menu.add(ordinal, it.ordinal, it.ordinal, it.title)
+            menuItem.setIcon(it.icon)
+        }
 
 }

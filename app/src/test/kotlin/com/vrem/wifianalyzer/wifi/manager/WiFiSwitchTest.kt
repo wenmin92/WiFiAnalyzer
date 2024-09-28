@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,10 @@
 package com.vrem.wifianalyzer.wifi.manager
 
 import android.net.wifi.WifiManager
-import com.nhaarman.mockitokotlin2.*
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
-import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.mockito.kotlin.*
 
 class WiFiSwitchTest {
     private val wifiManager: WifiManager = mock()
@@ -34,37 +34,37 @@ class WiFiSwitchTest {
 
     @Suppress("DEPRECATION")
     @Test
-    fun testOn() {
+    fun on() {
         // setup
         whenever(wifiManager.setWifiEnabled(true)).thenReturn(true)
         // execute
         val actual = fixture.on()
         // validate
-        assertTrue(actual)
+        assertThat(actual).isTrue()
         verify(wifiManager).isWifiEnabled = true
     }
 
     @Suppress("DEPRECATION")
     @Test
-    fun testOff() {
+    fun off() {
         // setup
         whenever(wifiManager.setWifiEnabled(false)).thenReturn(true)
         // execute
         val actual = fixture.off()
         // validate
-        assertTrue(actual)
+        assertThat(actual).isTrue()
         verify(wifiManager).isWifiEnabled = false
     }
 
     @Test
-    fun testOnWithAndroidQ() {
+    fun onWithAndroidQ() {
         // setup
         doReturn(true).whenever(fixture).minVersionQ()
         doNothing().whenever(fixture).startWiFiSettings()
         // execute
         val actual = fixture.on()
         // validate
-        assertTrue(actual)
+        assertThat(actual).isTrue()
         verify(fixture).startWiFiSettings()
         verify(fixture).minVersionQ()
     }

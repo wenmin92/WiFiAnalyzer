@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,11 +29,13 @@ val WiFiDetail.wiFiVirtual: WiFiVirtual
     get() =
         if (BSSID_LENGTH == wiFiIdentifier.bssid.length)
             WiFiVirtual(
-                    this.wiFiIdentifier.bssid.substring(2, BSSID_LENGTH - 1),
-                    this.wiFiSignal.primaryFrequency)
+                this.wiFiIdentifier.bssid.substring(2, BSSID_LENGTH - 1),
+                this.wiFiSignal.primaryFrequency
+            )
         else
             WiFiVirtual(
-                    wiFiIdentifier.bssid,
-                    wiFiSignal.primaryFrequency)
+                wiFiIdentifier.bssid,
+                wiFiSignal.primaryFrequency
+            )
 
 

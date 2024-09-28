@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,19 +40,34 @@ internal class NavigationInstrumentedTest : Runnable {
     private fun selectMenuItem(menuItem: Int) {
         pauseShort()
         val appCompatImageButton = Espresso.onView(
-                Matchers.allOf(ViewMatchers.withContentDescription(NAVIGATION_DRAWER_TAG),
-                        ChildAtPosition(Matchers.allOf(ViewMatchers.withId(R.id.toolbar),
-                                ChildAtPosition(
-                                        ViewMatchers.withClassName(Matchers.`is`("com.google.android.material.appbar.AppBarLayout")),
-                                        NAVIGATION_DRAWER_BUTTON)),
-                                NAVIGATION_DRAWER_ACTION),
-                        ViewMatchers.isDisplayed()))
+            Matchers.allOf(
+                ViewMatchers.withContentDescription(NAVIGATION_DRAWER_TAG),
+                ChildAtPosition(
+                    Matchers.allOf(
+                        ViewMatchers.withId(R.id.toolbar),
+                        ChildAtPosition(
+                            ViewMatchers.withClassName(Matchers.`is`("com.google.android.material.appbar.AppBarLayout")),
+                            NAVIGATION_DRAWER_BUTTON
+                        )
+                    ),
+                    NAVIGATION_DRAWER_ACTION
+                ),
+                ViewMatchers.isDisplayed()
+            )
+        )
         appCompatImageButton.perform(ViewActions.click())
         pauseShort()
         val navigationMenuItemView = Espresso.onView(
-                Matchers.allOf(ChildAtPosition(Matchers.allOf(ViewMatchers.withId(R.id.design_navigation_view),
-                        ChildAtPosition(ViewMatchers.withId(R.id.nav_drawer), NAVIGATION_DRAWER_BUTTON)), menuItem),
-                        ViewMatchers.isDisplayed()))
+            Matchers.allOf(
+                ChildAtPosition(
+                    Matchers.allOf(
+                        ViewMatchers.withId(com.google.android.material.R.id.design_navigation_view),
+                        ChildAtPosition(ViewMatchers.withId(R.id.nav_drawer), NAVIGATION_DRAWER_BUTTON)
+                    ), menuItem
+                ),
+                ViewMatchers.isDisplayed()
+            )
+        )
         navigationMenuItemView.perform(ViewActions.click())
     }
 

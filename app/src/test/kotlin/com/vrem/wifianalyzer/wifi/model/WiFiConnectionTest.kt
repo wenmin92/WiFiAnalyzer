@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,50 +18,51 @@
 package com.vrem.wifianalyzer.wifi.model
 
 import com.vrem.util.EMPTY
-import org.junit.Assert.*
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class WiFiConnectionTest {
     private val ipAddress = "21.205.91.7"
     private val linkSpeed = 21
     private val wiFiIdentifier = WiFiIdentifier("SSID-123", "BSSID-123")
+    private val other = WiFiConnection(WiFiIdentifier("SSID-123", "BSSID-123"))
     private val fixture: WiFiConnection = WiFiConnection(wiFiIdentifier, ipAddress, linkSpeed)
 
     @Test
-    fun testWiFiConnectionEmpty() {
+    fun wiFiConnectionEmpty() {
         // validate
-        assertEquals(WiFiIdentifier.EMPTY, WiFiConnection.EMPTY.wiFiIdentifier)
-        assertEquals(String.EMPTY, WiFiConnection.EMPTY.ipAddress)
-        assertEquals(WiFiConnection.LINK_SPEED_INVALID, WiFiConnection.EMPTY.linkSpeed)
-        assertFalse(WiFiConnection.EMPTY.connected)
+        assertThat(WiFiConnection.EMPTY.wiFiIdentifier).isEqualTo(WiFiIdentifier.EMPTY)
+        assertThat(WiFiConnection.EMPTY.ipAddress).isEqualTo(String.EMPTY)
+        assertThat(WiFiConnection.EMPTY.linkSpeed).isEqualTo(WiFiConnection.LINK_SPEED_INVALID)
+        assertThat(WiFiConnection.EMPTY.connected).isFalse()
     }
 
     @Test
-    fun testWiFiConnection() {
+    fun wiFiConnection() {
         // validate
-        assertEquals(wiFiIdentifier, fixture.wiFiIdentifier)
-        assertEquals(ipAddress, fixture.ipAddress)
-        assertEquals(linkSpeed, fixture.linkSpeed)
-        assertTrue(fixture.connected)
+        assertThat(fixture.wiFiIdentifier).isEqualTo(wiFiIdentifier)
+        assertThat(fixture.ipAddress).isEqualTo(ipAddress)
+        assertThat(fixture.linkSpeed).isEqualTo(linkSpeed)
+        assertThat(fixture.connected).isTrue()
     }
 
     @Test
-    fun testEquals() {
-        // setup
-        val wiFiIdentifier = WiFiIdentifier("SSID-123", "BSSID-123")
-        val other = WiFiConnection(wiFiIdentifier, String.EMPTY, WiFiConnection.LINK_SPEED_INVALID)
+    fun equalsUsingIdentifier() {
         // execute & validate
-        assertEquals(fixture, other)
-        assertNotSame(fixture, other)
+        assertThat(other).isEqualTo(fixture)
+        assertThat(other).isNotSameAs(fixture)
     }
 
     @Test
-    fun testHashCode() {
-        // setup
-        val wiFiIdentifier = WiFiIdentifier("SSID-123", "BSSID-123")
-        val other = WiFiConnection(wiFiIdentifier, String.EMPTY, WiFiConnection.LINK_SPEED_INVALID)
+    fun hashCodeUsingIdentifier() {
         // execute & validate
-        assertEquals(fixture.hashCode(), other.hashCode())
+        assertThat(other.hashCode()).isEqualTo(fixture.hashCode())
+    }
+
+    @Test
+    fun compareToUsingIdentifier() {
+        // execute & validate
+        assertThat(fixture.compareTo(other)).isEqualTo(0)
     }
 
 }

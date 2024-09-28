@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,51 +19,44 @@ package com.vrem.util
 
 import android.annotation.TargetApi
 import android.content.Context
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager.PackageInfoFlags
 import android.content.res.Configuration
 import android.content.res.Resources
-import android.graphics.drawable.Drawable
+import android.net.wifi.ScanResult
 import android.os.Build
-import androidx.annotation.ColorInt
-import androidx.annotation.ColorRes
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import java.util.*
 
-fun Context.createContext(newLocale: Locale): Context =
-        if (buildMinVersionN()) {
-            createContextAndroidN(newLocale)
-        } else {
-            createContextLegacy(newLocale)
-        }
-
-@TargetApi(Build.VERSION_CODES.N)
-private fun Context.createContextAndroidN(newLocale: Locale): Context {
+fun Context.createContext(newLocale: Locale): Context {
     val resources: Resources = resources
     val configuration: Configuration = resources.configuration
     configuration.setLocale(newLocale)
     return createConfigurationContext(configuration)
 }
 
+fun Context.packageInfo(): PackageInfo =
+    if (buildMinVersionT()) {
+        packageInfoAndroidT()
+    } else {
+        packageInfoLegacy()
+    }
+
+@TargetApi(Build.VERSION_CODES.TIRAMISU)
+private fun Context.packageInfoAndroidT(): PackageInfo =
+    packageManager.getPackageInfo(packageName, PackageInfoFlags.of(0))
+
+private fun Context.packageInfoLegacy(): PackageInfo =
+    packageManager.getPackageInfo(packageName, 0)
+
+fun ScanResult.ssid(): String =
+    if (buildMinVersionT()) {
+        ssidAndroidT()
+    } else {
+        ssidLegacy()
+    }.removeSurrounding("\"")
+
+@TargetApi(Build.VERSION_CODES.TIRAMISU)
+private fun ScanResult.ssidAndroidT(): String = String.nullToEmpty(wifiSsid?.toString())
+
 @Suppress("DEPRECATION")
-private fun Context.createContextLegacy(newLocale: Locale): Context {
-    val resources: Resources = resources
-    val configuration: Configuration = resources.configuration
-    configuration.locale = newLocale
-    resources.updateConfiguration(configuration, resources.displayMetrics)
-    return this
-}
-
-@ColorInt
-fun Context.compatColor(@ColorRes id: Int): Int =
-        if (buildMinVersionM()) {
-            getColor(id)
-        } else {
-            ContextCompat.getColor(this, id)
-        }
-
-fun Drawable.compatTint(@ColorInt tint: Int): Unit =
-        if (buildMinVersionL()) {
-            setTint(tint)
-        } else {
-            DrawableCompat.setTint(this, tint)
-        }
+private fun ScanResult.ssidLegacy(): String = String.nullToEmpty(SSID)

@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,16 +22,15 @@ import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.nhaarman.mockitokotlin2.*
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.*
 import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
-@Config(sdk = [Build.VERSION_CODES.Q])
+@Config(sdk = [Build.VERSION_CODES.UPSIDE_DOWN_CAKE])
 class ApplicationPermissionTest {
     private val activity: Activity = mock()
     private val permissionDialog: PermissionDialog = mock()
@@ -43,7 +42,7 @@ class ApplicationPermissionTest {
     }
 
     @Test
-    fun testCheckWithFineLocationGranted() {
+    fun checkWithFineLocationGranted() {
         // setup
         whenever(activity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)).thenReturn(PackageManager.PERMISSION_GRANTED)
         // execute
@@ -55,7 +54,7 @@ class ApplicationPermissionTest {
     }
 
     @Test
-    fun testCheckWithActivityFinish() {
+    fun checkWithActivityFinish() {
         // setup
         whenever(activity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)).thenReturn(PackageManager.PERMISSION_DENIED)
         whenever(activity.isFinishing).thenReturn(true)
@@ -68,7 +67,7 @@ class ApplicationPermissionTest {
     }
 
     @Test
-    fun testCheckWithRequestPermissions() {
+    fun checkWithRequestPermissions() {
         // setup
         whenever(activity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)).thenReturn(PackageManager.PERMISSION_DENIED)
         whenever(activity.isFinishing).thenReturn(false)
@@ -81,42 +80,42 @@ class ApplicationPermissionTest {
     }
 
     @Test
-    fun testGranted() {
+    fun granted() {
         // setup
         val grantResults = intArrayOf(PackageManager.PERMISSION_GRANTED)
         // execute
         val actual = fixture.granted(ApplicationPermission.REQUEST_CODE, grantResults)
         // validate
-        assertTrue(actual)
+        assertThat(actual).isTrue()
     }
 
     @Test
-    fun testGrantedWithOtherRequestCode() {
+    fun grantedWithOtherRequestCode() {
         // setup
         val grantResults = intArrayOf(PackageManager.PERMISSION_GRANTED)
         // execute
         val actual = fixture.granted(-ApplicationPermission.REQUEST_CODE, grantResults)
         // validate
-        assertFalse(actual)
+        assertThat(actual).isFalse()
     }
 
     @Test
-    fun testGrantedWithNoResults() {
+    fun grantedWithNoResults() {
         // setup
         val grantResults = intArrayOf()
         // execute
         val actual = fixture.granted(ApplicationPermission.REQUEST_CODE, grantResults)
         // validate
-        assertFalse(actual)
+        assertThat(actual).isFalse()
     }
 
     @Test
-    fun testGrantedWithNoPermissionGranted() {
+    fun grantedWithNoPermissionGranted() {
         // setup
         val grantResults = intArrayOf(PackageManager.PERMISSION_DENIED)
         // execute
         val actual = fixture.granted(ApplicationPermission.REQUEST_CODE, grantResults)
         // validate
-        assertFalse(actual)
+        assertThat(actual).isFalse()
     }
 }

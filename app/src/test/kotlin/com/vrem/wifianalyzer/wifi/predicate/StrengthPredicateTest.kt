@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,23 +18,23 @@
 package com.vrem.wifianalyzer.wifi.predicate
 
 import com.vrem.wifianalyzer.wifi.model.*
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class StrengthPredicateTest {
     @Test
-    fun testStrengthPredicate() {
+    fun strengthPredicate() {
         // setup
-        val wiFiDetail = makeWiFiDetail(-60)
+        val wiFiDetail = makeWiFiDetail()
         // execute & validate
-        assertTrue(Strength.THREE.predicate()(wiFiDetail))
-        assertFalse(Strength.FOUR.predicate()(wiFiDetail))
+        assertThat(Strength.THREE.predicate()(wiFiDetail)).isTrue()
+        assertThat(Strength.FOUR.predicate()(wiFiDetail)).isFalse()
     }
 
-    private fun makeWiFiDetail(level: Int): WiFiDetail =
-            WiFiDetail(
-                    WiFiIdentifier("ssid", "bssid"),
-                    "wpa",
-                    WiFiSignal(2445, 2445, WiFiWidth.MHZ_20, level, true))
+    private fun makeWiFiDetail(): WiFiDetail =
+        WiFiDetail(
+            WiFiIdentifier("ssid", "bssid"),
+            WiFiSecurity("wpa"),
+            WiFiSignal(2445, 2445, WiFiWidth.MHZ_20, -60)
+        )
 }

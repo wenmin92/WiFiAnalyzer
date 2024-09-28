@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,58 +18,60 @@
 
 package com.vrem.wifianalyzer.wifi.model
 
-import com.vrem.util.EMPTY
-import org.junit.Assert.assertEquals
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class WiFiVirtualTest {
 
     @Test
-    fun testWiFiVirtualWithVirtualBSSID() {
+    fun wiFiVirtualWithVirtualBSSID() {
         // setup
         val wiFiDetail = WiFiDetail(
-                WiFiIdentifier("SSID1", "20:cf:30:ce:1d:71"),
-                String.EMPTY,
-                WiFiSignal(2432, 2432, WiFiWidth.MHZ_20, -50, true),
-                WiFiAdditional.EMPTY)
+            WiFiIdentifier("SSID1", "20:cf:30:ce:1d:71"),
+            WiFiSecurity.EMPTY,
+            WiFiSignal(2432, 2432, WiFiWidth.MHZ_20, -50),
+            WiFiAdditional.EMPTY
+        )
         // execute
         val actual = wiFiDetail.wiFiVirtual
         // validate
-        assertEquals(":cf:30:ce:1d:7", actual.bssid)
-        assertEquals(2432, actual.frequency)
-        assertEquals(":cf:30:ce:1d:7-" + 2432, actual.key)
+        assertThat(actual.bssid).isEqualTo(":cf:30:ce:1d:7")
+        assertThat(actual.frequency).isEqualTo(2432)
+        assertThat(actual.key).isEqualTo(":cf:30:ce:1d:7-" + 2432)
     }
 
     @Test
-    fun testWiFiVirtualWithRegularBSSIDWhenBSSIDShort() {
+    fun wiFiVirtualWithRegularBSSIDWhenBSSIDShort() {
         // setup
         val wiFiDetail = WiFiDetail(
-                WiFiIdentifier("SSID1", "20:cf:30:ce:1d:7"),
-                String.EMPTY,
-                WiFiSignal(2432, 2432, WiFiWidth.MHZ_20, -50, true),
-                WiFiAdditional.EMPTY)
+            WiFiIdentifier("SSID1", "20:cf:30:ce:1d:7"),
+            WiFiSecurity.EMPTY,
+            WiFiSignal(2432, 2432, WiFiWidth.MHZ_20, -50),
+            WiFiAdditional.EMPTY
+        )
         // execute
         val actual = wiFiDetail.wiFiVirtual
         // validate
-        assertEquals("20:cf:30:ce:1d:7", actual.bssid)
-        assertEquals(2432, actual.frequency)
-        assertEquals("20:cf:30:ce:1d:7-" + 2432, actual.key)
+        assertThat(actual.bssid).isEqualTo("20:cf:30:ce:1d:7")
+        assertThat(actual.frequency).isEqualTo(2432)
+        assertThat(actual.key).isEqualTo("20:cf:30:ce:1d:7-" + 2432)
     }
 
     @Test
-    fun testWiFiVirtualWithRegularBSSIDWhenBSSIDLong() {
+    fun wiFiVirtualWithRegularBSSIDWhenBSSIDLong() {
         // setup
         val wiFiDetail = WiFiDetail(
-                WiFiIdentifier("SSID1", "20:cf:30:ce:1d:71:"),
-                String.EMPTY,
-                WiFiSignal(2432, 2432, WiFiWidth.MHZ_20, -50, true),
-                WiFiAdditional.EMPTY)
+            WiFiIdentifier("SSID1", "20:cf:30:ce:1d:71:"),
+            WiFiSecurity.EMPTY,
+            WiFiSignal(2432, 2432, WiFiWidth.MHZ_20, -50),
+            WiFiAdditional.EMPTY
+        )
         // execute
         val actual = wiFiDetail.wiFiVirtual
         // validate
-        assertEquals("20:cf:30:ce:1d:71:", actual.bssid)
-        assertEquals(2432, actual.frequency)
-        assertEquals("20:cf:30:ce:1d:71:-" + 2432, actual.key)
+        assertThat(actual.bssid).isEqualTo("20:cf:30:ce:1d:71:")
+        assertThat(actual.frequency).isEqualTo(2432)
+        assertThat(actual.key).isEqualTo("20:cf:30:ce:1d:71:-" + 2432)
     }
 
 }

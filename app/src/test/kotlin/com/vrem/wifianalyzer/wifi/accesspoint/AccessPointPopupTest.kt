@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,30 +24,30 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.vrem.wifianalyzer.R
 import com.vrem.wifianalyzer.RobolectricUtil
 import com.vrem.wifianalyzer.wifi.model.*
-import org.junit.Assert.*
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
-@Config(sdk = [Build.VERSION_CODES.Q])
+@Config(sdk = [Build.VERSION_CODES.UPSIDE_DOWN_CAKE])
 class AccessPointPopupTest {
     private val mainActivity = RobolectricUtil.INSTANCE.activity
     private val fixture = AccessPointPopup()
 
     @Test
-    fun testShowOpensPopup() {
+    fun showOpensPopup() {
         // setup
         val view = mainActivity.layoutInflater.inflate(R.layout.access_point_view_popup, null)
         // execute
         val actual = fixture.show(view)
         // validate
-        assertNotNull(actual)
-        assertTrue(actual.isShowing)
+        assertThat(actual).isNotNull()
+        assertThat(actual.isShowing).isTrue()
     }
 
     @Test
-    fun testPopupIsClosedOnPositiveButtonClick() {
+    fun popupIsClosedOnPositiveButtonClick() {
         // setup
         val view = mainActivity.layoutInflater.inflate(R.layout.access_point_view_popup, null)
         val alertDialog = fixture.show(view)
@@ -56,57 +56,57 @@ class AccessPointPopupTest {
         button.performClick()
         // validate
         RobolectricUtil.INSTANCE.clearLooper()
-        assertFalse(alertDialog.isShowing)
+        assertThat(alertDialog.isShowing).isFalse()
     }
 
     @Test
-    fun testPopupPositiveButtonIsNotVisible() {
+    fun popupPositiveButtonIsNotVisible() {
         // setup
         val view = mainActivity.layoutInflater.inflate(R.layout.access_point_view_popup, null)
         val alertDialog = fixture.show(view)
         // execute
         val actual = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE)
         // validate
-        assertEquals(View.VISIBLE, actual.visibility)
+        assertThat(actual.visibility).isEqualTo(View.VISIBLE)
     }
 
     @Test
-    fun testPopupNegativeButtonIsNotVisible() {
+    fun popupNegativeButtonIsNotVisible() {
         // setup
         val view = mainActivity.layoutInflater.inflate(R.layout.access_point_view_popup, null)
         val alertDialog = fixture.show(view)
         // execute
         val actual = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
         // validate
-        assertEquals(View.GONE, actual.visibility)
+        assertThat(actual.visibility).isEqualTo(View.GONE)
     }
 
     @Test
-    fun testPopupNeutralButtonIsNotVisible() {
+    fun popupNeutralButtonIsNotVisible() {
         // setup
         val view = mainActivity.layoutInflater.inflate(R.layout.access_point_view_popup, null)
         val alertDialog = fixture.show(view)
         // execute
         val actual = alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL)
         // validate
-        assertEquals(View.GONE, actual.visibility)
+        assertThat(actual.visibility).isEqualTo(View.GONE)
     }
 
     @Test
-    fun testAttach() {
+    fun attach() {
         // setup
         val wiFiDetail = withWiFiDetail()
         val view = mainActivity.layoutInflater.inflate(R.layout.access_point_view_compact, null)
         // execute
         fixture.attach(view, wiFiDetail)
         // validate
-        assertTrue(view.performClick())
+        assertThat(view.performClick()).isTrue()
     }
 
     private fun withWiFiDetail(): WiFiDetail =
-            WiFiDetail(
-                    WiFiIdentifier("SSID", "BSSID"),
-                    "capabilities",
-                    WiFiSignal(1, 1, WiFiWidth.MHZ_40, 2, true),
-                    WiFiAdditional.EMPTY)
+        WiFiDetail(
+            WiFiIdentifier("SSID", "BSSID"),
+            WiFiSecurity("capabilities"),
+            WiFiSignal(1, 1, WiFiWidth.MHZ_40, 2)
+        )
 }

@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,17 +20,17 @@ package com.vrem.wifianalyzer.wifi.channelrating
 import android.view.View
 import android.widget.RatingBar
 import android.widget.TextView
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
 import com.vrem.wifianalyzer.R
-import org.junit.Assert.assertEquals
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 
 class ChannelRatingAdapterBindingTest {
 
     @Test
-    fun testChannelRatingAdapterBinding() {
+    fun channelRatingAdapterBinding() {
         // setup
         val view: View = mock()
         val channelNumber: TextView = mock()
@@ -42,10 +42,10 @@ class ChannelRatingAdapterBindingTest {
         // execute
         val fixture = ChannelRatingAdapterBinding(view)
         // validate
-        assertEquals(view, fixture.root)
-        assertEquals(channelNumber, fixture.channelNumber)
-        assertEquals(accessPointCount, fixture.accessPointCount)
-        assertEquals(channelRating, fixture.channelRating)
+        assertThat(fixture.root).isEqualTo(view)
+        assertThat(fixture.channelNumber).isEqualTo(channelNumber)
+        assertThat(fixture.accessPointCount).isEqualTo(accessPointCount)
+        assertThat(fixture.channelRating).isEqualTo(channelRating)
         verify(view).findViewById<View>(R.id.channelNumber)
         verify(view).findViewById<View>(R.id.accessPointCount)
         verify(view).findViewById<View>(R.id.channelRating)

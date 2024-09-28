@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,33 +18,31 @@
 package com.vrem.wifianalyzer.permission
 
 import android.Manifest
-import android.annotation.TargetApi
 import android.app.Activity
 import android.content.pm.PackageManager
-import android.os.Build
 import com.vrem.annotation.OpenClass
-import com.vrem.util.buildMinVersionM
 
 @OpenClass
-class ApplicationPermission(private val activity: Activity, private val permissionDialog: PermissionDialog = PermissionDialog(activity)) {
+class ApplicationPermission(
+    private val activity: Activity,
+    private val permissionDialog: PermissionDialog = PermissionDialog(activity)
+) {
     fun check() {
-        if (granted()) {
-            return
+        PERMISSIONS.forEach {
+            if (!granted(it) && !activity.isFinishing) {
+                permissionDialog.show()
+            }
         }
-        if (activity.isFinishing) {
-            return
-        }
-        permissionDialog.show()
     }
 
     fun granted(requestCode: Int, grantResults: IntArray): Boolean =
-            requestCode == REQUEST_CODE && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
+        requestCode == REQUEST_CODE && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
 
-    fun granted(): Boolean = !buildMinVersionM() || grantedAndroidM()
+    fun granted(): Boolean =
+        PERMISSIONS.all { return granted(it) }
 
-    @TargetApi(Build.VERSION_CODES.M)
-    private fun grantedAndroidM(): Boolean =
-            activity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+    private fun granted(permission: String): Boolean =
+        activity.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
 
     companion object {
         internal val PERMISSIONS = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)

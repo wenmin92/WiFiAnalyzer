@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,10 @@
 package com.vrem.wifianalyzer.export
 
 import android.content.Intent
-import com.nhaarman.mockitokotlin2.*
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
-import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.mockito.kotlin.*
 
 class ExportIntentTest {
     private val intentSend: Intent = mock()
@@ -36,7 +36,7 @@ class ExportIntentTest {
     }
 
     @Test
-    fun testIntent() {
+    fun intent() {
         // setup
         val title = "title"
         val data = "data"
@@ -45,7 +45,7 @@ class ExportIntentTest {
         // execute
         val actual = fixture.intent(title, data)
         // validate
-        assertEquals(intentChooser, actual)
+        assertThat(actual).isEqualTo(intentChooser)
 
         verify(intentSend).flags = Intent.FLAG_ACTIVITY_NEW_TASK
         verify(intentSend).type = "text/plain"

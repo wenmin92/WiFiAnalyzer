@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,8 @@ package com.vrem.wifianalyzer.wifi.band
 
 import com.vrem.util.allCountries
 import com.vrem.util.findByCountryCode
-import java.util.*
+import java.util.Locale
+import java.util.SortedSet
 
 class WiFiChannelCountry(private val country: Locale) {
     private val unknown = "-Unknown"
@@ -38,7 +39,7 @@ class WiFiChannelCountry(private val country: Locale) {
 
     fun channelsGHZ5(): SortedSet<Int> = wiFiChannelGHZ5.findChannels(country.country)
 
-    fun channelsGHZ6(): SortedSet<Int> = wiFiChannelGHZ6.findChannels(country.country)
+    fun channelsGHZ6(): SortedSet<Int> = wiFiChannelGHZ6.findChannels()
 
     fun channelAvailableGHZ2(channel: Int): Boolean = channelsGHZ2().contains(channel)
 

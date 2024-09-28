@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ WiFiAnalyzer
-  ~ Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+  ~ Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -44,6 +44,7 @@
     <string name="location_msg">"Cette application peut accéder à votre position précise via les services de localisation lorsque vous l\'utilisez. Pour cela, vous devez activer les services de localisation sur votre appareil au préalable. Cela risque de solliciter davantage la batterie."</string>
     <string name="throttling_msg">"Android 9 a introduit la limitation de l\'analyse Wi-Fi. Android 10 dispose d\'une nouvelle option pour les développeurs pour désactiver la limitation sous (Paramètres > Options pour les développeurs > Réseau > Limitation de l\'analyse Wi-Fi)."</string>
     <string name="export_not_available">"Export non disponible"</string>
+    <string name="current_connection">"Connexion actuelle"</string>
 
     <string name="channel_rating_best">"Meilleurs canaux:"</string>
     <string name="channel_rating_best_none">"Aucun"</string>
@@ -119,9 +120,14 @@
     <string name="filter_close">"Fermer"</string>
     <string name="filter_reset">"Réinitialiser"</string>
     <string name="filter_apply">"Appliquer"</string>
+    <string name="filter_ssid_title">"SSID (sensible à la casse)"</string>
     <string name="filter_wifi_band_title">"Fréquence Wi-Fi"</string>
     <string name="filter_strength_title">"Intensité du signal"</string>
     <string name="filter_security_title">"Sécurité"</string>
     <!-- filter end -->
 
+    <!-- wifi throttling start -->
+    <string name="wifi_throttling_on">"La limitation de l\'analyse Wi-Fi est activée"</string>
+    <string name="wifi_throttling_off">"La limitation de l\'analyse Wi-Fi est désactivée"</string>
+    <!-- wifi throttling end -->
 </resources>

@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,12 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.vrem.wifianalyzer.wifi.filter.adapter.EnumFilterAdapter
 
-internal abstract class EnumFilter<T : Enum<*>, U : EnumFilterAdapter<T>>(internal val ids: Map<T, Int>, private val filter: U, alertDialog: AlertDialog, id: Int) {
+internal abstract class EnumFilter<T : Enum<T>, U : EnumFilterAdapter<T>>(
+    internal val ids: Map<T, Int>,
+    private val filter: U,
+    alertDialog: AlertDialog,
+    id: Int
+) {
 
     private fun setColor(view: View, value: T) {
         this.filter.color(value).let {

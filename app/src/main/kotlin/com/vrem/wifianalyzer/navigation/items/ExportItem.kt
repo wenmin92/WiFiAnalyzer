@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,6 +49,6 @@ internal class ExportItem(private val export: Export) : NavigationItem {
     }
 
     private fun exportAvailable(mainActivity: MainActivity, chooser: Intent): Boolean =
-            chooser.resolveActivity(mainActivity.packageManager) != null
+        chooser.resolveActivity(mainActivity.packageManager) != null
 
 }

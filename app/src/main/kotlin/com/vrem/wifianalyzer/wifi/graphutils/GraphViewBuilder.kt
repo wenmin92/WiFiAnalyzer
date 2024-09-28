@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@ internal fun GridLabelRenderer.colors(themeStyle: ThemeStyle): GridLabelRenderer
 internal fun GridLabelRenderer.horizontalTitle(title: String): GridLabelRenderer {
     if (title.isNotEmpty()) {
         this.horizontalAxisTitle = title
-        this.horizontalAxisTitleTextSize = this.horizontalAxisTitleTextSize * AXIS_TEXT_SIZE_ADJUSTMENT
+        this.horizontalAxisTitleTextSize *= AXIS_TEXT_SIZE_ADJUSTMENT
     }
     return this
 }
@@ -64,7 +64,7 @@ internal fun GridLabelRenderer.horizontalTitle(title: String): GridLabelRenderer
 internal fun GridLabelRenderer.verticalTitle(title: String): GridLabelRenderer {
     if (title.isNotEmpty()) {
         this.verticalAxisTitle = title
-        this.verticalAxisTitleTextSize = this.verticalAxisTitleTextSize * AXIS_TEXT_SIZE_ADJUSTMENT
+        this.verticalAxisTitleTextSize *= AXIS_TEXT_SIZE_ADJUSTMENT
     }
     return this
 }
@@ -76,22 +76,28 @@ internal fun GridLabelRenderer.labelFormat(labelFormatter: LabelFormatter?): Gri
     return this
 }
 
-internal fun GridLabelRenderer.labels(numHorizontalLabels: Int, numVerticalLabels: Int, horizontalLabelsVisible: Boolean): GridLabelRenderer {
+internal fun GridLabelRenderer.labels(
+    numHorizontalLabels: Int,
+    numVerticalLabels: Int,
+    horizontalLabelsVisible: Boolean
+): GridLabelRenderer {
     this.setHumanRounding(false)
     this.isHighlightZeroLines = false
     this.numVerticalLabels = numVerticalLabels
     this.numHorizontalLabels = numHorizontalLabels
     this.isVerticalLabelsVisible = true
     this.isHorizontalLabelsVisible = horizontalLabelsVisible
-    this.textSize = this.textSize * TEXT_SIZE_ADJUSTMENT
+    this.textSize *= TEXT_SIZE_ADJUSTMENT
     this.reloadStyles()
     return this
 }
 
-class GraphViewBuilder(private val numHorizontalLabels: Int,
-                       private val maximumY: Int,
-                       private val themeStyle: ThemeStyle,
-                       private val horizontalLabelsVisible: Boolean = true) {
+class GraphViewBuilder(
+    private val numHorizontalLabels: Int,
+    private val maximumY: Int,
+    private val themeStyle: ThemeStyle,
+    private val horizontalLabelsVisible: Boolean = true
+) {
     private var labelFormatter: LabelFormatter? = null
     private var verticalTitle: String = String.EMPTY
     private var horizontalTitle: String = String.EMPTY
@@ -112,10 +118,10 @@ class GraphViewBuilder(private val numHorizontalLabels: Int,
     }
 
     fun build(context: Context): GraphView =
-            GraphView(context)
-                    .layout(layoutParams)
-                    .gridLabelInitialize()
-                    .viewportInitialize()
+        GraphView(context)
+            .layout(layoutParams)
+            .gridLabelInitialize()
+            .viewportInitialize()
 
     private fun GraphView.viewportInitialize(): GraphView {
         this.viewport.initialize(maximumY)
@@ -124,11 +130,11 @@ class GraphViewBuilder(private val numHorizontalLabels: Int,
 
     private fun GraphView.gridLabelInitialize(): GraphView {
         this.gridLabelRenderer
-                .labels(numHorizontalLabels, numVerticalLabels, horizontalLabelsVisible)
-                .labelFormat(labelFormatter)
-                .horizontalTitle(horizontalTitle)
-                .verticalTitle(verticalTitle)
-                .colors(themeStyle)
+            .labels(numHorizontalLabels, numVerticalLabels, horizontalLabelsVisible)
+            .labelFormat(labelFormatter)
+            .horizontalTitle(horizontalTitle)
+            .verticalTitle(verticalTitle)
+            .colors(themeStyle)
         return this
     }
 
@@ -139,6 +145,6 @@ class GraphViewBuilder(private val numHorizontalLabels: Int,
         get() = if (maximumY > MAX_Y || maximumY < MIN_Y_HALF) MAX_Y_DEFAULT else maximumY
 
     val layoutParams: ViewGroup.LayoutParams =
-            ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
 
 }

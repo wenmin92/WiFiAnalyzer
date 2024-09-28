@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,11 +23,10 @@ import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.widget.Toolbar
-import com.nhaarman.mockitokotlin2.*
-import com.vrem.wifianalyzer.navigation.NavigationMenu
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
-import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.mockito.kotlin.*
 
 class ActivityUtilsTest {
     private val window: Window = mock()
@@ -49,46 +48,23 @@ class ActivityUtilsTest {
     }
 
     @Test
-    fun testSetupToolbar() {
+    fun setupToolbar() {
         // setup
         whenever<Any>(mainActivity.findViewById(R.id.toolbar)).thenReturn(toolbar)
         whenever(mainActivity.supportActionBar).thenReturn(actionBar)
         // execute
         val actual = mainActivity.setupToolbar()
         // validate
-        assertEquals(toolbar, actual)
+        assertThat(actual).isEqualTo(toolbar)
         verify(mainActivity).findViewById<View>(R.id.toolbar)
         verify(mainActivity).supportActionBar
-        verify(toolbar).setOnClickListener(any())
         verify(mainActivity).setSupportActionBar(toolbar)
         verify(actionBar).setHomeButtonEnabled(true)
         verify(actionBar).setDisplayHomeAsUpEnabled(true)
     }
 
     @Test
-    fun testWiFiBandToggleOnClickToggles() {
-        // setup
-        whenever(mainActivity.currentNavigationMenu()).thenReturn(NavigationMenu.CHANNEL_GRAPH)
-        // execute
-        mainActivity.toggleWiFiBand()
-        // validate
-        verify(settings).toggleWiFiBand()
-        verify(mainActivity).currentNavigationMenu()
-    }
-
-    @Test
-    fun testWiFiBandToggleOnClickDoesNotToggles() {
-        // setup
-        whenever(mainActivity.currentNavigationMenu()).thenReturn(NavigationMenu.ACCESS_POINTS)
-        // execute
-        mainActivity.toggleWiFiBand()
-        // validate
-        verify(settings, never()).toggleWiFiBand()
-        verify(mainActivity).currentNavigationMenu()
-    }
-
-    @Test
-    fun testKeepScreenOnSwitchOn() {
+    fun keepScreenOnSwitchOn() {
         // setup
         whenever(settings.keepScreenOn()).thenReturn(true)
         whenever(mainActivity.window).thenReturn(window)
@@ -101,7 +77,7 @@ class ActivityUtilsTest {
     }
 
     @Test
-    fun testKeepScreenOnSwitchOff() {
+    fun keepScreenOnSwitchOff() {
         // setup
         whenever(settings.keepScreenOn()).thenReturn(false)
         whenever(mainActivity.window).thenReturn(window)
@@ -114,15 +90,15 @@ class ActivityUtilsTest {
     }
 
     @Test
-    fun testStartWiFiSettings() {
+    fun startWiFiSettings() {
         // execute
         mainActivity.startWiFiSettings()
         // validate
-        verify(mainActivity).startActivityForResult(any(), eq(0))
+        verify(mainActivity).startActivity(any())
     }
 
     @Test
-    fun testStartLocationSettings() {
+    fun startLocationSettings() {
         // execute
         mainActivity.startLocationSettings()
         // validate

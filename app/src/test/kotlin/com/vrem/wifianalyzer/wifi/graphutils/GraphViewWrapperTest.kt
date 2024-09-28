@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,15 +24,15 @@ import com.jjoe64.graphview.GridLabelRenderer
 import com.jjoe64.graphview.LegendRenderer
 import com.jjoe64.graphview.Viewport
 import com.jjoe64.graphview.series.BaseSeries
-import com.nhaarman.mockitokotlin2.*
 import com.vrem.wifianalyzer.SIZE_MAX
 import com.vrem.wifianalyzer.SIZE_MIN
 import com.vrem.wifianalyzer.settings.ThemeStyle
 import com.vrem.wifianalyzer.wifi.model.WiFiDetail
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
+import org.mockito.kotlin.*
 
 class GraphViewWrapperTest {
     private val graphView: GraphView = mock()
@@ -49,7 +49,7 @@ class GraphViewWrapperTest {
 
     @Before
     fun setUp() {
-        assertEquals(GraphLegend.HIDE, fixture.graphLegend)
+        assertThat(fixture.graphLegend).isEqualTo(GraphLegend.HIDE)
     }
 
     @After
@@ -64,7 +64,7 @@ class GraphViewWrapperTest {
     }
 
     @Test
-    fun testRemoveSeries() {
+    fun removeSeries() {
         // setup
         val newSeries: Set<WiFiDetail> = setOf()
         val difference: List<WiFiDetail> = listOf()
@@ -81,7 +81,7 @@ class GraphViewWrapperTest {
     }
 
     @Test
-    fun testDifferenceSeries() {
+    fun differenceSeries() {
         // setup
         val newSeries: Set<WiFiDetail> = setOf()
         val expected: List<WiFiDetail> = listOf()
@@ -89,12 +89,12 @@ class GraphViewWrapperTest {
         // execute
         val actual = fixture.differenceSeries(newSeries)
         // validate
-        assertEquals(expected, actual)
+        assertThat(actual).isEqualTo(expected)
         verify(seriesCache).difference(newSeries)
     }
 
     @Test
-    fun testAddSeriesDirectly() {
+    fun addSeriesDirectly() {
         // execute
         fixture.addSeries(baseSeries)
         // validate
@@ -102,19 +102,19 @@ class GraphViewWrapperTest {
     }
 
     @Test
-    fun testAddSeriesWhenSeriesExistsDoesNotAddSeries() {
+    fun addSeriesWhenSeriesExistsDoesNotAddSeries() {
         // setup
         whenever(seriesCache.contains(wiFiDetail)).thenReturn(true)
         // execute
         val actual = fixture.addSeries(wiFiDetail, baseSeries, false)
         // validate
-        assertFalse(actual)
+        assertThat(actual).isFalse()
         verify(seriesCache).contains(wiFiDetail)
         verify(seriesCache, never()).put(wiFiDetail, baseSeries)
     }
 
     @Test
-    fun testAddSeriesAddsSeries() {
+    fun addSeriesAddsSeries() {
         // setup
         val expectedTitle = wiFiDetail.wiFiIdentifier.ssid + " " + wiFiDetail.wiFiSignal.channelDisplay()
         val connected = wiFiDetail.wiFiAdditional.wiFiConnection.connected
@@ -122,7 +122,7 @@ class GraphViewWrapperTest {
         // execute
         val actual = fixture.addSeries(wiFiDetail, baseSeries, true)
         // validate
-        assertTrue(actual)
+        assertThat(actual).isTrue()
         verify(seriesCache).contains(wiFiDetail)
         verify(seriesCache).put(wiFiDetail, baseSeries)
         verify(baseSeries).title = expectedTitle
@@ -134,19 +134,19 @@ class GraphViewWrapperTest {
     }
 
     @Test
-    fun testUpdateSeriesWhenSeriesDoesNotExistsDoesNotUpdateSeries() {
+    fun updateSeriesWhenSeriesDoesNotExistsDoesNotUpdateSeries() {
         // setup
         whenever(seriesCache.contains(wiFiDetail)).thenReturn(false)
         // execute
         val actual = fixture.updateSeries(wiFiDetail, dataPoints, true)
         // validate
-        assertFalse(actual)
+        assertThat(actual).isFalse()
         verify(seriesCache).contains(wiFiDetail)
         verify(seriesCache, never())[wiFiDetail]
     }
 
     @Test
-    fun testUpdateSeriesWhenSeriesDoesExists() {
+    fun updateSeriesWhenSeriesDoesExists() {
         // setup
         val connected = wiFiDetail.wiFiAdditional.wiFiConnection.connected
         whenever(seriesCache.contains(wiFiDetail)).thenReturn(true)
@@ -154,7 +154,7 @@ class GraphViewWrapperTest {
         // execute
         val actual = fixture.updateSeries(wiFiDetail, dataPoints, true)
         // validate
-        assertTrue(actual)
+        assertThat(actual).isTrue()
         verify(seriesCache).contains(wiFiDetail)
         verify(seriesCache)[wiFiDetail]
         verify(baseSeries).resetData(dataPoints)
@@ -163,20 +163,20 @@ class GraphViewWrapperTest {
     }
 
     @Test
-    fun testAppendSeriesWhenSeriesDoesNotExistsDoesNotUpdateSeries() {
+    fun appendSeriesWhenSeriesDoesNotExistsDoesNotUpdateSeries() {
         // setup
         val count = 10
         whenever(seriesCache.contains(wiFiDetail)).thenReturn(false)
         // execute
         val actual = fixture.appendToSeries(wiFiDetail, dataPoint, count, true)
         // validate
-        assertFalse(actual)
+        assertThat(actual).isFalse()
         verify(seriesCache).contains(wiFiDetail)
         verify(seriesCache, never())[wiFiDetail]
     }
 
     @Test
-    fun testAppendSeriesWhenSeriesDoesExists() {
+    fun appendSeriesWhenSeriesDoesExists() {
         // setup
         val count = 10
         val connected = wiFiDetail.wiFiAdditional.wiFiConnection.connected
@@ -185,7 +185,7 @@ class GraphViewWrapperTest {
         // execute
         val actual = fixture.appendToSeries(wiFiDetail, dataPoint, count, true)
         // validate
-        assertTrue(actual)
+        assertThat(actual).isTrue()
         verify(seriesCache).contains(wiFiDetail)
         verify(seriesCache)[wiFiDetail]
         verify(baseSeries).appendData(dataPoint, true, count + 1)
@@ -194,7 +194,7 @@ class GraphViewWrapperTest {
     }
 
     @Test
-    fun testUpdateLegend() {
+    fun updateLegend() {
         // setup
         val textSize = 10f
         doReturn(legendRenderer).whenever(fixture).newLegendRenderer()
@@ -203,7 +203,7 @@ class GraphViewWrapperTest {
         // execute
         fixture.updateLegend(GraphLegend.RIGHT)
         // validate
-        assertEquals(GraphLegend.RIGHT, fixture.graphLegend)
+        assertThat(fixture.graphLegend).isEqualTo(GraphLegend.RIGHT)
         verify(graphView).titleTextSize
         verify(graphView).legendRenderer
         verify(graphView).legendRenderer = legendRenderer
@@ -216,7 +216,7 @@ class GraphViewWrapperTest {
     }
 
     @Test
-    fun testSetVisibility() {
+    fun setVisibility() {
         // execute
         fixture.visibility(View.VISIBLE)
         // validate
@@ -224,13 +224,13 @@ class GraphViewWrapperTest {
     }
 
     @Test
-    fun testCalculateGraphType() {
+    fun calculateGraphType() {
         // execute & validate
-        assertTrue(fixture.calculateGraphType() > 0)
+        assertThat(fixture.calculateGraphType()).isGreaterThan(0)
     }
 
     @Test
-    fun testSetViewport() {
+    fun setViewport() {
         // setup
         whenever(graphView.gridLabelRenderer).thenReturn(gridLabelRenderer)
         whenever(gridLabelRenderer.numHorizontalLabels).thenReturn(10)
@@ -246,16 +246,16 @@ class GraphViewWrapperTest {
     }
 
     @Test
-    fun testGetSize() {
+    fun getSize() {
         // execute & validate
-        assertEquals(SIZE_MAX, fixture.size(TYPE1))
-        assertEquals(SIZE_MAX, fixture.size(TYPE2))
-        assertEquals(SIZE_MAX, fixture.size(TYPE3))
-        assertEquals(SIZE_MIN, fixture.size(TYPE4))
+        assertThat(fixture.size(TYPE1)).isEqualTo(SIZE_MAX)
+        assertThat(fixture.size(TYPE2)).isEqualTo(SIZE_MAX)
+        assertThat(fixture.size(TYPE3)).isEqualTo(SIZE_MAX)
+        assertThat(fixture.size(TYPE4)).isEqualTo(SIZE_MIN)
     }
 
     @Test
-    fun testSetViewportWithMinAndMax() {
+    fun setViewportWithMinAndMax() {
         // setup
         whenever(graphView.viewport).thenReturn(viewport)
         // execute
@@ -267,13 +267,13 @@ class GraphViewWrapperTest {
     }
 
     @Test
-    fun testIsNewSeries() {
+    fun isNewSeries() {
         // setup
         whenever(seriesCache.contains(wiFiDetail)).thenReturn(false)
         // execute
         val actual = fixture.newSeries(wiFiDetail)
         // validate
-        assertTrue(actual)
+        assertThat(actual).isTrue()
         verify(seriesCache).contains(wiFiDetail)
     }
 }

@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,14 +23,14 @@ import com.vrem.util.defaultLanguageTag
 import com.vrem.util.supportedLanguages
 import com.vrem.util.toCapitalize
 import com.vrem.util.toLanguageTag
-import java.util.*
+import java.util.Locale
 
 private fun data(): List<Data> = supportedLanguages()
-        .map { map(it) }
-        .sorted()
+    .map { map(it) }
+    .sorted()
 
 private fun map(it: Locale): Data =
-        Data(toLanguageTag(it), it.getDisplayName(it).toCapitalize(Locale.getDefault()))
+    Data(toLanguageTag(it), it.getDisplayName(it).toCapitalize(Locale.getDefault()))
 
 class LanguagePreference(context: Context, attrs: AttributeSet) :
-        CustomPreference(context, attrs, data(), defaultLanguageTag())
+    CustomPreference(context, attrs, data(), defaultLanguageTag())

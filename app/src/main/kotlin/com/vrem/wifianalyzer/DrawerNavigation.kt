@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ class DrawerNavigation(private val mainActivity: MainActivity, private val toolb
     fun syncState() = actionBarDrawerToggle.syncState()
 
     fun onConfigurationChanged(newConfig: Configuration?) =
-            actionBarDrawerToggle.onConfigurationChanged(newConfig)
+        actionBarDrawerToggle.onConfigurationChanged(newConfig)
 
     fun create() {
         val drawer = mainActivity.findViewById<DrawerLayout>(R.id.drawer_layout)
@@ -40,6 +40,6 @@ class DrawerNavigation(private val mainActivity: MainActivity, private val toolb
     }
 
     fun createDrawerToggle(drawer: DrawerLayout): ActionBarDrawerToggle =
-            ActionBarDrawerToggle(mainActivity, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        ActionBarDrawerToggle(mainActivity, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
 
 }

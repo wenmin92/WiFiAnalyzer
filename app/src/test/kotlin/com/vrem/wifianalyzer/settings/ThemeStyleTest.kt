@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,27 +18,27 @@
 package com.vrem.wifianalyzer.settings
 
 import com.vrem.wifianalyzer.R
-import org.junit.Assert.assertEquals
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class ThemeStyleTest {
     @Test
-    fun testThemeStyle() {
-        assertEquals(3, ThemeStyle.values().size)
+    fun themeStyle() {
+        assertThat(ThemeStyle.entries).hasSize(3)
     }
 
     @Test
-    fun testTheme() {
-        assertEquals(R.style.ThemeLight, ThemeStyle.LIGHT.theme)
-        assertEquals(R.style.ThemeDark, ThemeStyle.DARK.theme)
-        assertEquals(R.style.ThemeSystem, ThemeStyle.SYSTEM.theme)
+    fun theme() {
+        assertThat(ThemeStyle.LIGHT.theme).isEqualTo(R.style.ThemeLight)
+        assertThat(ThemeStyle.DARK.theme).isEqualTo(R.style.ThemeDark)
+        assertThat(ThemeStyle.SYSTEM.theme).isEqualTo(R.style.ThemeSystem)
     }
 
     @Test
-    fun testThemeNoActionBar() {
-        assertEquals(R.style.ThemeDarkNoActionBar, ThemeStyle.DARK.themeNoActionBar)
-        assertEquals(R.style.ThemeLightNoActionBar, ThemeStyle.LIGHT.themeNoActionBar)
-        assertEquals(R.style.ThemeSystemNoActionBar, ThemeStyle.SYSTEM.themeNoActionBar)
+    fun themeNoActionBar() {
+        assertThat(ThemeStyle.DARK.themeNoActionBar).isEqualTo(R.style.ThemeDarkNoActionBar)
+        assertThat(ThemeStyle.LIGHT.themeNoActionBar).isEqualTo(R.style.ThemeLightNoActionBar)
+        assertThat(ThemeStyle.SYSTEM.themeNoActionBar).isEqualTo(R.style.ThemeSystemNoActionBar)
     }
 
 }

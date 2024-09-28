@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,9 @@
  */
 package com.vrem.wifianalyzer.navigation.items
 
+import android.os.Build
 import android.view.View
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.vrem.wifianalyzer.about.AboutFragment
 import com.vrem.wifianalyzer.settings.SettingsFragment
 import com.vrem.wifianalyzer.vendor.VendorFragment
@@ -26,54 +28,58 @@ import com.vrem.wifianalyzer.wifi.channelavailable.ChannelAvailableFragment
 import com.vrem.wifianalyzer.wifi.channelgraph.ChannelGraphFragment
 import com.vrem.wifianalyzer.wifi.channelrating.ChannelRatingFragment
 import com.vrem.wifianalyzer.wifi.timegraph.TimeGraphFragment
-import org.junit.Assert.*
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 
+@RunWith(AndroidJUnit4::class)
+@Config(sdk = [Build.VERSION_CODES.UPSIDE_DOWN_CAKE])
 class NavigationItemsTest {
     @Test
-    fun testFragmentItem() {
-        assertTrue((navigationItemAccessPoints as FragmentItem).fragment is AccessPointsFragment)
-        assertTrue((navigationItemChannelRating as FragmentItem).fragment is ChannelRatingFragment)
-        assertTrue((navigationItemChannelGraph as FragmentItem).fragment is ChannelGraphFragment)
-        assertTrue((navigationItemTimeGraph as FragmentItem).fragment is TimeGraphFragment)
-        assertTrue((navigationItemChannelAvailable as FragmentItem).fragment is ChannelAvailableFragment)
-        assertTrue((navigationItemVendors as FragmentItem).fragment is VendorFragment)
-        assertTrue((navigationItemSettings as FragmentItem).fragment is SettingsFragment)
-        assertTrue((navigationItemAbout as FragmentItem).fragment is AboutFragment)
+    fun fragmentItem() {
+        assertThat((navigationItemAccessPoints as FragmentItem).fragment is AccessPointsFragment).isTrue()
+        assertThat((navigationItemChannelRating as FragmentItem).fragment is ChannelRatingFragment).isTrue()
+        assertThat((navigationItemChannelGraph as FragmentItem).fragment is ChannelGraphFragment).isTrue()
+        assertThat((navigationItemTimeGraph as FragmentItem).fragment is TimeGraphFragment).isTrue()
+        assertThat((navigationItemChannelAvailable as FragmentItem).fragment is ChannelAvailableFragment).isTrue()
+        assertThat((navigationItemVendors as FragmentItem).fragment is VendorFragment).isTrue()
+        assertThat((navigationItemSettings as FragmentItem).fragment is SettingsFragment).isTrue()
+        assertThat((navigationItemAbout as FragmentItem).fragment is AboutFragment).isTrue()
     }
 
     @Test
-    fun testRegisteredTrue() {
-        assertTrue(navigationItemAccessPoints.registered)
-        assertTrue(navigationItemChannelRating.registered)
-        assertTrue(navigationItemChannelGraph.registered)
-        assertTrue(navigationItemTimeGraph.registered)
+    fun registeredTrue() {
+        assertThat(navigationItemAccessPoints.registered).isTrue()
+        assertThat(navigationItemChannelRating.registered).isTrue()
+        assertThat(navigationItemChannelGraph.registered).isTrue()
+        assertThat(navigationItemTimeGraph.registered).isTrue()
     }
 
     @Test
-    fun testRegisteredFalse() {
-        assertFalse(navigationItemExport.registered)
-        assertFalse(navigationItemChannelAvailable.registered)
-        assertFalse(navigationItemVendors.registered)
-        assertFalse(navigationItemSettings.registered)
-        assertFalse(navigationItemAbout.registered)
+    fun registeredFalse() {
+        assertThat(navigationItemExport.registered).isFalse()
+        assertThat(navigationItemChannelAvailable.registered).isFalse()
+        assertThat(navigationItemVendors.registered).isFalse()
+        assertThat(navigationItemSettings.registered).isFalse()
+        assertThat(navigationItemAbout.registered).isFalse()
     }
 
     @Test
-    fun testVisibility() {
-        assertEquals(View.VISIBLE, navigationItemAccessPoints.visibility)
-        assertEquals(View.VISIBLE, navigationItemChannelRating.visibility)
-        assertEquals(View.VISIBLE, navigationItemChannelGraph.visibility)
-        assertEquals(View.VISIBLE, navigationItemTimeGraph.visibility)
-        assertEquals(View.VISIBLE, navigationItemChannelAvailable.visibility)
-        assertEquals(View.GONE, navigationItemVendors.visibility)
-        assertEquals(View.GONE, navigationItemExport.visibility)
-        assertEquals(View.GONE, navigationItemSettings.visibility)
-        assertEquals(View.GONE, navigationItemAbout.visibility)
+    fun visibility() {
+        assertThat(navigationItemAccessPoints.visibility).isEqualTo(View.VISIBLE)
+        assertThat(navigationItemChannelRating.visibility).isEqualTo(View.VISIBLE)
+        assertThat(navigationItemChannelGraph.visibility).isEqualTo(View.VISIBLE)
+        assertThat(navigationItemTimeGraph.visibility).isEqualTo(View.VISIBLE)
+        assertThat(navigationItemChannelAvailable.visibility).isEqualTo(View.VISIBLE)
+        assertThat(navigationItemVendors.visibility).isEqualTo(View.GONE)
+        assertThat(navigationItemExport.visibility).isEqualTo(View.GONE)
+        assertThat(navigationItemSettings.visibility).isEqualTo(View.GONE)
+        assertThat(navigationItemAbout.visibility).isEqualTo(View.GONE)
     }
 
     @Test
-    fun testExportItem() {
-        assertTrue(navigationItemExport is ExportItem)
+    fun exportItem() {
+        assertThat(navigationItemExport is ExportItem).isTrue()
     }
 }

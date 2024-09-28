@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,14 +19,13 @@ package com.vrem.util
 
 import android.content.res.Resources
 import android.content.res.Resources.NotFoundException
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
-import com.nhaarman.mockitokotlin2.whenever
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoMoreInteractions
+import org.mockito.kotlin.whenever
 import java.io.ByteArrayInputStream
 import java.io.InputStream
 
@@ -40,7 +39,7 @@ class FileUtilsTest {
     }
 
     @Test
-    fun testReadFile() {
+    fun readFile() {
         // setup
         val id = 11
         val expected = "Line-1\nLine-2\n"
@@ -49,19 +48,19 @@ class FileUtilsTest {
         // execute
         val actual: String = readFile(resources, id)
         // validate
-        assertEquals(expected, actual)
+        assertThat(actual).isEqualTo(expected)
         verify(resources).openRawResource(id)
     }
 
     @Test
-    fun testReadFileHandleException() {
+    fun readFileHandleException() {
         // setup
         val id = 11
         whenever(resources.openRawResource(id)).thenThrow(NotFoundException::class.java)
         // execute
         val actual: String = readFile(resources, id)
         // validate
-        assertTrue(actual.isEmpty())
+        assertThat(actual).isEmpty()
         verify(resources).openRawResource(id)
     }
 }

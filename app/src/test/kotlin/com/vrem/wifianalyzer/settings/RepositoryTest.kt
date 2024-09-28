@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,307 +23,314 @@ import android.content.SharedPreferences.Editor
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.content.res.Resources
 import com.vrem.wifianalyzer.R
-import io.mockk.*
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import org.mockito.kotlin.*
 
 class RepositoryTest {
+    private val keyIndex = R.string.app_full_name
     private val keyValue = "xyz"
-    private val context: Context = mockk()
-    private val sharedPreferences: SharedPreferences = mockk()
-    private val onSharedPreferenceChangeListener: OnSharedPreferenceChangeListener = mockk()
-    private val editor: Editor = mockk()
-    private val resources: Resources = mockk()
-    private val fixture = spyk(Repository(context))
+    private val context: Context = mock()
+    private val sharedPreferences: SharedPreferences = mock()
+    private val onSharedPreferenceChangeListener: OnSharedPreferenceChangeListener = mock()
+    private val editor: Editor = mock()
+    private val resources: Resources = mock()
+    private val fixture = spy(Repository(context))
 
     @Before
     fun setUp() {
-        every { fixture.defaultSharedPreferences(context) } returns sharedPreferences
+        doReturn(sharedPreferences).whenever(fixture).defaultSharedPreferences(context)
     }
 
     @After
     fun tearDown() {
-        confirmVerified(resources)
-        confirmVerified(context)
-        confirmVerified(sharedPreferences)
-        confirmVerified(onSharedPreferenceChangeListener)
-        confirmVerified(editor)
+        verifyNoMoreInteractions(resources)
+        verifyNoMoreInteractions(context)
+        verifyNoMoreInteractions(sharedPreferences)
+        verifyNoMoreInteractions(onSharedPreferenceChangeListener)
+        verifyNoMoreInteractions(editor)
     }
 
     @Test
-    fun testInitializeDefaultValues() {
+    fun initializeDefaultValues() {
         // setup
-        every { fixture.defaultValues(context, R.xml.settings, false) } just Runs
+        doNothing().whenever(fixture).defaultValues(context, R.xml.settings, false)
         // execute
         fixture.initializeDefaultValues()
         // validate
-        verify { fixture.defaultValues(context, R.xml.settings, false) }
+        verify(fixture).defaultValues(context, R.xml.settings, false)
     }
 
     @Test
-    fun testSaveString() {
+    fun saveString() {
         // setup
-        val keyIndex = R.string.app_full_name
         val value = "1111"
-        withSave(keyIndex, value)
+        withSave(value)
         // execute
         fixture.save(keyIndex, value)
         // validate
-        verifySave(keyIndex, value)
+        verifySave(value)
         verifyPreferenceManager()
     }
 
     @Test
-    fun testSaveInteger() {
+    fun saveInteger() {
         // setup
-        val keyIndex = R.string.app_full_name
         val value = 1111
-        withSave(keyIndex, value.toString())
+        withSave(value.toString())
         // execute
         fixture.save(keyIndex, value)
         // validate
-        verifySave(keyIndex, value.toString())
+        verifySave(value.toString())
         verifyPreferenceManager()
     }
 
     @Test
-    fun testString() {
+    fun string() {
         // setup
-        val keyIndex = R.string.app_full_name
         val value = "1111"
         val defaultValue = "2222"
-        every { context.getString(keyIndex) } returns keyValue
-        every { sharedPreferences.getString(keyValue, defaultValue) } returns value
+        doReturn(keyValue).whenever(context).getString(keyIndex)
+        doReturn(value).whenever(sharedPreferences).getString(keyValue, defaultValue)
         // execute
         val actual = fixture.string(keyIndex, defaultValue)
         // validate
-        assertEquals(value, actual)
-        verify { context.getString(keyIndex) }
-        verify { sharedPreferences.getString(keyValue, "" + defaultValue) }
+        assertThat(actual).isEqualTo(value)
+        verify(context).getString(keyIndex)
+        verify(sharedPreferences).getString(keyValue, "" + defaultValue)
         verifyPreferenceManager()
     }
 
     @Test
-    fun testStringAsInteger() {
+    fun stringAsInteger() {
         // setup
-        val keyIndex = R.string.app_full_name
         val value = 1111
         val defaultValue = 2222
-        every { context.getString(keyIndex) } returns keyValue
-        every { sharedPreferences.getString(keyValue, defaultValue.toString()) } returns value.toString()
+        doReturn(keyValue).whenever(context).getString(keyIndex)
+        doReturn(value.toString()).whenever(sharedPreferences).getString(keyValue, defaultValue.toString())
         // execute
         val actual = fixture.stringAsInteger(keyIndex, defaultValue)
         // validate
-        assertEquals(value, actual)
-        verify { context.getString(keyIndex) }
-        verify { sharedPreferences.getString(keyValue, defaultValue.toString()) }
+        assertThat(actual).isEqualTo(value)
+        verify(context).getString(keyIndex)
+        verify(sharedPreferences).getString(keyValue, defaultValue.toString())
         verifyPreferenceManager()
     }
 
     @Test
-    fun testStringAsIntegerThrowsException() {
+    fun stringAsIntegerThrowsException() {
         // setup
-        val keyIndex = R.string.app_full_name
         val defaultValue = 2222
-        every { context.getString(keyIndex) } returns keyValue
-        every { sharedPreferences.getInt(keyValue, defaultValue) } throws RuntimeException()
-        withSave(keyIndex, defaultValue.toString())
+        val defaultValueAsString = defaultValue.toString()
+        doReturn(keyValue).whenever(context).getString(keyIndex)
+        doThrow(RuntimeException()).whenever(sharedPreferences).getString(keyValue, defaultValueAsString)
+        withSave(defaultValueAsString)
         // execute
         val actual = fixture.stringAsInteger(keyIndex, defaultValue)
         // validate
-        assertEquals(defaultValue, actual)
-        verify { context.getString(keyIndex) }
-        verify { sharedPreferences.getString(keyValue, defaultValue.toString()) }
-        verifySave(keyIndex, defaultValue.toString())
+        assertThat(actual).isEqualTo(defaultValue)
+        verify(context).getString(keyIndex)
+        verify(sharedPreferences).getString(keyValue, defaultValueAsString)
+        verifySave(defaultValueAsString)
         verifyPreferenceManager()
     }
 
     @Test
-    fun testInteger() {
+    fun integer() {
         // setup
-        val keyIndex = R.string.app_full_name
         val value = 1111
         val defaultValue = 2222
-        every { context.getString(keyIndex) } returns keyValue
-        every { sharedPreferences.getInt(keyValue, defaultValue) } returns value
+        doReturn(keyValue).whenever(context).getString(keyIndex)
+        doReturn(value).whenever(sharedPreferences).getInt(keyValue, defaultValue)
         // execute
         val actual = fixture.integer(keyIndex, defaultValue)
         // validate
-        assertEquals(value, actual)
-        verify { context.getString(keyIndex) }
-        verify { sharedPreferences.getInt(keyValue, defaultValue) }
+        assertThat(actual).isEqualTo(value)
+        verify(context).getString(keyIndex)
+        verify(sharedPreferences).getInt(keyValue, defaultValue)
         verifyPreferenceManager()
     }
 
     @Test
-    fun testIntegerThrowsException() {
+    fun integerThrowsException() {
         // setup
-        val keyIndex = R.string.app_full_name
         val defaultValue = 2222
-        every { context.getString(keyIndex) } returns keyValue
-        every { sharedPreferences.getInt(keyValue, defaultValue) } throws RuntimeException()
-        withSave(keyIndex, defaultValue.toString())
+        doReturn(keyValue).whenever(context).getString(keyIndex)
+        doThrow(RuntimeException()).whenever(sharedPreferences).getInt(keyValue, defaultValue)
+        withSave(defaultValue.toString())
         // execute
         val actual = fixture.integer(keyIndex, defaultValue)
         // validate
-        assertEquals(defaultValue, actual)
-        verify { context.getString(keyIndex) }
-        verify { sharedPreferences.getInt(keyValue, defaultValue) }
-        verifySave(keyIndex, defaultValue.toString())
+        assertThat(actual).isEqualTo(defaultValue)
+        verify(context).getString(keyIndex)
+        verify(sharedPreferences).getInt(keyValue, defaultValue)
+        verifySave(defaultValue.toString())
         verifyPreferenceManager()
     }
 
     @Test
-    fun testResourceBoolean() {
+    fun resourceBoolean() {
         // setup
         val keyIndex = R.bool.wifi_off_on_exit_default
-        every { context.resources } returns resources
-        every { resources.getBoolean(keyIndex) } returns true
+        doReturn(resources).whenever(context).resources
+        doReturn(true).whenever(resources).getBoolean(keyIndex)
         // execute
         val actual = fixture.resourceBoolean(keyIndex)
         // validate
-        assertTrue(actual)
-        verify { context.resources }
-        verify { resources.getBoolean(keyIndex) }
+        assertThat(actual).isTrue()
+        verify(context).resources
+        verify(resources).getBoolean(keyIndex)
     }
 
     @Test
-    fun testBoolean() {
+    fun boolean() {
         // setup
-        val keyIndex = R.string.app_full_name
-        every { context.getString(keyIndex) } returns keyValue
-        every { sharedPreferences.getBoolean(keyValue, false) } returns true
+        doReturn(keyValue).whenever(context).getString(keyIndex)
+        doReturn(true).whenever(sharedPreferences).getBoolean(keyValue, false)
         // execute
         val actual = fixture.boolean(keyIndex, false)
         // validate
-        assertTrue(actual)
-        verify { context.getString(keyIndex) }
-        verify { sharedPreferences.getBoolean(keyValue, false) }
+        assertThat(actual).isTrue()
+        verify(context).getString(keyIndex)
+        verify(sharedPreferences).getBoolean(keyValue, false)
         verifyPreferenceManager()
     }
 
     @Test
-    fun testBooleanThrowsException() {
+    fun booleanThrowsException() {
         // setup
         val defaultValue = true
-        val keyIndex = R.string.app_full_name
-        every { context.getString(keyIndex) } returns keyValue
-        every { sharedPreferences.getBoolean(keyValue, defaultValue) } throws RuntimeException()
-        withSave(keyIndex, defaultValue)
+        doReturn(keyValue).whenever(context).getString(keyIndex)
+        doThrow(RuntimeException()).whenever(sharedPreferences).getBoolean(keyValue, defaultValue)
+        withSave()
         // execute
         val actual = fixture.boolean(keyIndex, defaultValue)
         // validate
-        assertTrue(actual)
-        verify { context.getString(keyIndex) }
-        verify { sharedPreferences.getBoolean(keyValue, defaultValue) }
-        verifySave(keyIndex, defaultValue)
+        assertThat(actual).isTrue()
+        verify(context).getString(keyIndex)
+        verify(sharedPreferences).getBoolean(keyValue, defaultValue)
+        verifySave()
         verifyPreferenceManager()
     }
 
     @Test
-    fun testRegisterOnSharedPreferenceChangeListener() {
+    fun registerOnSharedPreferenceChangeListener() {
         // setup
-        every { sharedPreferences.registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener) } just runs
+        doNothing().whenever(sharedPreferences)
+            .registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener)
         // execute
         fixture.registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener)
         // verify
-        verify { sharedPreferences.registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener) }
+        verify(sharedPreferences).registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener)
         verifyPreferenceManager()
     }
 
     @Test
-    fun testStringSet() {
+    fun stringSet() {
         // setup
-        val keyIndex = R.string.app_full_name
         val expected = setOf("123")
         val defaultValues = setOf("567")
-        every { context.getString(keyIndex) } returns keyValue
-        every { sharedPreferences.getStringSet(keyValue, defaultValues) } returns expected
+        doReturn(keyValue).whenever(context).getString(keyIndex)
+        doReturn(expected).whenever(sharedPreferences).getStringSet(keyValue, defaultValues)
         // execute
         val actual = fixture.stringSet(keyIndex, defaultValues)
         // validate
-        assertEquals(expected, actual)
-        verify { context.getString(keyIndex) }
-        verify { sharedPreferences.getStringSet(keyValue, defaultValues) }
+        assertThat(actual).isEqualTo(expected)
+        verify(context).getString(keyIndex)
+        verify(sharedPreferences).getStringSet(keyValue, defaultValues)
         verifyPreferenceManager()
     }
 
     @Test
-    fun testStringSetThrowsException() {
+    fun stringSetThrowsException() {
         // setup
-        val keyIndex = R.string.app_full_name
         val expected = setOf("567")
-        every { sharedPreferences.getStringSet(keyValue, expected) } throws RuntimeException()
-        withSave(keyIndex, expected)
+        doThrow(RuntimeException()).whenever(sharedPreferences).getStringSet(keyValue, expected)
+        withSave(expected)
         // execute
         val actual = fixture.stringSet(keyIndex, expected)
         // validate
-        assertEquals(expected, actual)
-        verify { sharedPreferences.getStringSet(keyValue, expected) }
-        verifySave(keyIndex, expected)
+        assertThat(actual).isEqualTo(expected)
+        verify(sharedPreferences).getStringSet(keyValue, expected)
+        verifySave(expected)
         verifyPreferenceManager()
     }
 
     @Test
-    fun testSaveStringSet() {
+    fun saveStringSet() {
         // setup
         val keyIndex = R.string.app_full_name
         val values = setOf("123")
-        withSave(keyIndex, values)
+        withSave(values)
         // execute
         fixture.saveStringSet(keyIndex, values)
         // validate
-        verifySave(keyIndex, values)
+        verifySave(values)
         verifyPreferenceManager()
     }
 
-    private fun verifySave(keyIndex: Int, values: Set<String>) {
-        verify { context.getString(keyIndex) }
-        verify { sharedPreferences.edit() }
-        verify { editor.putStringSet(keyValue, values) }
-        verify { editor.apply() }
+    @Test
+    fun stringWhenGetStringReturnsNull() {
+        // setup
+        val keyValue = "123"
+        val defaultValue = "default value"
+        doReturn(keyValue).whenever(context).getString(keyIndex)
+        doReturn(null).whenever(sharedPreferences).getString(keyValue, defaultValue)
+        // execute
+        val actual = fixture.string(keyIndex, defaultValue)
+        // validate
+        assertThat(actual).isEqualTo(defaultValue)
+        verify(context).getString(keyIndex)
+        verify(sharedPreferences).getString(keyValue, defaultValue)
     }
 
-    private fun verifySave(keyIndex: Int, value: String) {
-        verify { context.getString(keyIndex) }
-        verify { sharedPreferences.edit() }
-        verify { editor.putString(keyValue, value) }
-        verify { editor.apply() }
+
+    private fun verifySave(values: Set<String>) {
+        verify(context).getString(keyIndex)
+        verify(sharedPreferences).edit()
+        verify(editor).putStringSet(keyValue, values)
+        verify(editor).apply()
     }
 
-    private fun verifySave(keyIndex: Int, value: Boolean) {
-        verify { context.getString(keyIndex) }
-        verify { sharedPreferences.edit() }
-        verify { editor.putBoolean(keyValue, value) }
-        verify { editor.apply() }
+    private fun verifySave(value: String) {
+        verify(context).getString(keyIndex)
+        verify(sharedPreferences).edit()
+        verify(editor).putString(keyValue, value)
+        verify(editor).apply()
     }
 
-    private fun withSave(keyIndex: Int, value: String) {
-        every { context.getString(keyIndex) } returns keyValue
-        every { sharedPreferences.edit() } returns editor
-        every { editor.putString(keyValue, value) } returns editor
-        every { editor.apply() } just runs
+    private fun verifySave() {
+        verify(context).getString(keyIndex)
+        verify(sharedPreferences).edit()
+        verify(editor).putBoolean(keyValue, true)
+        verify(editor).apply()
     }
 
-    private fun withSave(keyIndex: Int, value: Boolean) {
-        every { context.getString(keyIndex) } returns keyValue
-        every { sharedPreferences.edit() } returns editor
-        every { editor.putBoolean(keyValue, value) } returns editor
-        every { editor.apply() } just runs
+    private fun withSave(value: String) {
+        doReturn(keyValue).whenever(context).getString(keyIndex)
+        doReturn(editor).whenever(sharedPreferences).edit()
+        doReturn(editor).whenever(editor).putString(keyValue, value)
+        doNothing().whenever(editor).apply()
     }
 
-    private fun withSave(keyIndex: Int, value: Set<String>) {
-        every { context.getString(keyIndex) } returns keyValue
-        every { sharedPreferences.edit() } returns editor
-        every { editor.putStringSet(keyValue, value) } returns editor
-        every { editor.apply() } just runs
+    private fun withSave() {
+        doReturn(keyValue).whenever(context).getString(keyIndex)
+        doReturn(editor).whenever(sharedPreferences).edit()
+        doReturn(editor).whenever(editor).putBoolean(keyValue, true)
+        doNothing().whenever(editor).apply()
+    }
+
+    private fun withSave(value: Set<String>) {
+        doReturn(keyValue).whenever(context).getString(keyIndex)
+        doReturn(editor).whenever(sharedPreferences).edit()
+        doReturn(editor).whenever(editor).putStringSet(keyValue, value)
+        doNothing().whenever(editor).apply()
     }
 
     private fun verifyPreferenceManager() {
-        verify(atLeast = 1) { fixture.defaultSharedPreferences(context) }
+        verify(fixture, atLeastOnce()).defaultSharedPreferences(context)
     }
 
 }

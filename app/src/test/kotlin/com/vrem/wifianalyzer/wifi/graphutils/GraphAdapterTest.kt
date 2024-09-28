@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
 package com.vrem.wifianalyzer.wifi.graphutils
 
 import com.jjoe64.graphview.GraphView
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
-import com.nhaarman.mockitokotlin2.whenever
 import com.vrem.wifianalyzer.MainContextHelper
 import com.vrem.wifianalyzer.wifi.model.WiFiData
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
-import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoMoreInteractions
+import org.mockito.kotlin.whenever
 
 class GraphAdapterTest {
     private val graphViewNotifier: GraphViewNotifier = mock()
@@ -43,7 +43,7 @@ class GraphAdapterTest {
     }
 
     @Test
-    fun testUpdate() {
+    fun update() {
         // execute
         fixture.update(wiFiData)
         // validate
@@ -51,14 +51,14 @@ class GraphAdapterTest {
     }
 
     @Test
-    fun testGraphViews() {
+    fun graphViews() {
         // setup
         whenever(graphViewNotifier.graphView()).thenReturn(graphView)
         // execute
         val actual = fixture.graphViews()
         // validate
-        assertEquals(1, actual.size)
-        assertEquals(graphView, actual[0])
+        assertThat(actual).hasSize(1)
+        assertThat(actual[0]).isEqualTo(graphView)
         verify(graphViewNotifier).graphView()
     }
 }

@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,44 +17,55 @@
  */
 package com.vrem.util
 
-import org.junit.Assert.assertEquals
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
+import java.util.Locale
 
 class StringUtilsTest {
 
     @Test
-    fun testSpecialTrim() {
+    fun specialTrim() {
         // setup
         val expected = "ABS ADF"
         val value = "    ABS    ADF    "
         // execute
         val actual: String = value.specialTrim()
         // verify
-        assertEquals(expected, actual)
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun testToHtmlSmall() {
+    fun toCapitalize() {
         // setup
-        val color = 10
-        val text = "ThisIsText"
-        val expected = "<font color='$color'><small>$text</small></font>"
+        val expected = "Value"
+        val value = "value"
         // execute
-        val actual: String = text.toHtml(color, true)
-        // validate
-        assertEquals(expected, actual)
+        val actual: String = value.toCapitalize(Locale.US)
+        // verify
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun testToHtml() {
+    fun nullToEmptyWhenNull() {
         // setup
-        val color = 10
-        val text = "ThisIsText"
-        val expected = "<font color='$color'><strong>$text</strong></font>"
+        val expected = String.EMPTY
+        val value = null
         // execute
-        val actual: String = text.toHtml(color, false)
-        // validate
-        assertEquals(expected, actual)
+        val actual: String = String.nullToEmpty(value)
+        // verify
+        assertThat(actual).isEqualTo(expected)
     }
+
+    @Test
+    fun nullToEmpty() {
+        // setup
+        val expected = "value"
+        val value = "value"
+        // execute
+        val actual: String = String.nullToEmpty(value)
+        // verify
+        assertThat(actual).isEqualTo(expected)
+    }
+
 
 }

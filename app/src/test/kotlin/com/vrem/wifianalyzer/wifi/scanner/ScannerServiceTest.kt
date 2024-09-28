@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,35 +18,42 @@
 package com.vrem.wifianalyzer.wifi.scanner
 
 import android.os.Handler
-import com.nhaarman.mockitokotlin2.*
+import com.vrem.wifianalyzer.MainActivity
 import com.vrem.wifianalyzer.settings.Settings
 import com.vrem.wifianalyzer.wifi.manager.WiFiManagerWrapper
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
-import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verifyNoMoreInteractions
 
 class ScannerServiceTest {
     private val wiFiManagerWrapper: WiFiManagerWrapper = mock()
+    private val mainActivity: MainActivity = mock()
     private val handler: Handler = mock()
     private val settings: Settings = mock()
 
     @After
     fun tearDown() {
         verifyNoMoreInteractions(wiFiManagerWrapper)
+        verifyNoMoreInteractions(mainActivity)
         verifyNoMoreInteractions(handler)
         verifyNoMoreInteractions(settings)
     }
 
     @Test
-    fun testMakeScannerService() {
+    fun makeScannerService() {
         // setup
-        val delayInitial = 1L
         // execute
-        val actual = makeScannerService(wiFiManagerWrapper, handler, settings)
+        val actual = makeScannerService(mainActivity, wiFiManagerWrapper, handler, settings) as Scanner
         // validate
-        assertTrue(actual is Scanner)
-        assertTrue(actual.running())
-        verify(handler).removeCallbacks(any())
-        verify(handler).postDelayed(any(), eq(delayInitial))
+        assertThat(actual.wiFiManagerWrapper).isEqualTo(wiFiManagerWrapper)
+        assertThat(actual.settings).isEqualTo(settings)
+        assertThat(actual.transformer).isNotNull()
+        assertThat(actual.periodicScan).isNotNull()
+        assertThat(actual.scannerCallback).isNotNull()
+        assertThat(actual.scanResultsReceiver).isNotNull()
+        assertThat(actual.running()).isFalse()
     }
+
 }

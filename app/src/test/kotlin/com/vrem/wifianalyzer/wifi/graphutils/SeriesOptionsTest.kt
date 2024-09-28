@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,12 +19,12 @@ package com.vrem.wifianalyzer.wifi.graphutils
 
 import com.jjoe64.graphview.series.LineGraphSeries
 import com.jjoe64.graphview.series.TitleLineGraphSeries
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
-import com.nhaarman.mockitokotlin2.whenever
 import org.junit.After
 import org.junit.Test
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoMoreInteractions
+import org.mockito.kotlin.whenever
 
 class SeriesOptionsTest {
     private val graphColors: GraphColors = mock()
@@ -41,7 +41,7 @@ class SeriesOptionsTest {
     }
 
     @Test
-    fun testRemoveSeries() {
+    fun removeSeries() {
         // setup
         val color = 10
         whenever(lineGraphSeries.color).thenReturn(color)
@@ -53,7 +53,7 @@ class SeriesOptionsTest {
     }
 
     @Test
-    fun testHighlightConnectedLineGraphSeriesSetsConnectedThickness() {
+    fun highlightConnectedLineGraphSeriesSetsConnectedThickness() {
         // execute
         fixture.highlightConnected(lineGraphSeries, true)
         // validate
@@ -61,7 +61,7 @@ class SeriesOptionsTest {
     }
 
     @Test
-    fun testHighlightConnectedLineGraphSeriesSetsNotConnectedThickness() {
+    fun highlightConnectedLineGraphSeriesSetsNotConnectedThickness() {
         // execute
         fixture.highlightConnected(lineGraphSeries, false)
         // validate
@@ -69,7 +69,7 @@ class SeriesOptionsTest {
     }
 
     @Test
-    fun testHighlightConnectedTitleLineGraphSeriesSetsConnectedThickness() {
+    fun highlightConnectedTitleLineGraphSeriesSetsConnectedThickness() {
         // execute
         fixture.highlightConnected(titleLineGraphSeries, true)
         // validate
@@ -78,7 +78,7 @@ class SeriesOptionsTest {
     }
 
     @Test
-    fun testHighlightConnectedTitleLineGraphSeriesSetsNotConnectedThickness() {
+    fun highlightConnectedTitleLineGraphSeriesSetsNotConnectedThickness() {
         // execute
         fixture.highlightConnected(titleLineGraphSeries, false)
         // validate
@@ -87,7 +87,7 @@ class SeriesOptionsTest {
     }
 
     @Test
-    fun testSetSeriesColorForLineGraphSeries() {
+    fun setSeriesColorForLineGraphSeries() {
         // setup
         whenever(graphColors.graphColor()).thenReturn(graphColor)
         // execute
@@ -99,7 +99,7 @@ class SeriesOptionsTest {
     }
 
     @Test
-    fun testSetSeriesColorForTitleLineGraphSeries() {
+    fun setSeriesColorForTitleLineGraphSeries() {
         // setup
         whenever(graphColors.graphColor()).thenReturn(graphColor)
         // execute
@@ -111,7 +111,7 @@ class SeriesOptionsTest {
     }
 
     @Test
-    fun testDrawBackgroundForLineGraphSeries() {
+    fun drawBackgroundForLineGraphSeries() {
         // execute
         fixture.drawBackground(lineGraphSeries, true)
         // validate

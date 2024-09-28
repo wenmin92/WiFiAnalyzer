@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,31 +20,49 @@ package com.vrem.wifianalyzer.permission
 import android.app.Activity
 import android.content.DialogInterface
 import android.os.Build
+import android.view.View
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
+import com.vrem.wifianalyzer.R
 import com.vrem.wifianalyzer.RobolectricUtil
 import com.vrem.wifianalyzer.permission.PermissionDialog.CancelClick
 import com.vrem.wifianalyzer.permission.PermissionDialog.OkClick
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoMoreInteractions
 import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
-@Config(sdk = [Build.VERSION_CODES.Q])
+@Config(sdk = [Build.VERSION_CODES.UPSIDE_DOWN_CAKE])
 class PermissionDialogTest {
     private val activity = RobolectricUtil.INSTANCE.activity
     private val fixture = PermissionDialog(activity)
 
     @Test
-    fun testShow() {
+    fun show() {
         // execute
-        fixture.show()
+        val actual = fixture.show()
+        //
+        assertThat(actual).isNotNull()
+        assertThat(actual?.findViewById<View>(R.id.throttling)?.isVisible).isTrue()
     }
 
     @Test
-    fun testOkClick() {
+    @Config(sdk = [Build.VERSION_CODES.O_MR1])
+    fun showAndroidO() {
+        // execute
+        val actual = fixture.show()
+        //
+        assertThat(actual).isNotNull()
+        assertThat(actual?.findViewById<View>(R.id.throttling)?.isGone).isTrue()
+    }
+
+    @Test
+    fun okClick() {
         // setup
         val activity: Activity = mock()
         val dialog: DialogInterface = mock()
@@ -59,7 +77,7 @@ class PermissionDialogTest {
     }
 
     @Test
-    fun testCancelClick() {
+    fun cancelClick() {
         // setup
         val activity: Activity = mock()
         val dialog: DialogInterface = mock()

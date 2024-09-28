@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,73 +20,78 @@ package com.vrem.wifianalyzer.navigation.items
 import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.view.MenuItem
 import android.view.View
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.vrem.wifianalyzer.MainActivity
-import com.vrem.wifianalyzer.MainContextMockkHelper
+import com.vrem.wifianalyzer.MainContextHelper
 import com.vrem.wifianalyzer.export.Export
 import com.vrem.wifianalyzer.navigation.NavigationMenu
 import com.vrem.wifianalyzer.wifi.model.WiFiConnection
 import com.vrem.wifianalyzer.wifi.model.WiFiData
 import com.vrem.wifianalyzer.wifi.model.WiFiDetail
-import io.mockk.*
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.kotlin.*
+import org.robolectric.annotation.Config
 
+@RunWith(AndroidJUnit4::class)
+@Config(sdk = [Build.VERSION_CODES.UPSIDE_DOWN_CAKE])
 class ExportItemTest {
-    private val export: Export = mockk()
-    private val mainActivity: MainActivity = mockk()
-    private val menuItem: MenuItem = mockk()
-    private val intent: Intent = mockk()
-    private val packageManager: PackageManager = mockk()
-    private val componentName: ComponentName = mockk()
-    private val scanner = MainContextMockkHelper.INSTANCE.scannerService
+    private val export: Export = mock()
+    private val mainActivity: MainActivity = mock()
+    private val menuItem: MenuItem = mock()
+    private val intent: Intent = mock()
+    private val packageManager: PackageManager = mock()
+    private val componentName: ComponentName = mock()
+    private val scanner = MainContextHelper.INSTANCE.scannerService
 
     private val fixture = ExportItem(export)
 
     @After
     fun tearDown() {
-        confirmVerified(export)
-        confirmVerified(mainActivity)
-        confirmVerified(menuItem)
-        confirmVerified(intent)
-        confirmVerified(packageManager)
-        confirmVerified(componentName)
-        confirmVerified(scanner)
-        MainContextMockkHelper.INSTANCE.restore()
+        verifyNoMoreInteractions(export)
+        verifyNoMoreInteractions(mainActivity)
+        verifyNoMoreInteractions(menuItem)
+        verifyNoMoreInteractions(intent)
+        verifyNoMoreInteractions(packageManager)
+        verifyNoMoreInteractions(componentName)
+        verifyNoMoreInteractions(scanner)
+        MainContextHelper.INSTANCE.restore()
     }
 
     @Test
-    fun testActivate() {
+    fun activate() {
         // setup
         val wiFiData: WiFiData = withWiFiData()
-        every { scanner.wiFiData() } returns wiFiData
-        every { export.export(mainActivity, wiFiData.wiFiDetails) } returns intent
-        every { mainActivity.startActivity(intent) } just runs
-        every { mainActivity.packageManager } returns packageManager
-        every { intent.resolveActivity(packageManager) } returns componentName
+        doReturn(wiFiData).whenever(scanner).wiFiData()
+        doReturn(intent).whenever(export).export(mainActivity, wiFiData.wiFiDetails)
+        doNothing().whenever(mainActivity).startActivity(intent)
+        doReturn(packageManager).whenever(mainActivity).packageManager
+        doReturn(componentName).whenever(intent).resolveActivity(packageManager)
         // execute
         fixture.activate(mainActivity, menuItem, NavigationMenu.EXPORT)
         // validate
-        verify { scanner.wiFiData() }
-        verify { mainActivity.packageManager }
-        verify { intent.resolveActivity(packageManager) }
-        verify { mainActivity.startActivity(intent) }
-        verify { export.export(mainActivity, wiFiData.wiFiDetails) }
+        verify(scanner).wiFiData()
+        verify(mainActivity).packageManager
+        verify(intent).resolveActivity(packageManager)
+        verify(mainActivity).startActivity(intent)
+        verify(export).export(mainActivity, wiFiData.wiFiDetails)
     }
 
     @Test
-    fun testRegistered() {
+    fun registered() {
         // execute & validate
-        assertFalse(fixture.registered)
+        assertThat(fixture.registered).isFalse()
     }
 
     @Test
-    fun testVisibility() {
+    fun visibility() {
         // execute & validate
-        assertEquals(View.GONE, fixture.visibility)
+        assertThat(fixture.visibility).isEqualTo(View.GONE)
     }
 
     private fun withWiFiData(): WiFiData {

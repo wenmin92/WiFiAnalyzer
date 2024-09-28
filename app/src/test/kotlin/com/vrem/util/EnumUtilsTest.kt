@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,94 +17,93 @@
  */
 package com.vrem.util
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class EnumUtilsTest {
 
     @Test
-    fun testOrdinals() {
+    fun ordinals() {
         // setup
-        val expected = TestObject.values()
+        val expected = TestObject.entries
         // execute
-        val actual = ordinals(TestObject.values())
+        val actual = ordinals(TestObject.entries)
         // validate
-        assertEquals(expected.size, actual.size)
+        assertThat(actual).hasSize(expected.size)
         expected.forEach {
-            assertTrue(actual.contains("" + it.ordinal))
+            assertThat(actual).contains("" + it.ordinal)
         }
     }
 
     @Test
-    fun testFindSetUsingOrdinals() {
+    fun findSetUsingOrdinals() {
         // setup
-        val expected = TestObject.values().toSet()
+        val expected = TestObject.entries.toSet()
         val ordinals: Set<String> = setOf("" + TestObject.VALUE1.ordinal, "" + TestObject.VALUE2.ordinal, "" + TestObject.VALUE3.ordinal)
         // execute
-        val actual = findSet(TestObject.values(), ordinals, TestObject.VALUE2)
+        val actual = findSet(TestObject.entries, ordinals, TestObject.VALUE2)
         // validate
         validate(expected, actual)
     }
 
     @Test
-    fun testFindSetUsingOrdinalsWithEmptyInput() {
+    fun findSetUsingOrdinalsWithEmptyInput() {
         // setup
-        val expected = TestObject.values().toSet()
+        val expected = TestObject.entries.toSet()
         // execute
-        val actual = findSet(TestObject.values(), setOf(), TestObject.VALUE2)
+        val actual = findSet(TestObject.entries, setOf(), TestObject.VALUE2)
         // validate
         validate(expected, actual)
     }
 
     @Test
-    fun testFindSetUsingOrdinalsWithInvalidInput() {
+    fun findSetUsingOrdinalsWithInvalidInput() {
         // setup
         val expected = TestObject.VALUE2
         val ordinals: Set<String> = setOf("-1")
         // execute
-        val actual = findSet(TestObject.values(), ordinals, expected)
+        val actual = findSet(TestObject.entries, ordinals, expected)
         // validate
-        assertEquals(1, actual.size)
-        assertTrue(actual.contains(expected))
+        assertThat(actual).hasSize(1)
+        assertThat(actual).contains(expected)
     }
 
     @Test
-    fun testFindOneUsingIndex() {
-        TestObject.values().forEach {
+    fun findOneUsingIndex() {
+        TestObject.entries.forEach {
             // execute
-            val actual = findOne(TestObject.values(), it.ordinal, TestObject.VALUE2)
+            val actual = findOne(TestObject.entries, it.ordinal, TestObject.VALUE2)
             // validate
-            assertEquals(it, actual)
+            assertThat(actual).isEqualTo(it)
         }
     }
 
     @Test
-    fun testFindOneUsingInvalidLowIndex() {
+    fun findOneUsingInvalidLowIndex() {
         // setup
         val index = -1
         val expected = TestObject.VALUE3
         // execute
-        val actual = findOne(TestObject.values(), index, expected)
+        val actual = findOne(TestObject.entries, index, expected)
         // validate
-        assertEquals(expected, actual)
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun testFindOneUsingInvalidHighIndex() {
+    fun findOneUsingInvalidHighIndex() {
         // setup
-        val index = TestObject.values().size
+        val index = TestObject.entries.size
         val expected = TestObject.VALUE3
         // execute
-        val actual = findOne(TestObject.values(), index, expected)
+        val actual = findOne(TestObject.entries, index, expected)
         // validate
-        assertEquals(expected, actual)
+        assertThat(actual).isEqualTo(expected)
     }
 
     private fun validate(expected: Collection<TestObject>, actual: Collection<TestObject>) {
-        assertEquals(expected.size, actual.size)
+        assertThat(actual).hasSize(expected.size)
         expected.forEach {
-            assertTrue(actual.contains(it))
+            assertThat(actual).contains(it)
         }
     }
 

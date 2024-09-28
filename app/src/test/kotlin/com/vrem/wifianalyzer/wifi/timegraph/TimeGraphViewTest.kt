@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,6 @@ import android.os.Build
 import android.view.View
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.jjoe64.graphview.GraphView
-import com.nhaarman.mockitokotlin2.*
 import com.vrem.wifianalyzer.MainContext
 import com.vrem.wifianalyzer.MainContextHelper
 import com.vrem.wifianalyzer.RobolectricUtil
@@ -36,14 +35,15 @@ import com.vrem.wifianalyzer.wifi.model.WiFiData
 import com.vrem.wifianalyzer.wifi.model.WiFiDetail
 import com.vrem.wifianalyzer.wifi.predicate.Predicate
 import com.vrem.wifianalyzer.wifi.predicate.truePredicate
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
-import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.*
 import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
-@Config(sdk = [Build.VERSION_CODES.Q])
+@Config(sdk = [Build.VERSION_CODES.UPSIDE_DOWN_CAKE])
 class TimeGraphViewTest {
     private val dataManager: DataManager = mock()
     private val graphViewWrapper: GraphViewWrapper = mock()
@@ -57,7 +57,7 @@ class TimeGraphViewTest {
     }
 
     @Test
-    fun testUpdate() {
+    fun update() {
         // setup
         val settings = MainContextHelper.INSTANCE.settings
         val wiFiDetails: List<WiFiDetail> = listOf()
@@ -87,35 +87,35 @@ class TimeGraphViewTest {
     }
 
     @Test
-    fun testGraphView() {
+    fun graphView() {
         // setup
         val expected: GraphView = mock()
         whenever(graphViewWrapper.graphView).thenReturn(expected)
         // execute
         val actual = fixture.graphView()
         // validate
-        Assert.assertEquals(expected, actual)
+        assertThat(actual).isEqualTo(expected)
         verify(graphViewWrapper).graphView
         verifyNoMoreInteractions(expected)
     }
 
     @Test
-    fun testMakeGraphView() {
+    fun makeGraphViewShouldNotBeNull() {
         // setup
         RobolectricUtil.INSTANCE.activity
         // execute
         val actual = makeGraphView(MainContext.INSTANCE, 10, ThemeStyle.DARK)
         // validate
-        Assert.assertNotNull(actual)
+        assertThat(actual).isNotNull()
     }
 
     @Test
-    fun testMakeGraphViewWrapper() {
+    fun makeGraphViewWrapperShouldNotBeNull() {
         // setup
         RobolectricUtil.INSTANCE.activity
         // execute
         val actual = makeGraphViewWrapper()
         // validate
-        Assert.assertNotNull(actual)
+        assertThat(actual).isNotNull()
     }
 }

@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,8 +17,7 @@
  */
 package com.vrem.wifianalyzer.wifi.model
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import java.text.DecimalFormat
 
@@ -26,7 +25,7 @@ class WiFiUtilsTest {
     private val decimalFormat = DecimalFormat("#.##")
 
     @Test
-    fun testCalculateDistance() {
+    fun calculateDistance() {
         validate(2437, -36, "0.62")
         validate(2437, -42, "1.23")
         validate(2432, -88, "246.34")
@@ -34,34 +33,34 @@ class WiFiUtilsTest {
     }
 
     private fun validate(frequency: Int, level: Int, expected: String) {
-        assertEquals(expected, decimalFormat.format(calculateDistance(frequency, level)))
+        assertThat(decimalFormat.format(calculateDistance(frequency, level))).isEqualTo(expected)
     }
 
     @Test
-    fun testCalculateSignalLevel() {
-        assertEquals(0, calculateSignalLevel(-110, 5))
-        assertEquals(0, calculateSignalLevel(-89, 5))
-        assertEquals(1, calculateSignalLevel(-88, 5))
-        assertEquals(1, calculateSignalLevel(-78, 5))
-        assertEquals(2, calculateSignalLevel(-77, 5))
-        assertEquals(2, calculateSignalLevel(-67, 5))
-        assertEquals(3, calculateSignalLevel(-66, 5))
-        assertEquals(3, calculateSignalLevel(-56, 5))
-        assertEquals(4, calculateSignalLevel(-55, 5))
-        assertEquals(4, calculateSignalLevel(0, 5))
+    fun calculateSignalLevel() {
+        assertThat(calculateSignalLevel(-110, 5)).isEqualTo(0)
+        assertThat(calculateSignalLevel(-89, 5)).isEqualTo(0)
+        assertThat(calculateSignalLevel(-88, 5)).isEqualTo(1)
+        assertThat(calculateSignalLevel(-78, 5)).isEqualTo(1)
+        assertThat(calculateSignalLevel(-77, 5)).isEqualTo(2)
+        assertThat(calculateSignalLevel(-67, 5)).isEqualTo(2)
+        assertThat(calculateSignalLevel(-66, 5)).isEqualTo(3)
+        assertThat(calculateSignalLevel(-56, 5)).isEqualTo(3)
+        assertThat(calculateSignalLevel(-55, 5)).isEqualTo(4)
+        assertThat(calculateSignalLevel(0, 5)).isEqualTo(4)
     }
 
     @Test
-    fun testConvertIpAddress() {
-        assertEquals("21.205.91.7", convertIpAddress(123456789))
-        assertEquals("1.0.0.0", convertIpAddress(1))
-        assertTrue(convertIpAddress(0).isEmpty())
-        assertTrue(convertIpAddress(-1).isEmpty())
+    fun convertIpAddress() {
+        assertThat(convertIpV4Address(123456789)).isEqualTo("21.205.91.7")
+        assertThat(convertIpV4Address(1)).isEqualTo("1.0.0.0")
+        assertThat(convertIpV4Address(0)).isEmpty()
+        assertThat(convertIpV4Address(-1)).isEmpty()
     }
 
     @Test
-    fun testConvertSSID() {
-        assertEquals("SSID", convertSSID("\"SSID\""))
-        assertEquals("SSID", convertSSID("SSID"))
+    fun convertSSID() {
+        assertThat(convertSSID("\"SSID\"")).isEqualTo("SSID")
+        assertThat(convertSSID("SSID")).isEqualTo("SSID")
     }
 }

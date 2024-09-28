@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,7 @@
  */
 package com.vrem.wifianalyzer.wifi.model
 
+import android.annotation.SuppressLint
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import com.vrem.wifianalyzer.R
@@ -31,16 +32,15 @@ enum class Strength(@DrawableRes val imageResource: Int, @ColorRes val colorReso
     fun weak(): Boolean = ZERO == this
 
     companion object {
-        const val colorResourceDefault: Int = R.color.regular
+        @SuppressLint("NonConstantResourceId")
+        const val COLOR_RESOURCE_DEFAULT: Int = R.color.regular
 
         fun calculate(level: Int): Strength {
-            val enumValues: Array<Strength> = enumValues()
-            return enumValues[calculateSignalLevel(level, enumValues.size)]
+            return entries[calculateSignalLevel(level, entries.size)]
         }
 
         fun reverse(strength: Strength): Strength {
-            val enumValues: Array<Strength> = enumValues()
-            return enumValues[enumValues.size - strength.ordinal - 1]
+            return entries[entries.size - strength.ordinal - 1]
         }
     }
 

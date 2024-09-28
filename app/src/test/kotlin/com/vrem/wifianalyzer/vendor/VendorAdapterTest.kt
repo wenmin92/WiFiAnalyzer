@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,22 +22,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.nhaarman.mockitokotlin2.*
 import com.vrem.wifianalyzer.MainActivity
 import com.vrem.wifianalyzer.MainContextHelper.INSTANCE
 import com.vrem.wifianalyzer.R
 import com.vrem.wifianalyzer.RobolectricUtil
 import com.vrem.wifianalyzer.vendor.model.VendorService
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.*
 import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
-@Config(sdk = [Build.VERSION_CODES.Q])
+@Config(sdk = [Build.VERSION_CODES.UPSIDE_DOWN_CAKE])
 class VendorAdapterTest {
     private val vendorName1 = "N1"
     private val vendorName2 = "N2"
@@ -64,17 +63,17 @@ class VendorAdapterTest {
     }
 
     @Test
-    fun testConstructor() {
+    fun constructor() {
         // validate
-        assertEquals(vendors.size, fixture.count)
-        assertEquals(vendors[0], fixture.getItem(0))
-        assertEquals(vendors[1], fixture.getItem(1))
-        assertEquals(vendors[2], fixture.getItem(2))
+        assertThat(fixture.count).isEqualTo(vendors.size)
+        assertThat(fixture.getItem(0)).isEqualTo(vendors[0])
+        assertThat(fixture.getItem(1)).isEqualTo(vendors[1])
+        assertThat(fixture.getItem(2)).isEqualTo(vendors[2])
         verify(vendorService).findVendors()
     }
 
     @Test
-    fun testGetView() {
+    fun getView() {
         // setup
         val expected = macs.joinToString(separator = ", ")
         val viewGroup = mainActivity.findViewById<ViewGroup>(android.R.id.content)
@@ -82,16 +81,16 @@ class VendorAdapterTest {
         // execute
         val actual = fixture.getView(1, null, viewGroup)
         // validate
-        assertNotNull(actual)
-        assertEquals(vendorName2, actual.findViewById<TextView>(R.id.vendor_name).text.toString())
-        assertEquals(expected, actual.findViewById<TextView>(R.id.vendor_macs).text.toString())
+        assertThat(actual).isNotNull()
+        assertThat(actual.findViewById<TextView>(R.id.vendor_name).text.toString()).isEqualTo(vendorName2)
+        assertThat(actual.findViewById<TextView>(R.id.vendor_macs).text.toString()).isEqualTo(expected)
         verify(vendorService).findMacAddresses(vendorName2)
         verify(vendorService, never()).findVendorName(vendorName1)
         verify(vendorService, never()).findVendorName(vendorName3)
     }
 
     @Test
-    fun testUpdate() {
+    fun update() {
         // setup
         fixture = spy(VendorAdapter(mainActivity, vendorService))
         whenever(vendorService.findVendors(vendorName2)).thenReturn(vendors)
@@ -106,7 +105,7 @@ class VendorAdapterTest {
     }
 
     @Test
-    fun testGetViewWhenRootViewNotNull() {
+    fun getViewWhenRootViewNotNull() {
         // setup
         val rootView: View = mock()
         val vendorNameView: TextView = mock()
@@ -119,7 +118,7 @@ class VendorAdapterTest {
         // execute
         val actual = fixture.getView(1, rootView, viewGroup)
         // validate
-        assertNotNull(actual)
+        assertThat(actual).isNotNull()
         verify(vendorNameView).text = vendorName2
         verify(vendorMacsView).text = expected
         verify(rootView).findViewById<TextView>(R.id.vendor_name)

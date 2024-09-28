@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,12 +17,13 @@
  */
 package com.vrem.wifianalyzer
 
-import com.nhaarman.mockitokotlin2.mock
+import com.vrem.wifianalyzer.permission.PermissionService
 import com.vrem.wifianalyzer.settings.Settings
 import com.vrem.wifianalyzer.vendor.model.VendorService
 import com.vrem.wifianalyzer.wifi.filter.adapter.FiltersAdapter
 import com.vrem.wifianalyzer.wifi.manager.WiFiManagerWrapper
 import com.vrem.wifianalyzer.wifi.scanner.ScannerService
+import org.mockito.kotlin.mock
 
 enum class MainContextHelper {
     INSTANCE;
@@ -50,6 +51,17 @@ enum class MainContextHelper {
             }
             mainContext.vendorService = mock()
             return mainContext.vendorService
+        }
+
+    val permissionService: PermissionService
+        get() {
+            try {
+                saved[PermissionService::class.java] = mainContext.permissionService
+            } catch (e: UninitializedPropertyAccessException) {
+                /* do nothing */
+            }
+            mainContext.permissionService = mock()
+            return mainContext.permissionService
         }
 
     val scannerService: ScannerService

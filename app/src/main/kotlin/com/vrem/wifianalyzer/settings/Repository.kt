@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,29 +23,19 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import androidx.preference.PreferenceManager
 import com.vrem.wifianalyzer.R
 
-inline fun SharedPreferences.edit(func: SharedPreferences.Editor.() -> Unit) {
-    val editor: SharedPreferences.Editor = edit()
-    editor.func()
-    editor.apply()
-}
-
 class Repository(private val context: Context) {
 
     fun initializeDefaultValues(): Unit = defaultValues(context, R.xml.settings, false)
 
     fun registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener: OnSharedPreferenceChangeListener): Unit =
-            sharedPreferences().registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener)
+        sharedPreferences().registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener)
 
     fun save(key: Int, value: Int): Unit = save(key, value.toString())
 
     fun save(key: Int, value: String): Unit = sharedPreferences().edit { putString(context.getString(key), value) }
 
     fun stringAsInteger(key: Int, defaultValue: Int): Int =
-            try {
-                string(key, defaultValue.toString()).toInt()
-            } catch (e: Exception) {
-                defaultValue
-            }
+        string(key, defaultValue.toString()).toInt()
 
     fun string(key: Int, defaultValue: String): String {
         val keyValue: String = context.getString(key)
@@ -90,13 +80,13 @@ class Repository(private val context: Context) {
     }
 
     fun saveStringSet(key: Int, values: Set<String>): Unit =
-            sharedPreferences().edit { putStringSet(context.getString(key), values) }
+        sharedPreferences().edit { putStringSet(context.getString(key), values) }
 
-    fun defaultValues(context: Context?, resId: Int, readAgain: Boolean): Unit =
-            PreferenceManager.setDefaultValues(context, resId, readAgain)
+    fun defaultValues(context: Context, resId: Int, readAgain: Boolean): Unit =
+        PreferenceManager.setDefaultValues(context, resId, readAgain)
 
-    fun defaultSharedPreferences(context: Context?): SharedPreferences =
-            PreferenceManager.getDefaultSharedPreferences(context)
+    fun defaultSharedPreferences(context: Context): SharedPreferences =
+        PreferenceManager.getDefaultSharedPreferences(context)
 
     private fun sharedPreferences(): SharedPreferences = defaultSharedPreferences(context)
 

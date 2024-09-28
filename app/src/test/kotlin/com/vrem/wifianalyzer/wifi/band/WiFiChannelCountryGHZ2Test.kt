@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,10 +17,9 @@
  */
 package com.vrem.wifianalyzer.wifi.band
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import java.util.*
+import java.util.SortedSet
 
 class WiFiChannelCountryGHZ2Test {
     private val channelsSet1: SortedSet<Int> = sortedSetOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)
@@ -28,20 +27,20 @@ class WiFiChannelCountryGHZ2Test {
     private val fixture = WiFiChannelCountryGHZ2()
 
     @Test
-    fun testChannelsForUSAndSimilar() {
+    fun channelsForUSAndSimilar() {
         listOf("AS", "CA", "CO", "DO", "FM", "GT", "GU", "MP", "MX", "PA", "PR", "UM", "US", "UZ", "VI")
-                .forEach { validateChannels(channelsSet1, fixture.findChannels(it)) }
+            .forEach { validateChannels(channelsSet1, fixture.findChannels(it)) }
     }
 
     @Test
-    fun testChannelsForWorld() {
+    fun channelsForWorld() {
         listOf("GB", "XYZ", "AU", "AE")
-                .forEach { validateChannels(channelsSet2, fixture.findChannels(it)) }
+            .forEach { validateChannels(channelsSet2, fixture.findChannels(it)) }
     }
 
     private fun validateChannels(expected: SortedSet<Int>, actual: SortedSet<Int>) {
-        assertEquals(expected.size, actual.size)
-        assertTrue(actual.containsAll(expected))
+        assertThat(actual).hasSize(expected.size)
+        assertThat(actual).containsAll(expected)
     }
 
 }

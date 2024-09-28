@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,17 +17,10 @@
  */
 package com.vrem.util
 
-import java.util.*
+import java.util.Locale
 
 val String.Companion.EMPTY: String get() = ""
 val String.Companion.SPACE_SEPARATOR: String get() = " "
-
-fun String.specialTrim(): String =
-        this.trim { it <= ' ' }.replace(" +".toRegex(), String.SPACE_SEPARATOR)
-
-fun String.toHtml(color: Int, small: Boolean): String =
-        "<font color='" + color + "'><" + (if (small) "small" else "strong") +
-                ">" + this + "</" + (if (small) "small" else "strong") + "></font>"
-
-fun String.toCapitalize(locale: Locale): String =
-        this.replaceFirstChar { word -> word.uppercase(locale) }
+fun String.Companion.nullToEmpty(value: String?): String = value ?: String.EMPTY
+fun String.specialTrim(): String = this.trim { it <= ' ' }.replace(" +".toRegex(), String.SPACE_SEPARATOR)
+fun String.toCapitalize(locale: Locale): String = this.replaceFirstChar { word -> word.uppercase(locale) }

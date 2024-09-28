@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,9 +26,10 @@ import com.vrem.wifianalyzer.R
 
 @OpenClass
 class NavigationMenuController(
-        navigationMenuControl: NavigationMenuControl,
-        val navigationView: NavigationView = navigationMenuControl.findViewById(R.id.nav_drawer),
-        val bottomNavigationView: BottomNavigationView = navigationMenuControl.findViewById(R.id.nav_bottom)) {
+    navigationMenuControl: NavigationMenuControl,
+    val navigationView: NavigationView = navigationMenuControl.findViewById(R.id.nav_drawer),
+    val bottomNavigationView: BottomNavigationView = navigationMenuControl.findViewById(R.id.nav_bottom)
+) {
 
     private lateinit var currentNavigationMenu: NavigationMenu
 
@@ -55,9 +56,12 @@ class NavigationMenuController(
     }
 
     init {
-        NavigationGroup.values().forEach { it.populateMenuItems(navigationView.menu) }
+        NavigationGroup.entries.forEach { it.populateMenuItems(navigationView.menu) }
+        @Suppress("LeakingThis")
         navigationView.setNavigationItemSelectedListener(navigationMenuControl)
+        @Suppress("LeakingThis")
         NavigationGroup.GROUP_FEATURE.populateMenuItems(bottomNavigationView.menu)
+        @Suppress("LeakingThis")
         bottomNavigationView.setOnItemSelectedListener(navigationMenuControl)
     }
 }

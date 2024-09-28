@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@ package com.vrem.wifianalyzer.wifi.scanner
 import android.net.wifi.ScanResult
 import android.net.wifi.WifiInfo
 import com.vrem.annotation.OpenClass
+import com.vrem.util.ssid
 import com.vrem.wifianalyzer.MainContext
 
 internal class CacheResult(val scanResult: ScanResult, val average: Int)
@@ -29,25 +30,25 @@ internal data class CacheKey(val bssid: String, val ssid: String)
 @OpenClass
 internal class Cache {
     private val scanResults: ArrayDeque<List<ScanResult>> = ArrayDeque(MAXIMUM)
-    private var wifiInfo: WifiInfo? = null
     private var count: Int = COUNT_MIN
+    var wifiInfo: WifiInfo? = null
 
     fun scanResults(): List<CacheResult> =
-            combineCache()
-                    .groupingBy { CacheKey(it.BSSID, it.SSID) }
-                    .aggregate { _, accumulator: CacheResult?, element, first ->
-                        CacheResult(element, calculate(first, element, accumulator))
-                    }
-                    .values
-                    .toList()
+        combineCache()
+            .groupingBy { CacheKey(it.BSSID, it.ssid()) }
+            .aggregate { _, accumulator: CacheResult?, element, first ->
+                CacheResult(element, calculate(first, element, accumulator))
+            }
+            .values
+            .toList()
 
-    fun add(scanResults: List<ScanResult>, wifiInfo: WifiInfo?) {
+    fun add(scanResults: List<ScanResult>) {
         count = if (count >= MAXIMUM * FACTOR) COUNT_MIN else count + 1
-        while (this.scanResults.size >= size()) {
+        val size = size()
+        while (this.scanResults.size >= size) {
             this.scanResults.removeLastOrNull()
         }
         this.scanResults.addFirst(scanResults)
-        this.wifiInfo = wifiInfo
     }
 
     fun first(): List<ScanResult> = scanResults.first()
@@ -55,8 +56,12 @@ internal class Cache {
     fun last(): List<ScanResult> = scanResults.last()
 
     fun size(): Int =
-            if (sizeAvailable)
-                with(MainContext.INSTANCE.settings.scanSpeed()) {
+        if (sizeAvailable) {
+            val settings = MainContext.INSTANCE.settings
+            if (settings.cacheOff())
+                MINIMUM
+            else {
+                with(settings.scanSpeed()) {
                     when {
                         this < 2 -> MAXIMUM
                         this < 5 -> MAXIMUM - 1
@@ -64,21 +69,20 @@ internal class Cache {
                         else -> MINIMUM
                     }
                 }
-            else MINIMUM
-
-    fun wifiInfo(): WifiInfo? = wifiInfo
+            }
+        } else MINIMUM
 
     private fun calculate(first: Boolean, element: ScanResult, accumulator: CacheResult?): Int {
         val average: Int = if (first) element.level else (accumulator!!.average + element.level) / DENOMINATOR
         return (if (sizeAvailable) average else average - SIZE * (count + count % FACTOR) / DENOMINATOR)
-                .coerceIn(LEVEL_MINIMUM, LEVEL_MAXIMUM)
+            .coerceIn(LEVEL_MINIMUM, LEVEL_MAXIMUM)
     }
 
     private fun combineCache(): List<ScanResult> =
-            scanResults.flatten().sortedWith(comparator())
+        scanResults.flatten().sortedWith(comparator())
 
     private fun comparator(): Comparator<ScanResult> =
-            compareBy<ScanResult> { it.BSSID }.thenBy { it.SSID }.thenBy { it.level }
+        compareBy<ScanResult> { it.BSSID }.thenBy { it.ssid() }.thenBy { it.level }
 
     private val sizeAvailable: Boolean
         get() = MainContext.INSTANCE.configuration.sizeAvailable

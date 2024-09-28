@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  */
 package com.vrem.wifianalyzer.wifi.band
 
-import org.junit.Assert.assertEquals
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class WiFiChannelCountryGHZ5Test {
@@ -27,103 +27,103 @@ class WiFiChannelCountryGHZ5Test {
     private val fixture = WiFiChannelCountryGHZ5()
 
     @Test
-    fun testChannelsAustraliaCanada() {
+    fun channelsAustraliaCanada() {
         val expected = channelsSet1.union(setOf(100, 104, 108, 112, 116, 132, 136, 140, 144)).union(channelsSet3)
         listOf("AU", "CA").forEach {
             val actual = fixture.findChannels(it)
-            assertEquals(it, expected.size, actual.size)
-            assertEquals(it, expected, actual)
+            assertThat(actual).hasSize(expected.size)
+            assertThat(actual).isEqualTo(expected)
         }
     }
 
     @Test
-    fun testChannelsChinaSouthKorea() {
+    fun channelsChinaSouthKorea() {
         val expected = channelsSet1.union(channelsSet3)
         listOf("CN", "KR").forEach {
             val actual = fixture.findChannels(it)
-            assertEquals(it, expected.size, actual.size)
-            assertEquals(it, expected, actual)
+            assertThat(actual).hasSize(expected.size)
+            assertThat(actual).isEqualTo(expected)
         }
     }
 
     @Test
-    fun testChannelsJapanTurkeySouthAfrica() {
+    fun channelsJapanTurkeySouthAfrica() {
         val expected = channelsSet1.union(channelsSet2)
         listOf("JP", "TR", "ZA").forEach {
             val actual = fixture.findChannels(it)
-            assertEquals(it, expected.size, actual.size)
-            assertEquals(it, expected, actual)
+            assertThat(actual).hasSize(expected.size)
+            assertThat(actual).isEqualTo(expected)
         }
     }
 
     @Test
-    fun testChannelsRussia() {
+    fun channelsRussia() {
         val expected = channelsSet1.union(setOf(132, 136, 140, 144)).union(channelsSet3)
         val actual = fixture.findChannels("RU")
-        assertEquals(expected.size, actual.size)
-        assertEquals(expected, actual)
+        assertThat(actual).hasSize(expected.size)
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun testChannelsUS() {
+    fun channelsUS() {
         val expected = channelsSet1.union(channelsSet2).union(channelsSet3).union(setOf(169, 173, 177))
         val actual = fixture.findChannels("US")
-        assertEquals(expected.size, actual.size)
-        assertEquals(expected, actual)
+        assertThat(actual).hasSize(expected.size)
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun testChannelsETSI() {
+    fun channelsETSI() {
         val countriesETSI = listOf(
-                "AT",      // ETSI Austria
-                "BE",      // ETSI Belgium
-                "CH",      // ETSI Switzerland
-                "CY",      // ETSI Cyprus
-                "CZ",      // ETSI Czechia
-                "DE",      // ETSI Germany
-                "DK",      // ETSI Denmark
-                "EE",      // ETSI Estonia
-                "ES",      // ETSI Spain
-                "FI",      // ETSI Finland
-                "FR",      // ETSI France
-                "GR",      // ETSI Greece
-                "HU",      // ETSI Hungary
-                "IE",      // ETSI Ireland
-                "IS",      // ETSI Iceland
-                "IT",      // ETSI Italy
-                "LI",      // ETSI Liechtenstein
-                "LT",      // ETSI Lithuania
-                "LU",      // ETSI Luxembourg
-                "LV",      // ETSI Latvia
-                "MT",      // ETSI Malta
-                "NL",      // ETSI Netherlands
-                "NO",      // ETSI Norway
-                "PL",      // ETSI Poland
-                "PT",      // ETSI Portugal
-                "RO",      // ETSI Romania
-                "SE",      // ETSI Sweden
-                "SI",      // ETSI Slovenia
-                "SK",      // ETSI Slovakia
-                "IL"       // ETSI Israel
+            "AT",      // ETSI Austria
+            "BE",      // ETSI Belgium
+            "CH",      // ETSI Switzerland
+            "CY",      // ETSI Cyprus
+            "CZ",      // ETSI Czechia
+            "DE",      // ETSI Germany
+            "DK",      // ETSI Denmark
+            "EE",      // ETSI Estonia
+            "ES",      // ETSI Spain
+            "FI",      // ETSI Finland
+            "FR",      // ETSI France
+            "GR",      // ETSI Greece
+            "HU",      // ETSI Hungary
+            "IE",      // ETSI Ireland
+            "IS",      // ETSI Iceland
+            "IT",      // ETSI Italy
+            "LI",      // ETSI Liechtenstein
+            "LT",      // ETSI Lithuania
+            "LU",      // ETSI Luxembourg
+            "LV",      // ETSI Latvia
+            "MT",      // ETSI Malta
+            "NL",      // ETSI Netherlands
+            "NO",      // ETSI Norway
+            "PL",      // ETSI Poland
+            "PT",      // ETSI Portugal
+            "RO",      // ETSI Romania
+            "SE",      // ETSI Sweden
+            "SI",      // ETSI Slovenia
+            "SK",      // ETSI Slovakia
+            "IL"       // ETSI Israel
         )
 
         val expected = channelsSet1
-                .union(setOf(100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140, 144))
-                .union(setOf(149, 153, 157, 161, 165, 169, 173))
+            .union(setOf(100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140, 144))
+            .union(setOf(149, 153, 157, 161, 165, 169, 173))
         countriesETSI.forEach {
             val actual = fixture.findChannels(it)
-            assertEquals(it, expected.size, actual.size)
-            assertEquals(it, expected, actual)
+            assertThat(actual).hasSize(expected.size)
+            assertThat(actual).isEqualTo(expected)
         }
     }
 
     @Test
-    fun testChannelsOther() {
+    fun channelsOther() {
         val expected = channelsSet1.union(channelsSet2).union(channelsSet3)
         listOf("UK", "BR", "XYZ").forEach {
             val actual = fixture.findChannels(it)
-            assertEquals(it, expected.size, actual.size)
-            assertEquals(it, expected, actual)
+            assertThat(actual).hasSize(expected.size)
+            assertThat(actual).isEqualTo(expected)
         }
     }
 

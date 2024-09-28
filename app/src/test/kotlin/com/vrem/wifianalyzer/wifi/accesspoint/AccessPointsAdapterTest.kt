@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,25 +22,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ExpandableListView
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
-import com.nhaarman.mockitokotlin2.whenever
 import com.vrem.wifianalyzer.MainContextHelper
 import com.vrem.wifianalyzer.R
 import com.vrem.wifianalyzer.RobolectricUtil
 import com.vrem.wifianalyzer.wifi.model.WiFiConnection
 import com.vrem.wifianalyzer.wifi.model.WiFiData
 import com.vrem.wifianalyzer.wifi.model.WiFiDetail
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoMoreInteractions
+import org.mockito.kotlin.whenever
 import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
-@Config(sdk = [Build.VERSION_CODES.Q])
+@Config(sdk = [Build.VERSION_CODES.UPSIDE_DOWN_CAKE])
 class AccessPointsAdapterTest {
     private val mainActivity = RobolectricUtil.INSTANCE.activity
     private val accessPointsAdapterData: AccessPointsAdapterData = mock()
@@ -66,7 +66,7 @@ class AccessPointsAdapterTest {
     }
 
     @Test
-    fun testGetGroupViewWithNoChildren() {
+    fun getGroupViewWithNoChildren() {
         // setup
         val wiFiDetail = WiFiDetail.EMPTY
         whenever(accessPointsAdapterData.parent(1)).thenReturn(wiFiDetail)
@@ -75,15 +75,15 @@ class AccessPointsAdapterTest {
         // execute
         val actual = fixture.getGroupView(1, false, view, viewGroup)
         // validate
-        assertNotNull(actual)
-        assertEquals(View.GONE, actual.findViewById<View>(R.id.groupIndicator).visibility)
+        assertThat(actual).isNotNull()
+        assertThat(actual.findViewById<View>(R.id.groupIndicator).visibility).isEqualTo(View.GONE)
         verify(accessPointsAdapterData).parent(1)
         verify(accessPointsAdapterData).childrenCount(1)
         verifyView(view, wiFiDetail)
     }
 
     @Test
-    fun testGetGroupViewCompactAddsPopup() {
+    fun getGroupViewCompactAddsPopup() {
         // setup
         val wiFiDetail = WiFiDetail.EMPTY
         whenever(accessPointsAdapterData.parent(1)).thenReturn(wiFiDetail)
@@ -92,8 +92,8 @@ class AccessPointsAdapterTest {
         // execute
         val actual = fixture.getGroupView(1, false, view, viewGroup)
         // validate
-        assertNotNull(actual)
-        assertEquals(View.GONE, actual.findViewById<View>(R.id.groupIndicator).visibility)
+        assertThat(actual).isNotNull()
+        assertThat(actual.findViewById<View>(R.id.groupIndicator).visibility).isEqualTo(View.GONE)
         verify(accessPointsAdapterData).parent(1)
         verify(accessPointsAdapterData).childrenCount(1)
         verifyView(view, wiFiDetail)
@@ -102,7 +102,7 @@ class AccessPointsAdapterTest {
     }
 
     @Test
-    fun testGetGroupViewWithChildren() {
+    fun getGroupViewWithChildren() {
         // setup
         val wiFiDetail = WiFiDetail.EMPTY
         whenever(accessPointsAdapterData.parent(1)).thenReturn(wiFiDetail)
@@ -111,15 +111,15 @@ class AccessPointsAdapterTest {
         // execute
         val actual = fixture.getGroupView(1, false, view, viewGroup)
         // validate
-        assertNotNull(actual)
-        assertEquals(View.VISIBLE, actual.findViewById<View>(R.id.groupIndicator).visibility)
+        assertThat(actual).isNotNull()
+        assertThat(actual.findViewById<View>(R.id.groupIndicator).visibility).isEqualTo(View.VISIBLE)
         verify(accessPointsAdapterData).parent(1)
         verify(accessPointsAdapterData).childrenCount(1)
         verifyView(view, wiFiDetail)
     }
 
     @Test
-    fun testGetChildView() {
+    fun getChildView() {
         // setup
         val wiFiDetail = WiFiDetail.EMPTY
         whenever(accessPointsAdapterData.child(0, 0)).thenReturn(wiFiDetail)
@@ -127,14 +127,14 @@ class AccessPointsAdapterTest {
         // execute
         val actual = fixture.getChildView(0, 0, false, view, viewGroup)
         // validate
-        assertNotNull(actual)
-        assertEquals(View.GONE, actual.findViewById<View>(R.id.groupIndicator).visibility)
+        assertThat(actual).isNotNull()
+        assertThat(actual.findViewById<View>(R.id.groupIndicator).visibility).isEqualTo(View.GONE)
         verify(accessPointsAdapterData).child(0, 0)
         verifyChildView(view, wiFiDetail)
     }
 
     @Test
-    fun testGetChildViewCompactAddsPopup() {
+    fun getChildViewCompactAddsPopup() {
         // setup
         val wiFiDetail = WiFiDetail.EMPTY
         whenever(accessPointsAdapterData.child(0, 0)).thenReturn(wiFiDetail)
@@ -142,8 +142,8 @@ class AccessPointsAdapterTest {
         // execute
         val actual = fixture.getChildView(0, 0, false, view, viewGroup)
         // validate
-        assertNotNull(actual)
-        assertEquals(View.GONE, actual.findViewById<View>(R.id.groupIndicator).visibility)
+        assertThat(actual).isNotNull()
+        assertThat(actual.findViewById<View>(R.id.groupIndicator).visibility).isEqualTo(View.GONE)
         verify(accessPointsAdapterData).child(0, 0)
         verifyChildView(view, wiFiDetail)
         verify(accessPointPopup).attach(view.findViewById(R.id.attachPopup), wiFiDetail)
@@ -151,7 +151,7 @@ class AccessPointsAdapterTest {
     }
 
     @Test
-    fun testUpdate() {
+    fun update() {
         // setup
         val wiFiData = WiFiData(listOf(), WiFiConnection.EMPTY)
         // execute
@@ -161,75 +161,85 @@ class AccessPointsAdapterTest {
     }
 
     @Test
-    fun testGetGroupCount() {
+    fun getGroupCount() {
         // setup
         val expected = 5
         whenever(accessPointsAdapterData.parentsCount()).thenReturn(expected)
         // execute
         val actual = fixture.groupCount
         // validate
-        assertEquals(expected, actual)
+        assertThat(actual).isEqualTo(expected)
         verify(accessPointsAdapterData).parentsCount()
     }
 
     @Test
-    fun testGetChildrenCount() {
+    fun getChildrenCount() {
         // setup
         val expected = 25
         whenever(accessPointsAdapterData.childrenCount(1)).thenReturn(expected)
         // execute
         val actual = fixture.getChildrenCount(1)
         // validate
-        assertEquals(expected, actual)
+        assertThat(actual).isEqualTo(expected)
         verify(accessPointsAdapterData).childrenCount(1)
     }
 
     @Test
-    fun testGetGroup() {
+    fun getGroup() {
         // setup
         val expected = WiFiDetail.EMPTY
         whenever(accessPointsAdapterData.parent(3)).thenReturn(expected)
         // execute
         val actual = fixture.getGroup(3)
         // validate
-        assertEquals(expected, actual)
+        assertThat(actual).isEqualTo(expected)
         verify(accessPointsAdapterData).parent(3)
     }
 
     @Test
-    fun testGetChild() {
+    fun getChild() {
         // setup
         val expected = WiFiDetail.EMPTY
         whenever(accessPointsAdapterData.child(1, 2)).thenReturn(expected)
         // execute
         val actual = fixture.getChild(1, 2)
         // validate
-        assertEquals(expected, actual)
+        assertThat(actual).isEqualTo(expected)
         verify(accessPointsAdapterData).child(1, 2)
     }
 
     @Test
-    fun testGetGroupId() {
-        assertEquals(22, fixture.getGroupId(22))
+    fun getGroupId() {
+        // setup
+        val expected = 22L
+        // execute
+        val actual = fixture.getGroupId(expected.toInt())
+        // validate
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun testGetChildId() {
-        assertEquals(11, fixture.getChildId(1, 11))
+    fun getChildId() {
+        // setup
+        val expected = 11L
+        // execute
+        val actual = fixture.getChildId(1, expected.toInt())
+        // validate
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun testHasStableIds() {
-        assertTrue(fixture.hasStableIds())
+    fun hasStableIds() {
+        assertThat(fixture.hasStableIds()).isTrue()
     }
 
     @Test
-    fun testIsChildSelectable() {
-        assertTrue(fixture.isChildSelectable(0, 0))
+    fun isChildSelectable() {
+        assertThat(fixture.isChildSelectable(0, 0)).isTrue()
     }
 
     @Test
-    fun testOnGroupCollapsed() {
+    fun onGroupCollapsed() {
         // setup
         val index = 11
         // execute
@@ -239,7 +249,7 @@ class AccessPointsAdapterTest {
     }
 
     @Test
-    fun testOnGroupExpanded() {
+    fun onGroupExpanded() {
         // setup
         val index = 22
         // execute

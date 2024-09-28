@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,14 +22,14 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.vrem.wifianalyzer.RobolectricUtil
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
-import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
-@Config(sdk = [Build.VERSION_CODES.Q])
+@Config(sdk = [Build.VERSION_CODES.UPSIDE_DOWN_CAKE])
 class NavigationMenuControllerTest {
     private val mainActivity = RobolectricUtil.INSTANCE.activity
     private val fixture = mainActivity.navigationMenuController
@@ -42,80 +42,80 @@ class NavigationMenuControllerTest {
     }
 
     @Test
-    fun testNavigationMenuView() {
+    fun navigationMenuView() {
         // execute
         val menu: Menu = navigationView.menu
         // validate
-        assertEquals(NavigationMenu.values().size, menu.size())
+        assertThat(menu.size()).isEqualTo(NavigationMenu.entries.size)
         validateNavigationGroup(menu)
     }
 
     @Test
-    fun testGetCurrentMenuItem() {
+    fun getCurrentMenuItem() {
         // setup
         val expected = navigationViewMenuItem(NavigationMenu.ACCESS_POINTS)
         // execute
         val actual = fixture.currentMenuItem()
         // validate
-        assertEquals(expected, actual)
-        assertTrue(actual.isCheckable)
-        assertTrue(actual.isChecked)
+        assertThat(actual).isEqualTo(expected)
+        assertThat(actual.isCheckable).isTrue()
+        assertThat(actual.isChecked).isTrue()
     }
 
     @Test
-    fun testGetCurrentNavigationMenu() {
+    fun getCurrentNavigationMenu() {
         // execute
         val actual = fixture.currentNavigationMenu()
         // validate
-        assertEquals(NavigationMenu.ACCESS_POINTS, actual)
+        assertThat(actual).isEqualTo(NavigationMenu.ACCESS_POINTS)
     }
 
     @Test
-    fun testSetCurrentNavigationMenuWithNavigationView() {
+    fun setCurrentNavigationMenuWithNavigationView() {
         // setup
         val expected = NavigationMenu.CHANNEL_GRAPH
         // execute
         fixture.currentNavigationMenu(expected)
         // validate
-        assertEquals(expected, fixture.currentNavigationMenu())
-        assertTrue(navigationViewMenuItem(NavigationMenu.CHANNEL_GRAPH).isCheckable)
-        assertTrue(navigationViewMenuItem(NavigationMenu.CHANNEL_GRAPH).isChecked)
-        assertFalse(navigationViewMenuItem(NavigationMenu.ACCESS_POINTS).isCheckable)
-        assertFalse(navigationViewMenuItem(NavigationMenu.ACCESS_POINTS).isChecked)
+        assertThat(fixture.currentNavigationMenu()).isEqualTo(expected)
+        assertThat(navigationViewMenuItem(NavigationMenu.CHANNEL_GRAPH).isCheckable).isTrue()
+        assertThat(navigationViewMenuItem(NavigationMenu.CHANNEL_GRAPH).isChecked).isTrue()
+        assertThat(navigationViewMenuItem(NavigationMenu.ACCESS_POINTS).isCheckable).isFalse()
+        assertThat(navigationViewMenuItem(NavigationMenu.ACCESS_POINTS).isChecked).isFalse()
     }
 
     @Test
-    fun testSetCurrentNavigationMenuWithBottomNavigationView() {
+    fun setCurrentNavigationMenuWithBottomNavigationView() {
         // setup
         val expected = NavigationMenu.CHANNEL_GRAPH
         // execute
         fixture.currentNavigationMenu(expected)
         // validate
-        assertEquals(expected, fixture.currentNavigationMenu())
+        assertThat(fixture.currentNavigationMenu()).isEqualTo(expected)
         val menuItem = bottomNavigationMenuItem(NavigationMenu.CHANNEL_GRAPH)
-        assertTrue(menuItem.isCheckable)
-        assertTrue(menuItem.isChecked)
-        assertFalse(bottomNavigationMenuItem(NavigationMenu.ACCESS_POINTS).isCheckable)
+        assertThat(menuItem.isCheckable).isTrue()
+        assertThat(menuItem.isChecked).isTrue()
+        assertThat(bottomNavigationMenuItem(NavigationMenu.ACCESS_POINTS).isCheckable).isFalse()
     }
 
     private fun navigationViewMenuItem(navigationMenu: NavigationMenu): MenuItem =
-            navigationView.menu.findItem(navigationMenu.ordinal)
+        navigationView.menu.findItem(navigationMenu.ordinal)
 
     private fun bottomNavigationMenuItem(navigationMenu: NavigationMenu): MenuItem =
-            bottomNavigationView.menu.findItem(navigationMenu.ordinal)
+        bottomNavigationView.menu.findItem(navigationMenu.ordinal)
 
     private fun validateNavigationGroup(menu: Menu): Unit =
-            NavigationGroup.values().forEach { validateNavigationMenu(it, menu) }
+        NavigationGroup.entries.forEach { validateNavigationMenu(it, menu) }
 
     private fun validateNavigationMenu(navigationGroup: NavigationGroup, menu: Menu): Unit =
-            navigationGroup.navigationMenus.forEach { validateMenuItem(menu, it, navigationGroup) }
+        navigationGroup.navigationMenus.forEach { validateMenuItem(menu, it, navigationGroup) }
 
     private fun validateMenuItem(menu: Menu, navigationMenu: NavigationMenu, navigationGroup: NavigationGroup) {
         val actual: MenuItem = menu.getItem(navigationMenu.ordinal)
-        assertEquals(navigationGroup.ordinal, actual.groupId)
-        assertEquals(mainActivity.resources.getString(navigationMenu.title), actual.title)
-        assertEquals(navigationMenu.ordinal, actual.itemId)
-        assertEquals(navigationMenu.ordinal, actual.order)
+        assertThat(actual.groupId).isEqualTo(navigationGroup.ordinal)
+        assertThat(actual.title).isEqualTo(mainActivity.resources.getString(navigationMenu.title))
+        assertThat(actual.itemId).isEqualTo(navigationMenu.ordinal)
+        assertThat(actual.order).isEqualTo(navigationMenu.ordinal)
     }
 
 }

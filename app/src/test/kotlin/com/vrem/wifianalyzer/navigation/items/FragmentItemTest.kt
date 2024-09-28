@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,19 +17,25 @@
  */
 package com.vrem.wifianalyzer.navigation.items
 
+import android.os.Build
 import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import com.nhaarman.mockitokotlin2.*
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.vrem.wifianalyzer.MainActivity
 import com.vrem.wifianalyzer.R
 import com.vrem.wifianalyzer.navigation.NavigationMenu
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
-import org.junit.Assert.*
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.kotlin.*
+import org.robolectric.annotation.Config
 
+@RunWith(AndroidJUnit4::class)
+@Config(sdk = [Build.VERSION_CODES.UPSIDE_DOWN_CAKE])
 class FragmentItemTest {
     private val title = "title"
     private val fragment: Fragment = mock()
@@ -48,7 +54,7 @@ class FragmentItemTest {
     }
 
     @Test
-    fun testActivateWithStateSaved() {
+    fun activateWithStateSaved() {
         // setup
         val fixture = FragmentItem(fragment, true, View.VISIBLE)
         val navigationMenu = NavigationMenu.ACCESS_POINTS
@@ -64,7 +70,7 @@ class FragmentItemTest {
     }
 
     @Test
-    fun testActivateWithStateNotSaved() {
+    fun activateWithStateNotSaved() {
         // setup
         val fixture = FragmentItem(fragment, true, View.VISIBLE)
         val navigationMenu = NavigationMenu.ACCESS_POINTS
@@ -83,27 +89,27 @@ class FragmentItemTest {
     }
 
     @Test
-    fun testRegisteredFalse() {
+    fun registeredFalse() {
         // setup
         val fixture = FragmentItem(fragment, false, View.VISIBLE)
         // execute & validate
-        assertFalse(fixture.registered)
+        assertThat(fixture.registered).isFalse()
     }
 
     @Test
-    fun testRegisteredTrue() {
+    fun registeredTrue() {
         // setup
         val fixture = FragmentItem(fragment, true, View.VISIBLE)
         // execute & validate
-        assertTrue(fixture.registered)
+        assertThat(fixture.registered).isTrue()
     }
 
     @Test
-    fun testVisibility() {
+    fun visibility() {
         // setup
         val fixture = FragmentItem(fragment, false, View.INVISIBLE)
         // execute & validate
-        assertEquals(View.INVISIBLE, fixture.visibility)
+        assertThat(fixture.visibility).isEqualTo(View.INVISIBLE)
     }
 
     private fun withFragmentTransaction() {

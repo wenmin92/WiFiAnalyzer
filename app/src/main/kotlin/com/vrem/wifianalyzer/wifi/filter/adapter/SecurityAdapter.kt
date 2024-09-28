@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@ package com.vrem.wifianalyzer.wifi.filter.adapter
 import com.vrem.wifianalyzer.settings.Settings
 import com.vrem.wifianalyzer.wifi.model.Security
 
-class SecurityAdapter(selections: Set<Security>) : EnumFilterAdapter<Security>(selections, Security.values()) {
+class SecurityAdapter(selections: Set<Security>) : EnumFilterAdapter<Security>(selections, Security.entries) {
     override fun save(settings: Settings) {
         settings.saveSecurities(selections)
     }

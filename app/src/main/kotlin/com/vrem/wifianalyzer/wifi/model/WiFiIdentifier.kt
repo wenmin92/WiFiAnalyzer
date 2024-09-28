@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,10 +33,10 @@ data class WiFiIdentifier(val ssidRaw: SSID = String.EMPTY, val bssid: BSSID = S
         get() = "$ssid ($bssid)"
 
     fun equals(other: WiFiIdentifier, ignoreCase: Boolean = false): Boolean =
-            ssid.equals(other.ssidRaw, ignoreCase) && bssid.equals(other.bssid, ignoreCase)
+        ssid.equals(other.ssidRaw, ignoreCase) && bssid.equals(other.bssid, ignoreCase)
 
     override fun compareTo(other: WiFiIdentifier): Int =
-            compareBy<WiFiIdentifier> { it.ssidRaw }.thenBy { it.bssid }.compare(this, other)
+        compareBy<WiFiIdentifier> { it.ssidRaw }.thenBy { it.bssid }.compare(this, other)
 
     companion object {
         val EMPTY = WiFiIdentifier()

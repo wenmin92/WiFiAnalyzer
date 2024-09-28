@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,98 +17,100 @@
  */
 package com.vrem.util
 
-import org.junit.Assert
-import org.junit.Assert.assertEquals
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import java.util.*
+import java.util.Locale
 
 class LocaleUtilsTest {
     @Test
-    fun testAllCountries() {
+    fun allSupportedCountries() {
         // execute
         val actual = allCountries()
         // validate
-        Assert.assertTrue(actual.size >= 2)
-        Assert.assertTrue(actual[0].country < actual[actual.size - 1].country)
+        assertThat(actual.size).isGreaterThanOrEqualTo(2)
+        assertThat(actual[0].country).isLessThan(actual[actual.size - 1].country)
     }
 
     @Test
-    fun testFindByCountryCode() {
+    fun findByCountryCodeWithKnownCode() {
         // setup
         val expected = allCountries()[0]
         // execute
         val actual = findByCountryCode(expected.country)
         // validate
-        assertEquals(expected, actual)
-        assertEquals(expected.country, actual.country)
-        assertEquals(expected.displayCountry, actual.displayCountry)
-        Assert.assertNotEquals(expected.country, expected.displayCountry)
-        Assert.assertNotEquals(actual.country, actual.displayCountry)
+        assertThat(actual).isEqualTo(expected)
+        assertThat(actual.country).isEqualTo(expected.country)
+        assertThat(actual.displayCountry).isEqualTo(expected.displayCountry)
+        assertThat(expected.displayCountry).isNotEqualTo(expected.country)
+        assertThat(actual.displayCountry).isNotEqualTo(actual.country)
     }
 
     @Test
-    fun testFindByCountryCodeWithUnknownCode() {
+    fun findByCountryCodeWithUnknownCode() {
         // execute
         val actual = findByCountryCode("WW")
         // validate
-        assertEquals(Locale.getDefault(), actual)
+        assertThat(actual).isEqualTo(Locale.getDefault())
     }
 
     @Test
-    fun testToLanguageTag() {
-        assertEquals(Locale.US.language + "_" + Locale.US.country, toLanguageTag(Locale.US))
-        assertEquals(Locale.ENGLISH.language + "_", toLanguageTag(Locale.ENGLISH))
+    fun toLanguageTagWithKnownCode() {
+        assertThat(toLanguageTag(Locale.US)).isEqualTo(Locale.US.language + "_" + Locale.US.country)
+        assertThat(toLanguageTag(Locale.ENGLISH)).isEqualTo(Locale.ENGLISH.language + "_")
     }
 
     @Test
-    fun testFindByLanguageTagWithUnknownTag() {
+    fun findByLanguageTagWithUnknownTag() {
         val defaultLocal = Locale.getDefault()
-        assertEquals(defaultLocal, findByLanguageTag(String.EMPTY))
-        assertEquals(defaultLocal, findByLanguageTag("WW"))
-        assertEquals(defaultLocal, findByLanguageTag("WW_HH_TT"))
+        assertThat(findByLanguageTag(String.EMPTY)).isEqualTo(defaultLocal)
+        assertThat(findByLanguageTag("WW")).isEqualTo(defaultLocal)
+        assertThat(findByLanguageTag("WW_HH_TT")).isEqualTo(defaultLocal)
     }
 
     @Test
-    fun testFindByLanguageTag() {
-        assertEquals(Locale.SIMPLIFIED_CHINESE, findByLanguageTag(toLanguageTag(Locale.SIMPLIFIED_CHINESE)))
-        assertEquals(Locale.TRADITIONAL_CHINESE, findByLanguageTag(toLanguageTag(Locale.TRADITIONAL_CHINESE)))
-        assertEquals(Locale.ENGLISH, findByLanguageTag(toLanguageTag(Locale.ENGLISH)))
+    fun findByLanguageTagWithKnownTag() {
+        assertThat(findByLanguageTag(toLanguageTag(Locale.SIMPLIFIED_CHINESE))).isEqualTo(Locale.SIMPLIFIED_CHINESE)
+        assertThat(findByLanguageTag(toLanguageTag(Locale.TRADITIONAL_CHINESE))).isEqualTo(Locale.TRADITIONAL_CHINESE)
+        assertThat(findByLanguageTag(toLanguageTag(Locale.ENGLISH))).isEqualTo(Locale.ENGLISH)
     }
 
     @Test
-    fun testSupportedLanguages() {
+    fun allSupportedLanguages() {
         // setup
         val expected: Set<Locale> = setOf(
-                BULGARIAN,
-                Locale.SIMPLIFIED_CHINESE,
-                Locale.TRADITIONAL_CHINESE,
-                Locale.ENGLISH,
-                Locale.FRENCH,
-                Locale.GERMAN,
-                Locale.ITALIAN,
-                Locale.JAPANESE,
-                POLISH,
-                PORTUGUESE,
-                SPANISH,
-                RUSSIAN,
-                UKRAINIAN,
-                Locale.getDefault())
+            BULGARIAN,
+            GREEK,
+            Locale.SIMPLIFIED_CHINESE,
+            Locale.TRADITIONAL_CHINESE,
+            Locale.ENGLISH,
+            Locale.FRENCH,
+            Locale.GERMAN,
+            Locale.ITALIAN,
+            Locale.JAPANESE,
+            POLISH,
+            PORTUGUESE,
+            SPANISH,
+            RUSSIAN,
+            TURKISH,
+            UKRAINIAN,
+            Locale.getDefault()
+        )
         // execute
         val actual = supportedLanguages()
         // validate
-        assertEquals(expected.size, actual.size)
+        assertThat(actual).hasSize(expected.size)
         for (locale in expected) {
-            Assert.assertTrue(actual.contains(locale))
+            assertThat(actual).contains(locale)
         }
     }
 
     @Test
-    fun testDefaultCountryCode() {
-        assertEquals(Locale.getDefault().country, defaultCountryCode())
+    fun currentDefaultCountryCode() {
+        assertThat(defaultCountryCode()).isEqualTo(Locale.getDefault().country)
     }
 
     @Test
-    fun testDefaultLanguageTag() {
-        assertEquals(toLanguageTag(Locale.getDefault()), defaultLanguageTag())
+    fun currentDefaultLanguageTag() {
+        assertThat(defaultLanguageTag()).isEqualTo(toLanguageTag(Locale.getDefault()))
     }
 }

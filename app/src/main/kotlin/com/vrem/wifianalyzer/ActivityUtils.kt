@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,15 +25,14 @@ import android.view.WindowManager
 import androidx.appcompat.widget.Toolbar
 
 internal fun MainActivity.keepScreenOn() =
-        if (MainContext.INSTANCE.settings.keepScreenOn()) {
-            this.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        } else {
-            this.window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        }
+    if (MainContext.INSTANCE.settings.keepScreenOn()) {
+        this.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    } else {
+        this.window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    }
 
 internal fun MainActivity.setupToolbar(): Toolbar {
     val toolbar: Toolbar = this.findViewById(R.id.toolbar)
-    toolbar.setOnClickListener { toggleWiFiBand() }
     this.setSupportActionBar(toolbar)
     this.supportActionBar?.let {
         it.setHomeButtonEnabled(true)
@@ -42,18 +41,12 @@ internal fun MainActivity.setupToolbar(): Toolbar {
     return toolbar
 }
 
-internal fun MainActivity.toggleWiFiBand() {
-    if (this.currentNavigationMenu().wiFiBandSwitchable()) {
-        MainContext.INSTANCE.settings.toggleWiFiBand()
-    }
-}
-
 internal fun makeIntent(action: String): Intent = Intent(action)
 
 @TargetApi(Build.VERSION_CODES.Q)
 internal fun MainActivity.startWiFiSettings() =
-        this.startActivityForResult(makeIntent(Settings.Panel.ACTION_WIFI), 0)
+    this.startActivity(makeIntent(Settings.Panel.ACTION_WIFI))
 
 internal fun MainActivity.startLocationSettings() =
-        this.startActivity(makeIntent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+    this.startActivity(makeIntent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
 

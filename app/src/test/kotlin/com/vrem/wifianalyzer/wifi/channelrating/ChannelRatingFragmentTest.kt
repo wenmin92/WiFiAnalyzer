@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,23 +20,23 @@ package com.vrem.wifianalyzer.wifi.channelrating
 import android.os.Build
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
 import com.vrem.wifianalyzer.MainActivity
 import com.vrem.wifianalyzer.MainContextHelper.INSTANCE
 import com.vrem.wifianalyzer.R
 import com.vrem.wifianalyzer.RobolectricUtil
 import com.vrem.wifianalyzer.wifi.scanner.ScannerService
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
-@Config(sdk = [Build.VERSION_CODES.Q])
+@Config(sdk = [Build.VERSION_CODES.UPSIDE_DOWN_CAKE])
 class ChannelRatingFragmentTest {
+    @Suppress("unused")
     private val mainActivity: MainActivity = RobolectricUtil.INSTANCE.activity
     private val scanner: ScannerService = INSTANCE.scannerService
     private val fixture: ChannelRatingFragment = ChannelRatingFragment()
@@ -47,7 +47,7 @@ class ChannelRatingFragmentTest {
     }
 
     @Test
-    fun testOnCreateView() {
+    fun onCreateView() {
         // execute
         RobolectricUtil.INSTANCE.startFragment(fixture)
         // validate
@@ -56,45 +56,46 @@ class ChannelRatingFragmentTest {
     }
 
     @Test
-    fun testRefreshEnabled() {
+    fun refreshEnabled() {
         // setup
         RobolectricUtil.INSTANCE.startFragment(fixture)
         // execute
         val swipeRefreshLayout: SwipeRefreshLayout = fixture.view!!.findViewById(R.id.channelRatingRefresh)
         // validate
-        assertTrue(swipeRefreshLayout.isEnabled)
+        assertThat(swipeRefreshLayout.isEnabled).isTrue()
     }
 
 
     @Test
-    fun testOnResume() {
+    fun onResume() {
         // setup
         RobolectricUtil.INSTANCE.startFragment(fixture)
         // execute
         fixture.onResume()
         // validate
         verify(scanner, times(2)).update()
+        verify(scanner, times(2)).register(fixture.channelRatingAdapter)
     }
 
     @Test
-    fun testOnDestroy() {
+    fun onPause() {
         // setup
         RobolectricUtil.INSTANCE.startFragment(fixture)
         // execute
-        fixture.onDestroy()
+        fixture.onPause()
         // validate
         verify(scanner).unregister(fixture.channelRatingAdapter)
     }
 
     @Config(sdk = [Build.VERSION_CODES.P])
     @Test
-    fun testRefreshDisabled() {
+    fun refreshDisabled() {
         // setup
         RobolectricUtil.INSTANCE.startFragment(fixture)
         // execute
         val swipeRefreshLayout: SwipeRefreshLayout = fixture.view!!.findViewById(R.id.channelRatingRefresh)
         // validate
-        assertFalse(swipeRefreshLayout.isRefreshing)
-        assertFalse(swipeRefreshLayout.isEnabled)
+        assertThat(swipeRefreshLayout.isRefreshing).isFalse()
+        assertThat(swipeRefreshLayout.isEnabled).isFalse()
     }
 }

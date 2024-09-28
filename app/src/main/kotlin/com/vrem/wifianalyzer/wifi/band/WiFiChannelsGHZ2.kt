@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,19 +23,20 @@ class WiFiChannelsGHZ2 : WiFiChannels(RANGE, SETS) {
     override fun wiFiChannelPairFirst(countryCode: String): WiFiChannelPair = SET
 
     override fun availableChannels(countryCode: String): List<WiFiChannel> =
-            availableChannels(WiFiChannelCountry.find(countryCode).channelsGHZ2())
+        availableChannels(WiFiChannelCountry.find(countryCode).channelsGHZ2())
 
     override fun channelAvailable(countryCode: String, channel: Int): Boolean =
-            WiFiChannelCountry.find(countryCode).channelAvailableGHZ2(channel)
+        WiFiChannelCountry.find(countryCode).channelAvailableGHZ2(channel)
 
     override fun wiFiChannelByFrequency(frequency: Int, wiFiChannelPair: WiFiChannelPair): WiFiChannel =
-            if (inRange(frequency)) wiFiChannel(frequency, SET) else WiFiChannel.UNKNOWN
+        if (inRange(frequency)) wiFiChannel(frequency, SET) else WiFiChannel.UNKNOWN
 
     companion object {
         private val RANGE: WiFiRange = WiFiRange(2400, 2499)
         private val SETS: List<WiFiChannelPair> = listOf(
-                WiFiChannelPair(WiFiChannel(1, 2412), WiFiChannel(13, 2472)),
-                WiFiChannelPair(WiFiChannel(14, 2484), WiFiChannel(14, 2484)))
+            WiFiChannelPair(WiFiChannel(1, 2412), WiFiChannel(13, 2472)),
+            WiFiChannelPair(WiFiChannel(14, 2484), WiFiChannel(14, 2484))
+        )
         private val SET: WiFiChannelPair = WiFiChannelPair(SETS[0].first, SETS[SETS.size - 1].second)
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ WiFiAnalyzer
-  ~ Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+  ~ Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -18,9 +18,9 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/accessPointsRefresh"
@@ -32,7 +32,7 @@
             android:id="@+id/accessPointsView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:groupIndicator="@null"/>
+            android:groupIndicator="@null" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

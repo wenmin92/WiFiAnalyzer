@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2015 - 2021 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2015 - 2024 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,26 +17,19 @@
  */
 package com.vrem.wifianalyzer.wifi.model
 
-import com.vrem.util.EMPTY
-
 data class WiFiDetail(
-        val wiFiIdentifier: WiFiIdentifier = WiFiIdentifier.EMPTY,
-        val capabilities: String = String.EMPTY,
-        val wiFiSignal: WiFiSignal = WiFiSignal.EMPTY,
-        val wiFiAdditional: WiFiAdditional = WiFiAdditional.EMPTY,
-        val children: List<WiFiDetail> = listOf()) : Comparable<WiFiDetail> {
+    val wiFiIdentifier: WiFiIdentifier = WiFiIdentifier.EMPTY,
+    val wiFiSecurity: WiFiSecurity = WiFiSecurity.EMPTY,
+    val wiFiSignal: WiFiSignal = WiFiSignal.EMPTY,
+    val wiFiAdditional: WiFiAdditional = WiFiAdditional.EMPTY,
+    val children: List<WiFiDetail> = listOf()
+) : Comparable<WiFiDetail> {
 
     constructor(wiFiDetail: WiFiDetail, wiFiAdditional: WiFiAdditional) :
-            this(wiFiDetail.wiFiIdentifier, wiFiDetail.capabilities, wiFiDetail.wiFiSignal, wiFiAdditional)
+        this(wiFiDetail.wiFiIdentifier, wiFiDetail.wiFiSecurity, wiFiDetail.wiFiSignal, wiFiAdditional)
 
     constructor(wiFiDetail: WiFiDetail, children: List<WiFiDetail>) :
-            this(wiFiDetail.wiFiIdentifier, wiFiDetail.capabilities, wiFiDetail.wiFiSignal, wiFiDetail.wiFiAdditional, children)
-
-    val security: Security
-        get() = Security.findOne(capabilities)
-
-    val securities: Set<Security>
-        get() = Security.findAll(capabilities)
+        this(wiFiDetail.wiFiIdentifier, wiFiDetail.wiFiSecurity, wiFiDetail.wiFiSignal, wiFiDetail.wiFiAdditional, children)
 
     val noChildren: Boolean
         get() = children.isNotEmpty()
